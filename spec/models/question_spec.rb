@@ -5,6 +5,6 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of :title }              
   it { should validate_presence_of :body } 
   it { should have_db_index :title }
-  it { should have_many :answers }
+  it { should have_many :answers }  
 
 end
