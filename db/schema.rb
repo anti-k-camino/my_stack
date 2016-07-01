@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20160630212613) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "questions", ["title"], name: "index_questions_on_title", unique: true, using: :btree
+  add_index "questions", ["title"], name: "index_questions_on_title", using: :btree
 
   add_foreign_key "answers", "questions", on_delete: :cascade
 end
