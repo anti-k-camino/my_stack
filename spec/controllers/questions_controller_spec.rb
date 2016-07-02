@@ -19,20 +19,17 @@ describe 'GET #index' do
 
   end
 =end
-  describe 'GET #index' do
-    it('should populate array of all questions') do
-      question1 = FactoryGirl.create(:question)
-      question2 = FactoryGirl.create(:question)
+  describe 'GET #index' do  
 
+    it('should populate array of questions') do
+      questions = FactoryGirl.create_list(:question, 2)
       get :index
-
-      expect(assign(:questions)).to match_array([question1, question2])
+      expect(assigns(:questions)).to match_array([question1, question2])      
     end
-    it ('should render view index') do
+    it('should render index view') do
       get :index
-
       expect(response).to render_template :index
-    end 
+    end
   end
 
 end
