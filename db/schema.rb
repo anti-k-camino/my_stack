@@ -47,6 +47,5 @@ ActiveRecord::Schema.define(version: 20160704122813) do
   add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
 
   add_foreign_key "answers", "questions", on_delete: :cascade
-  add_foreign_key "answers", "users", on_delete: :cascade
   add_foreign_key "questions", "users", on_delete: :cascade
 end
