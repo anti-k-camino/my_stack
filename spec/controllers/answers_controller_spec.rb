@@ -1,7 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question){ create :question }
+  let(:question){ create :question } 
+  let(:answers){ create_list(:answer, 2) }
+
+  describe 'GET #index' do    
+    before{ get :index, question_id: question }
+    it 'populates an array of answers to question' do      
+      expect(assigns :answers).to match_array answers
+    end
+    it 'renders view index' do 
+    end
+  end
+
+
 
   describe 'GET #new' do
     before{ get :new, question_id: question }
@@ -9,7 +21,7 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns :answer).to be_a_new Answer
     end
     it 'renders view new' do
-      expect(response).to render_template :new, question_id: question
+      expect(response).to render_template :new
     end
   end
 
@@ -29,7 +41,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'renders view new' do
         post :create, question_id: question, answer: attributes_for(:invalid_answer)
-        expect(response).to render_template :new, question_id: question
+        expect(response).to render_template :new
       end
     end
   end

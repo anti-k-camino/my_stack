@@ -1,6 +1,6 @@
 class Answer < ActiveRecord::Base
-  belongs_to :question, foreign_key: :question_id
-  belongs_to :user, foreign_key: :user_id
+  belongs_to :question
+  belongs_to :user
 
-  validates :body, presence: true  
+  validates :body, :question_id,  presence: true  
 end
