@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question){ create :question } 
-  let(:answers){ create_list(:answer, 2) }
+  let(:question_with_answers){ create(:question_with_answers) }
 
   describe 'GET #index' do    
-    before{ get :index, question_id: question }
+    before{ get :index, question_id: question_with_answers }
     it 'populates an array of answers to question' do      
-      expect(assigns :answers).to match_array answers
+      expect(assigns :answers).to match_array question_with_answers.answers
     end
     it 'renders view index' do 
     end
