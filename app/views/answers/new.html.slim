@@ -1,0 +1,8 @@
+h1 Answer
+= form_for [@question, @answer] do |f|
+  div.field
+    = f.label :body
+    br
+    = f.text_field :body
+  div.actions
+    = f.submit

@@ -1,0 +1,8 @@
+h1 Question
+a href="#{new_question_answer_path(@question)}" title="new answer" Create new answer
+br
+br
+
+=@question.answers.each do |answer|
+  li "#{answer.body}"
+  
