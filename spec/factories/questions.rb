@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :question do
     title "MyString"
     body "MyText"
+    user
     factory :question_with_answers do      
       transient do
         answers_count 2
