@@ -24,11 +24,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    before do
-      @user = create(:user)
-      @request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in @user
-    end
+    sign_in_user
     before { get :new }
     it 'assigns Question to @question' do
       expect(assigns :question).to be_a_new Question
@@ -38,7 +34,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do    
+  describe 'GET #edit' do
+    sign_in_user    
     before{ get :edit, id: question }
     it 'assigns required question to @question' do
       expect(assigns :question).to eq question
@@ -50,6 +47,7 @@ RSpec.describe QuestionsController, type: :controller do
 
 
   describe 'POST #create' do
+    sign_in_user
     context 'with valid attributes' do
       it 'saves the new question to db' do
         expect{ post :create, question: attributes_for(:question)}.to change(Question, :count).by 1
@@ -71,6 +69,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    sign_in_user
     context 'with valid attributes' do
       it 'assigns question to @question' do
         patch :update, id: question, question: attributes_for(:question)
@@ -100,6 +99,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    sign_in_user
     before{ question }
     it 'deletes question' do      
       expect{ delete :destroy, id: question }.to change(Question, :count).by -1
