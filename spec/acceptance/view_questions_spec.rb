@@ -7,7 +7,7 @@ feature 'User gets list of questions', %q{
 } do   
   scenario 'Unregistered user try to get the list of questions' do
     visit questions_path
-    #expect(page).to have_current_path questions_path    
+    expect(page).to have_current_path questions_path    
     expect(page).to have_selector 'ul'
   end
 end
