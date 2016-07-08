@@ -87,10 +87,14 @@ RSpec.describe QuestionsController, type: :controller do
       end   
     end
     context 'with invalid attriutes' do 
-      before{ patch :update, id: question, question: { title: 'NewTitle', body: nil } }
+      before do patch :update, id: question, question: { title: 'NewTitle', body: nil }
+        @title = question.title
+        @body = question.body
+      end
+
       it 'does not change question attributes' do        
-        expect(question.title).to eq "MyString"
-        expect(question.body).to eq "MyText"
+        expect(question.title).to eq @title
+        expect(question.body).to eq @body
       end
       it 'renders view edit' do        
         expect(response).to render_template :edit
