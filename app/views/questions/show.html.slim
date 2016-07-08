@@ -1,3 +1,9 @@
-p = @question.body
+p=@question.body
 br
+ -if(@question.answers.empty?)
+    |No answers are already to this question
+ -else
+  -@question.answers.each do|question|
+    .li =question.body
+
 p=link_to 'Answer', new_question_answer_path(@question)

@@ -8,14 +8,14 @@ feature 'Give an answer', %q{
   given(:question){ create :question }
   scenario 'User creates an answer to a question' do
     question
-    visit questions_path
-    
-    click_on "#{question.title}" 
-    
+    visit questions_path    
+    click_on "#{question.title}"
+    expect(current_path).to eq question_path question    
     click_on 'Answer'
-
     fill_in 'Body', with:'text text'
-    click_on 'Create answer'    
-    expect(page).to have_content('Your answer successfully added.')
+    click_on 'Create answer'   
+    expect(current_path).to eq question_path question
+    expect(page).to have_content('Your answer successfully added.')    
+    expect(page).to have_content("#{ question.answers.last.body }")
   end
 end
