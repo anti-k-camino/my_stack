@@ -25,6 +25,17 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    sign_in_user
+    before{ get :show, id: answer }
+    it 'assigns reqested answer to @answer' do
+      expect(assigns :answer).to eq answer
+    end
+    it 'renders view show' do
+      expect(response).to render_template :show
+    end
+  end
+
   describe 'GET #edit' do
     sign_in_user
     before{ get :edit, id: answer}

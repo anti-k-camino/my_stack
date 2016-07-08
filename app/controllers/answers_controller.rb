@@ -1,10 +1,11 @@
 class AnswersController < BaseController
-  before_action :set_question, except:[:edit, :update]
+  before_action :set_question, except:[:show, :edit, :update, :destroy]
   before_action :set_answer, only:[:show, :edit, :update, :destroy]
   def index
     @answers = @question.answers
   end
-
+  def show
+  end
   def new
     @answer = Answer.new
   end
