@@ -1,5 +1,6 @@
 h1 Answer
 = form_for [@question, @answer] do |f|
+  =render 'common/errors', resource:@answer  
   div.field
     = f.label :body
     br
