@@ -1,6 +1,6 @@
-class AnswersController < ApplicationController
-  before_action :set_question 
-
+class AnswersController < BaseController
+  before_action :set_question, except:[:edit, :update]
+  before_action :set_answer, only:[:edit, :update, :destroy]
   def index
     @answers = @question.answers
   end
@@ -8,8 +8,9 @@ class AnswersController < ApplicationController
   def new
     @answer = Answer.new
   end
-
-  def create
+  def edit
+  end
+  def create    
     @answer = @question.answers.new(answer_params)
     if @answer.save
       redirect_to @question, notice:'Your answer successfully added.'
@@ -21,7 +22,12 @@ class AnswersController < ApplicationController
   private
   def set_question
     @question = Question.find params[:question_id]
-  end  
+  end 
+
+  def set_answer
+    @answer = Answer.find(params[:id])
+  end
+
   def answer_params
     params.require(:answer).permit(:body)
   end

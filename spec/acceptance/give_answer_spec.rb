@@ -4,7 +4,7 @@ feature 'Give an answer', %q{
   As a User
   I want to see the question
   I want to give an answer on that question
-} do 
+}, skip:true do; 
   given(:question){ create :question }
   before do
     question

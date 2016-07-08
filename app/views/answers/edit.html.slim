@@ -1,0 +1,9 @@
+h1 Edit Answer
+= form_for [@question, @answer] do |f|
+  =render 'common/errors', resource:@answer  
+  div.field
+    = f.label :body
+    br
+    = f.text_field :body
+  div.actions
+    = f.submit 'Edit answer'
