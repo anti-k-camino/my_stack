@@ -87,7 +87,8 @@ RSpec.describe QuestionsController, type: :controller do
       end   
     end
     context 'with invalid attriutes' do 
-      before do patch :update, id: question, question: { title: 'NewTitle', body: nil }
+      before do
+        patch :update, id: question, question: { title: 'NewTitle', body: nil }
         @title = question.title
         @body = question.body
       end

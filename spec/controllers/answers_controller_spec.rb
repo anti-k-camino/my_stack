@@ -58,6 +58,27 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    sign_in_user
+    context 'valid parameters' do
+      it 'assigns answer to @answer' do
+        patch :update, id: answer, answer: attributes_for(:answer)
+        expect(assigns :answer).to eq answer
+      end
+      it 'changes answer attributes' do
+        patch :update, id: answer, answer: { body: 'NewBody' }
+        answer.reload
+        expect(answer.body).to eq 'NewBody' 
+      end
+      it 'redirects to question' do
+        patch :update, id: answer, answer: { body: 'NewBody' }
+        expect(response).to redirect_to question_path answer.question , notice:'Your answer successfully apdated'
+      end
+    end
+    context 'invalid parameters' do
+    end
+  end
+
 
 
 end

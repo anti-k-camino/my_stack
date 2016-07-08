@@ -1,6 +1,6 @@
 class AnswersController < BaseController
   before_action :set_question, except:[:edit, :update]
-  before_action :set_answer, only:[:edit, :update, :destroy]
+  before_action :set_answer, only:[:show, :edit, :update, :destroy]
   def index
     @answers = @question.answers
   end
@@ -18,7 +18,13 @@ class AnswersController < BaseController
       render :new
     end
   end
-
+  def update
+    if @answer.update! answer_params
+      redirect_to question_path @answer.question, notice:'Your answer successfully apdated'
+    else
+      render :edit
+    end
+  end
   private
   def set_question
     @question = Question.find params[:question_id]
