@@ -48,8 +48,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
     context 'curent user is not the author of a question' do
-      let(:malicious_case){ create :user }
-      let(:question){ create :question, user: malicious_case }
+      malicious_case
       before{ get :edit, id: question }  
       it 'assigns required question to @question' do
         expect(assigns :question).to eq question
@@ -120,8 +119,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
     context 'user is not author of a question' do
-      let(:malicious_case){ create :user }
-      let(:question){ create :question, user: malicious_case}
+      malicious_case
       before do
         patch :update, id: question, question: attributes_for(:question)
         @title = question.title
@@ -153,9 +151,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
     context 'current user is not the owner of a question' do
-      let(:malicious_case){ create :user }
-      let(:question){ create :question, user: malicious_case }
-
+      malicious_case
       it 'fails to delete a question' do
         question
         expect{ delete :destroy, id: question }.to_not change(Question, :count)
