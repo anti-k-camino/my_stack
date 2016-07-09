@@ -83,13 +83,29 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirects to question' do
         patch :update, id: answer, answer: { body: 'NewBody' }
-        expect(response).to redirect_to question_path answer.question , notice:'Your answer successfully apdated'
+        expect(response).to redirect_to question_path answer.question , notice:'Your answer successfully updated'
       end
     end
     context 'invalid parameters' do
     end
   end
 
+  describe 'DELETE #destroy' do
+       
+    before do
+     @user = create(:user)
+     @request.env['devise.mapping'] = Devise.mappings[:user]
+     sign_in @user
+     answer     
+    end   
+    context 'user and answer.user ids are equal' do
+      it 'deletes answer' do
+        expect{ delete :destroy, id: answer }.to change(Answer, :count).by -1 if @user.permission? answer
+      end
+    end
+    context 'user and answer.user ids differ' do 
 
+    end
+  end
 
 end

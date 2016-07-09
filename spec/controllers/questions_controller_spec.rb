@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question){ create :question }
+  
   describe 'GET #index' do
     let(:questions){ create_list(:question, 2) }
     before { get :index }
@@ -13,7 +13,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #show' do    
+  describe 'GET #show' do
+    let(:question){ create :question }    
     before { get :show, id: question}
     it 'assigns requested question to @question' do      
       expect(assigns :question).to eq question
@@ -27,7 +28,7 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     before { get :new }
     it 'assigns Question to @question' do
-      expect(assigns :question).to be_a_new Question
+      expect(assigns :question).to be_a_new Question      
     end
     it 'renders view new' do
       expect(response).to render_template :new
@@ -35,13 +36,27 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    sign_in_user    
-    before{ get :edit, id: question }
-    it 'assigns required question to @question' do
-      expect(assigns :question).to eq question
+    sign_in_user 
+    context 'current user is the author of a question' do
+      let(:question){ create :question, user: @user }   
+      before{ get :edit, id: question }
+      it 'assigns required question to @question' do
+        expect(assigns :question).to eq question
+      end
+      it 'renders view edit' do
+        expect(response).to render_template :edit
+      end
     end
-    it 'renders view edit' do
-      expect(response).to render_template :edit
+    context 'curent user is not the author of a question' do
+      let(:malicious_case){ create :user }
+      let(:question){ create :question, user: malicious_case }
+      before{ get :edit, id: question }  
+      it 'assigns required question to @question' do
+        expect(assigns :question).to eq question
+      end
+      it 'renders view index' do
+        expect(response).to render_template :show , notice:'Restricted'
+      end
     end
   end
 
@@ -103,15 +118,33 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
-    sign_in_user
-    before{ question }
-    it 'deletes question' do      
-      expect{ delete :destroy, id: question }.to change(Question, :count).by -1
+  describe 'DELETE #destroy' do 
+    sign_in_user 
+    
+    context 'current user is the author of a question' do 
+      let(:question){ create :question, user: @user }
+      
+      it 'deletes question' do
+        question      
+        expect{ delete :destroy, id: question }.to change(Question, :count).by -1 #if subject.current_user.permission? question
+      end
+      it 'redirects to view index' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
     end
-    it 'redirects to view index' do
-      delete :destroy, id: question
-      expect(response).to redirect_to questions_path
+    context 'current user is not the owner of a question' do
+      let(:malicious_case){ create :user }
+      let(:question){ create :question, user: malicious_case }
+
+      it 'fails to delete a question' do
+        question
+        expect{ delete :destroy, id: question }.to_not change(Question, :count)
+      end
+      it 'renders view show' do
+        delete :destroy, id: question
+        expect(response).to render_template :show, id: question, notice: 'Restricted'
+      end
     end
   end
 

@@ -3,7 +3,8 @@ br
  -if(@question.answers.empty?)
     |No answers are already to this question
  -else
-  -@question.answers.each do|question|
-    .li =question.body
+  -@question.answers.each do|answer|
+    .li =answer.body
+    =link_to 'Destroy', answer,  method: :delete, data: { confirm: 'Are you sure?' } 
 
 p=link_to 'Answer', new_question_answer_path(@question)

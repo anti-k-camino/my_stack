@@ -7,4 +7,8 @@ class User < ActiveRecord::Base
   has_many :answers, dependent: :destroy #foreign_key on_delete: :cascade is set in db
   validates :name, presence: true
   validates :name, uniqueness: { case_sensitive: false }
+
+  def permission? comp
+    id == comp.user_id
+  end
 end

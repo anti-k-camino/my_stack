@@ -8,7 +8,10 @@ class QuestionsController < BaseController
   def new
     @question = Question.new
   end
-  def edit    
+  def edit 
+    if !current_user.permission? @question
+      render :show, id: @question, notice: 'Restricted' and return 
+    end 
   end
   def update
     if @question.update(question_params)
@@ -19,6 +22,7 @@ class QuestionsController < BaseController
   end
   def create
     @question = Question.new(question_params)
+    @question.user_id = current_user.id
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
@@ -26,9 +30,13 @@ class QuestionsController < BaseController
     end
   end
 
-  def destroy    
-    @question.destroy
-    redirect_to questions_path
+  def destroy
+    if current_user.permission? @question    
+      @question.destroy
+      redirect_to questions_path, notice: 'Question successfully destroyed.'
+    else
+      render :show, id: @question, notice: 'Restricted'
+    end
   end
   
   private
