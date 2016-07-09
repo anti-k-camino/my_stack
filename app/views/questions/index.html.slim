@@ -4,7 +4,6 @@ ul
   -else
    -@questions.each do|question|
      li 
-      =link_to"#{ question.title } ", question_path(question)
-      =link_to 'Destroy', question,  method: :delete, data: { confirm: 'Are you sure?' } 
+      =link_to"#{ question.title } ", question_path(question)      
 
 p= link_to 'Ask question', new_question_path

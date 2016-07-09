@@ -1,10 +1,12 @@
-p=@question.body
+table
+  tr =@question.body
+  =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
 br
  -if(@question.answers.empty?)
     |No answers are already to this question
  -else
   -@question.answers.each do|answer|
     .li =answer.body
-    =link_to 'Destroy', answer,  method: :delete, data: { confirm: 'Are you sure?' } 
+    =link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } 
 
 p=link_to 'Answer', new_question_answer_path(@question)
