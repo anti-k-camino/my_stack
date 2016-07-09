@@ -85,35 +85,54 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     sign_in_user
-    context 'with valid attributes' do
-      it 'assigns question to @question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(assigns :question).to eq question
-      end  
-      it 'changes question attributes' do
-        patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
-        question.reload
-        expect(question.title).to eq 'NewTitle'
-        expect(question.body).to eq 'NewBody'
-      end 
-      it 'redirects to updated question' do
-        patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
-        expect(response).to redirect_to question
-      end   
+    context 'user is author of a question' do
+      let(:question){ create :question, user: @user}
+      context 'with valid attributes' do
+        it 'assigns question to @question' do
+          patch :update, id: question, question: attributes_for(:question)
+          expect(assigns :question).to eq question
+        end  
+        it 'changes question attributes' do
+          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
+          question.reload
+          expect(question.title).to eq 'NewTitle'
+          expect(question.body).to eq 'NewBody'
+        end 
+        it 'redirects to updated question' do
+          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
+          expect(response).to redirect_to question
+        end   
+      end
+      context 'with invalid attriutes' do 
+        before do
+          patch :update, id: question, question: { title: 'NewTitle', body: nil }
+          @title = question.title
+          @body = question.body
+        end
+
+        it 'does not change question attributes' do        
+          expect(question.title).to eq @title
+          expect(question.body).to eq @body
+        end
+        it 'renders view edit' do        
+          expect(response).to render_template :edit
+        end
+      end
     end
-    context 'with invalid attriutes' do 
+    context 'user is not author of a question' do
+      let(:malicious_case){ create :user }
+      let(:question){ create :question, user: malicious_case}
       before do
-        patch :update, id: question, question: { title: 'NewTitle', body: nil }
+        patch :update, id: question, question: attributes_for(:question)
         @title = question.title
         @body = question.body
-      end
-
-      it 'does not change question attributes' do        
+      end      
+      it 'does not modify @question' do
         expect(question.title).to eq @title
-        expect(question.body).to eq @body
+        expect(question.body).to eq @body        
       end
-      it 'renders view edit' do        
-        expect(response).to render_template :edit
+      it 'renders view show' do        
+        expect(response).to render_template :show, id: question, notice: 'Restricted'
       end
     end
   end

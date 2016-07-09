@@ -14,7 +14,9 @@ class QuestionsController < BaseController
     end 
   end
   def update
-    if @question.update(question_params)
+    if !current_user.permission? @question
+      render :show, id: @question, notice: 'Restricted'
+    elsif @question.update(question_params)
       redirect_to @question
     else
       render :edit
