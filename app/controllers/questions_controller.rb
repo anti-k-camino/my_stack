@@ -1,5 +1,6 @@
 class QuestionsController < BaseController
   before_action :set_question, only:[:show, :edit, :update, :destroy]
+  before_action :check_permission, only:[:edit, :update, :destroy]
   def index
     @questions = Question.all    
   end
@@ -9,14 +10,9 @@ class QuestionsController < BaseController
     @question = Question.new
   end
   def edit 
-    if !current_user.permission? @question
-      render :show, id: @question, notice: 'Restricted' and return 
-    end 
   end
-  def update
-    if !current_user.permission? @question
-      render :show, id: @question, notice: 'Restricted'
-    elsif @question.update(question_params)
+  def update    
+    if @question.update(question_params)
       redirect_to @question
     else
       render :edit
@@ -32,16 +28,17 @@ class QuestionsController < BaseController
     end
   end
 
-  def destroy
-    if current_user.permission? @question    
-      @question.destroy
-      redirect_to questions_path, notice: 'Question successfully destroyed.'
-    else
-      render :show, id: @question, notice: 'Restricted'
-    end
+  def destroy    
+    @question.destroy
+    redirect_to questions_path, notice: 'Question successfully destroyed.'    
   end
   
   private
+  def check_permission
+    if !current_user.permission? @question    
+      render :show, id: @question, notice: 'Restricted' and return
+    end
+  end
   def set_question
     @question = Question.find params[:id]
   end
