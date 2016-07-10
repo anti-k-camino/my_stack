@@ -1,17 +1,21 @@
 class AnswersController < BaseController
   before_action :set_question, except:[:show, :edit, :update, :destroy]
   before_action :set_answer, only:[:show, :edit, :update, :destroy]
-  before_action :check_permission, only:[:edit, :update, :destroy]
+  before_action :not_author?, only:[:edit, :update, :destroy]
   def index
     @answers = @question.answers
   end
+  
   def show
   end
+
   def new
     @answer = Answer.new
   end
+
   def edit    
   end
+
   def create    
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
@@ -21,6 +25,7 @@ class AnswersController < BaseController
       render :new
     end
   end
+
   def update     
     if @answer.update(answer_params)
       redirect_to question_path @answer.question, notice:'Your answer successfully updated'
@@ -36,7 +41,7 @@ class AnswersController < BaseController
   end
 
   private
-  def check_permission
+  def not_author?
     if !current_user.permission? @answer    
       redirect_to question_path @answer.question, notice: 'Restricted' and return
     end
