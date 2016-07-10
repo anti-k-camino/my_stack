@@ -14,13 +14,8 @@ RSpec.describe User, type: :model do
   let(:question){ create :question, user: user }
   let(:question1){ create :question, user: user1}
 
-  it "returns true when user is the author || false when it is not" do    
-=begin
-    user.permission?(question).should == true
-    user1.permission?(question).should == false
-    user.permission?(question1).should == false
-    user1.permission?(question1).should == true
-=end
+  it "returns true when user is the author || false when it is not" do   
+
     expect(user.permission? question ).to eq true
     expect(user1.permission? question).to eq false
     expect(user.permission? question1).to eq false
