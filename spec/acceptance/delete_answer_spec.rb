@@ -16,9 +16,9 @@ feature 'User can delete an answer', %q{
       answer            
       sign_in user
       visit question_path question
-      save_and_open_page  
+        
       within("//p[class='answer']"){ click_on 'Delete' } 
-
+      save_and_open_page
       expect(page).to have_content 'Answer successfully destroyed.'
       expect(current_path).to eq question_path question      
     end
