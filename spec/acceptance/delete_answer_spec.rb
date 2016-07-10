@@ -8,12 +8,10 @@ feature 'User can delete an answer', %q{
   context 'Athenticated user wants to delete an answer' do
     given(:user){ create :user }
     given(:malicious_user){ create :user }
-    given(:question){ create :question }
-    given(:answer){ create :answer, question: question, user: user }    
+    given!(:question){ create :question }
+    given!(:answer){ create :answer, question: question, user: user }    
     
-    scenario 'Author of an answer deletes an answer' do 
-      question
-      answer            
+    scenario 'Author of an answer deletes an answer' do                   
       sign_in user
       visit question_path question        
       within("//p[class='answer']"){ click_on 'Delete' }
@@ -21,9 +19,7 @@ feature 'User can delete an answer', %q{
       expect(current_path).to eq question_path question      
     end
 
-    scenario 'Not the author of a question try to delete a question' do
-      question
-      answer
+    scenario 'Not the author of a question try to delete a question' do      
       sign_in malicious_user
       visit question_path question       
       within("//p[class='answer']"){ expect(page).to_not have_content 'Delete' }              
