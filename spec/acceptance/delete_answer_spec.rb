@@ -28,5 +28,6 @@ feature 'User can delete an answer', %q{
       visit question_path question       
       within("//p[class='answer']"){ expect(page).to_not have_content 'Delete' }              
     end
-  end 
+  end
+   
 end
