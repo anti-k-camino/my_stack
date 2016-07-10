@@ -39,9 +39,11 @@ class QuestionsController < BaseController
       render :show, id: @question, notice: 'Restricted' and return
     end
   end
+
   def set_question
     @question = Question.find params[:id]
   end
+  
   def question_params
     params.require(:question).permit(:title, :body)
   end
