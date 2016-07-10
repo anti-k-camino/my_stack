@@ -1,12 +1,15 @@
-table
-  tr =@question.body
-  =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
-br
+h4 =@question.body 
  -if(@question.answers.empty?)
-    |No answers are already to this question
+    |No answers currently
  -else
   -@question.answers.each do|answer|
     .li =answer.body
     =link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } 
 
 p=link_to 'Answer', new_question_answer_path(@question)
+
+br
+p class=[:question]
+ -if(current_user.permission? @question)
+  =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
+
