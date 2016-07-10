@@ -140,7 +140,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirects to view show question' do
         delete :destroy, id: answer
-        expect(response).to redirect_to question_path answer.question
+        expect(response).to redirect_to question_path answer.question, notice: 'Answer successfully destroyed.'
       end
     end
     context 'current user is not the owner of an answer' do

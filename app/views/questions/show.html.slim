@@ -5,9 +5,10 @@ h4 =@question.body
   ul
     -@question.answers.each do|answer|
       li=answer.body
-      -if(user_signed_in?)
-       -if(current_user.permission? answer)
-        =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+      p class=[:answer]         
+        -if(user_signed_in?)
+          -if(current_user.permission? answer)         
+            =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
     
 
 p=link_to 'Answer', new_question_answer_path(@question)

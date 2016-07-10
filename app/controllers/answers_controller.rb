@@ -37,7 +37,7 @@ class AnswersController < BaseController
     @question = @answer.question  
     if current_user.permission? @answer    
       @answer.destroy
-      redirect_to @question, notice: 'Question successfully destroyed.'
+      redirect_to @question, notice: 'Answer successfully destroyed.'
     else
       redirect_to question_path @question, notice: 'Restricted'
     end
