@@ -16,7 +16,7 @@ class AnswersController < BaseController
   end
   def create    
     @answer = @question.answers.new(answer_params)
-    @answer.user_id = current_user.id
+    @answer.user = current_user
     if @answer.save
       redirect_to @question, notice:'Your answer successfully added.'
     else
