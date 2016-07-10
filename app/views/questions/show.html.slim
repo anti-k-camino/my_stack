@@ -1,15 +1,20 @@
 h4 =@question.body 
- -if(@question.answers.empty?)
-    |No answers currently
- -else
-  -@question.answers.each do|answer|
-    .li =answer.body
-    =link_to 'Destroy', answer, method: :delete, data: { confirm: 'Are you sure?' } 
+-if(@question.answers.empty?)
+  |No answers currently
+-else
+  ul
+    -@question.answers.each do|answer|
+      li=answer.body
+      -if(user_signed_in?)
+       -if(current_user.permission? answer)
+        =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+    
 
 p=link_to 'Answer', new_question_answer_path(@question)
 
 br
 p class=[:question]
- -if(current_user.permission? @question)
-  =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
+  -if(user_signed_in?)
+   -if(current_user.permission? @question)
+    =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
 

@@ -25,8 +25,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #show' do
-    sign_in_user
+  describe 'GET #show' do    
     before{ get :show, id: answer }
     it 'assigns reqested answer to @answer' do
       expect(assigns :answer).to eq answer
@@ -37,13 +36,26 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
-    sign_in_user
-    before{ get :edit, id: answer}
-    it 'assigns required answer to @answer' do
-      expect(assigns :answer).to eq answer
+    sign_in_user 
+    context 'current user is the author of an answer' do
+      let(:answer){ create :answer, user: @user }   
+      before{ get :edit, id: answer }
+      it 'assigns required answer to @answer' do
+        expect(assigns :answer).to eq answer
+      end
+      it 'renders view edit' do
+        expect(response).to render_template :edit
+      end
     end
-    it 'renders view edit' do
-      expect(response).to render_template :edit
+    context 'curent user is not the author of a answer' do
+      malicious_case
+      before{ get :edit, id: answer }  
+      it 'assigns required answer to @answer' do
+        expect(assigns :answer).to eq answer
+      end
+      it 'redirects view show question' do
+        expect(response).to redirect_to question_path answer.question,  notice:'Restricted'
+      end
     end
   end
 
@@ -71,40 +83,76 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     sign_in_user
-    context 'valid parameters' do
-      it 'assigns answer to @answer' do
-        patch :update, id: answer, answer: attributes_for(:answer)
-        expect(assigns :answer).to eq answer
+    context 'user is author of an answer' do
+      let(:answer){ create :answer, user: @user}
+      context 'with valid attributes' do
+        it 'assigns answer to @answer' do
+          patch :update, id: answer, answer: attributes_for(:answer)
+          expect(assigns :answer).to eq answer
+        end  
+        it 'changes answer attributes' do
+          patch :update, id: answer, answer: { body: 'NewBody' }
+          answer.reload          
+          expect(answer.body).to eq 'NewBody'
+        end 
+        it 'redirects to answer question' do
+          patch :update, id: answer, answer: { body: 'NewBody' }
+          expect(response).to redirect_to question_path answer.question, notice:'Your answer successfully updated'
+        end   
       end
-      it 'changes answer attributes' do
-        patch :update, id: answer, answer: { body: 'NewBody' }
-        answer.reload
-        expect(answer.body).to eq 'NewBody' 
-      end
-      it 'redirects to question' do
-        patch :update, id: answer, answer: { body: 'NewBody' }
-        expect(response).to redirect_to question_path answer.question , notice:'Your answer successfully updated'
+      context 'with invalid attriutes' do 
+        before do
+          patch :update, id: answer, answer: { body: nil }          
+          @body = answer.body
+        end
+        it 'does not change answer attributes' do           
+          expect(answer.body).to eq @body
+        end
+        it 'renders view edit' do                
+          expect(response).to render_template :edit
+        end
       end
     end
-    context 'invalid parameters' do
+    context 'user is not author of an answer' do
+      malicious_case
+      before do
+        patch :update, id: answer, answer: attributes_for(:answer)
+        @body = answer.body
+      end      
+      it 'does not modify @answer' do        
+        expect(answer.body).to eq @body        
+      end
+      it 'redirects to view show question answers' do        
+        expect(response).to redirect_to question_path answer.question, notice: 'Restricted'
+      end
     end
   end
 
-  describe 'DELETE #destroy' do
-       
-    before do
-     @user = create(:user)
-     @request.env['devise.mapping'] = Devise.mappings[:user]
-     sign_in @user
-     answer     
-    end   
-    context 'user and answer.user ids are equal' do
+  describe 'DELETE #destroy' do       
+    sign_in_user    
+    context 'current user is the author of an answer' do 
+      let(:answer){ create :answer, user: @user }
+      
       it 'deletes answer' do
-        expect{ delete :destroy, id: answer }.to change(Answer, :count).by -1 if @user.permission? answer
+        answer      
+        expect{ delete :destroy, id: answer }.to change(@user.answers, :count).by -1
+        #expect{ delete :destroy, id: answer }.to change(answer.question, :count).by -1 
+      end
+      it 'redirects to view show question' do
+        delete :destroy, id: answer
+        expect(response).to redirect_to question_path answer.question
       end
     end
-    context 'user and answer.user ids differ' do 
-
+    context 'current user is not the owner of an answer' do
+      malicious_case
+      it 'fails to delete an answer' do
+        answer
+        expect{ delete :destroy, id: answer }.to_not change(Answer, :count)
+      end
+      it 'redirects to view show question' do
+        delete :destroy, id: answer
+        expect(response).to redirect_to question_path answer.question, notice: 'Restricted'
+      end
     end
   end
 

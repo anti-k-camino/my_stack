@@ -143,7 +143,7 @@ RSpec.describe QuestionsController, type: :controller do
       
       it 'deletes question' do
         question      
-        expect{ delete :destroy, id: question }.to change(Question, :count).by -1 #if subject.current_user.permission? question
+        expect{ delete :destroy, id: question }.to change(@user.questions, :count).by -1 #if subject.current_user.permission? question
       end
       it 'redirects to view index' do
         delete :destroy, id: question

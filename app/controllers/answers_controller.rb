@@ -10,6 +10,9 @@ class AnswersController < BaseController
     @answer = Answer.new
   end
   def edit
+    if !current_user.permission? @answer      
+      redirect_to question_path @answer.question, notice: 'Restricted' and return 
+    end 
   end
   def create    
     @answer = @question.answers.new(answer_params)
@@ -20,8 +23,10 @@ class AnswersController < BaseController
       render :new
     end
   end
-  def update
-    if @answer.update! answer_params
+  def update 
+    if !current_user.permission? @answer      
+      redirect_to question_path @answer.question, notice: 'Restricted' and return
+    elsif @answer.update(answer_params)
       redirect_to question_path @answer.question, notice:'Your answer successfully updated'
     else
       render :edit
@@ -30,11 +35,11 @@ class AnswersController < BaseController
 
   def destroy  
     @question = @answer.question  
-    if current_user == @answer.user     
+    if current_user.permission? @answer    
       @answer.destroy
-      redirect_to @question, notice:'Answer deleted'
+      redirect_to @question, notice: 'Question successfully destroyed.'
     else
-      redirect_to @question, notice:'You do not have ptropper rights'
+      redirect_to question_path @question, notice: 'Restricted'
     end
   end
 
