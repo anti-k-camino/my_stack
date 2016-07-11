@@ -13,10 +13,11 @@ feature 'Give an answer', %q{
     expect(current_path).to eq question_path question    
     click_on 'Answer'
   end
-  
+
   scenario 'User creates an answer to a question' do   
     fill_in 'Body', with:'text text'
-    click_on 'Create answer'   
+    click_on 'Create answer'
+
     expect(current_path).to eq question_path question
     expect(page).to have_content 'Your answer successfully added.'    
     expect(page).to have_content "#{ question.answers.last.body }"    
@@ -24,6 +25,7 @@ feature 'Give an answer', %q{
 
   scenario 'User try to create a question with empty body' do    
     click_on 'Create answer'
+    
     expect(current_path).to eq question_answers_path question
     expect(page).to have_content 'error'
   end
