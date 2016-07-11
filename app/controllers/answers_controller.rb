@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :set_question, except:[:show, :edit, :update, :destroy]
   before_action :set_answer, only:[:show, :edit, :update, :destroy]
   before_action :not_author?, only:[:edit, :update, :destroy]
+  
   def index
     @answers = @question.answers
   end
