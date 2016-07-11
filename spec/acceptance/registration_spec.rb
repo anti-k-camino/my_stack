@@ -33,7 +33,7 @@ feature 'user can registrate' do
     fill_in 'Password confirmation', with:'12345678'
     click_on 'Sign up'
     expect(current_path).to eq user_registration_path
-    expect(page).to have_content /Name has already been taken./    
+    expect(page).to have_content 'Name has already been taken.' 
   end
   scenario "user try's to registrate himself with existing email or name upcase" do       
     fill_in 'Name', with: user.name.upcase
@@ -42,6 +42,6 @@ feature 'user can registrate' do
     fill_in 'Password confirmation', with:'12345678'
     click_on 'Sign up'
     expect(current_path).to eq user_registration_path
-    expect(page).to have_content /Name has already been taken./    
+    expect(page).to have_content 'Name has already been taken.'   
   end
 end
