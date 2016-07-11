@@ -97,6 +97,11 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.title).to eq 'NewTitle'
           expect(question.body).to eq 'NewBody'
         end 
+        it 'question has current user as an author' do
+          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
+          question.reload
+          expect(question.user_id).to eq @user.id
+        end
         it 'redirects to updated question' do
           patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
           expect(response).to redirect_to question
@@ -121,13 +126,17 @@ RSpec.describe QuestionsController, type: :controller do
     context 'user is not author of a question' do
       malicious_case
       before do
-        patch :update, id: question, question: attributes_for(:question)
         @title = question.title
         @body = question.body
+        patch :update, id: question, question: attributes_for(:question)
+        question.reload       
       end      
-      it 'does not modify @question' do
+      it 'does not modify @question' do              
         expect(question.title).to eq @title
         expect(question.body).to eq @body        
+      end
+      it 'does not changes the author' do
+        expect(question.user_id).to_not eq @user.id
       end
       it 'renders view show' do        
         expect(response).to render_template :show, id: question, notice: 'Restricted'
