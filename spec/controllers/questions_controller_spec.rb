@@ -126,8 +126,8 @@ RSpec.describe QuestionsController, type: :controller do
     context 'user is not author of a question' do
       malicious_case
       before do
-        @title = question.title
         @body = question.body
+        @title = question.title       
         patch :update, id: question, question: attributes_for(:question)
         question.reload       
       end      
