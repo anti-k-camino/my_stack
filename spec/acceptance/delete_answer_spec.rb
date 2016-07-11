@@ -14,15 +14,16 @@ feature 'User can delete an answer', %q{
     scenario 'Author of an answer deletes an answer' do                   
       sign_in user
       visit question_path question        
-      within("//p[class='answer']"){ click_on 'Delete' }
+      within("div.answers"){ click_on 'Delete' }
       expect(page).to have_content 'Answer successfully destroyed.'
+      expect(page).to_not have_content "#{ answer.body }"
       expect(current_path).to eq question_path question      
     end
 
     scenario 'Not the author of a question try to delete a question' do      
       sign_in malicious_user
       visit question_path question       
-      within("//p[class='answer']"){ expect(page).to_not have_content 'Delete' }              
+      within("div.answers"){ expect(page).to_not have_content 'Delete' }              
     end
   end
    
