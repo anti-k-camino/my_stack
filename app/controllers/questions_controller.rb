@@ -1,4 +1,4 @@
-class QuestionsController < BaseController
+class QuestionsController < ApplicationController
   before_action :set_question, only:[:show, :edit, :update, :destroy]
   before_action :check_permission, only:[:edit, :update, :destroy]
   def index
