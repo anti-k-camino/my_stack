@@ -1,18 +1,20 @@
 div.question
- div.question_title
-  =@question.title
- div.question_body
-  =@question.body
-  -if user_signed_in? && current_user.permission?(@question)
-   =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
-  -if @question.answers.empty? 
-   |No answers currently
-  -else
-   div.answers  
+  div.question_title
+   =@question.title
+  div.question_body
+   =@question.body
+   -if user_signed_in? && current_user.permission?(@question)
+    =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
+
+-if @question.answers.count == 0 
+  |No answers currently.
+-else
+ div.answers  
    -@question.answers.each do|answer|   
-    =answer.body             
-    -if user_signed_in? && current_user.permission?(answer)     
-     =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+     =answer.body             
+     -if user_signed_in? && current_user.permission?(answer)     
+      =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+      br
 
 div.create_answer
  =form_for [@question, @answer] do |f|
