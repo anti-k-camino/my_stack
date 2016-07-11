@@ -34,6 +34,7 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :show
     end
   end
+=begin
 
   describe 'GET #edit' do
     sign_in_user 
@@ -58,12 +59,17 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+=end
+
 
   describe 'POST #create' do
-    sign_in_user
-    context 'valid parameters' do
+    sign_in_user    
+    context 'valid parameters' do      
       it 'saves new answer to db' do
-        expect{ post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by 1
+        expect{ post :create, question_id: question, answer:{ body:'TestBody', user: @user } }.to change(question.answers, :count).by 1
+      end
+      it 'changes author user answers' do
+        expect{ post :create, question_id: question, answer:{ body:'TestBody', user: @user } }.to change(@user.answers, :count).by 1
       end
       it 'redirects to view question show' do
         post :create, question_id: question, answer: attributes_for(:answer)
@@ -88,8 +94,13 @@ RSpec.describe AnswersController, type: :controller do
       context 'with valid attributes' do
         it 'assigns answer to @answer' do
           patch :update, id: answer, answer: attributes_for(:answer)
-          expect(assigns :answer).to eq answer
-        end  
+          expect(assigns :answer).to eq answer          
+        end 
+        it 'answer has a user as an author' do
+          patch :update, id: answer, answer: { body: 'TestAnswerBody', user: @user }
+          answer.reload           
+          expect(@user.answers.last.body).to eq answer.body
+        end 
         it 'changes answer attributes' do
           patch :update, id: answer, answer: { body: 'NewBody' }
           answer.reload          
@@ -112,7 +123,7 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to render_template :edit
         end
       end
-    end
+    end    
     context 'user is not author of an answer' do
       malicious_case
       before do
