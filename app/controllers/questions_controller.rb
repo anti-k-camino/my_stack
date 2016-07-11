@@ -5,6 +5,7 @@ class QuestionsController < BaseController
     @questions = Question.all    
   end
   def show   
+    @answer = @question.answers.new
   end
   def new
     @question = Question.new
