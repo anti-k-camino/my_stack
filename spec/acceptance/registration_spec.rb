@@ -19,29 +19,31 @@ feature 'user can registrate' do
     sign_in user
     expect(page).to_not have_content 'Register'
   end
-  before do
-    user
-    visit root_path
-    expect(page).to have_content 'Register'
-    click_on 'Register'
-    expect(current_path).to eq new_user_registration_path 
-  end
-  scenario "user try's to registrate himself with existing email or name 100% equality" do     
-    fill_in 'Name', with: user.name
-    fill_in 'Email', with: 'email@gmail.com'
-    fill_in 'Password', with: '12345678'
-    fill_in 'Password confirmation', with:'12345678'
-    click_on 'Sign up'
-    expect(current_path).to eq user_registration_path
-    expect(page).to have_content /Name has already been taken./ 
-  end
-  scenario "user try's to registrate himself with existing email or name upcase" do       
-    fill_in 'Name', with: user.name.upcase
-    fill_in 'Email', with: 'email@gmail.com'
-    fill_in 'Password', with: '12345678'
-    fill_in 'Password confirmation', with:'12345678'
-    click_on 'Sign up'
-    expect(current_path).to eq user_registration_path
-    expect(page).to have_content /Name has already been taken./   
+  context 'already registrated user or registration duplicate paremeters' do
+    before do
+      user
+      visit root_path
+      expect(page).to have_content 'Register'
+      click_on 'Register'
+      expect(current_path).to eq new_user_registration_path 
+    end
+    scenario "user try's to registrate himself with existing email or name 100% equality" do     
+      fill_in 'Name', with: user.name
+      fill_in 'Email', with: 'email@gmail.com'
+      fill_in 'Password', with: '12345678'
+      fill_in 'Password confirmation', with:'12345678'
+      click_on 'Sign up'
+      expect(current_path).to eq user_registration_path
+      expect(page).to have_content /Name has already been taken./ 
+    end
+    scenario "user try's to registrate himself with existing email or name upcase" do       
+      fill_in 'Name', with: user.name.upcase
+      fill_in 'Email', with: 'email@gmail.com'
+      fill_in 'Password', with: '12345678'
+      fill_in 'Password confirmation', with:'12345678'
+      click_on 'Sign up'
+      expect(current_path).to eq user_registration_path
+      expect(page).to have_content /Name has already been taken./   
+    end
   end
 end
