@@ -14,6 +14,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+=begin
   describe 'GET #new' do
     sign_in_user
     before{ get :new, question_id: question }
@@ -34,6 +35,8 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :show
     end
   end
+=end
+
 =begin
 
   describe 'GET #edit' do
@@ -82,7 +85,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'renders view new' do
         post :create, question_id: question, answer: attributes_for(:invalid_answer)
-        expect(response).to render_template :new
+        expect(response).to render_template :show, question
       end
     end
   end

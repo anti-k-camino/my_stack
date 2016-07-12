@@ -12,7 +12,7 @@ div.question
  div.answers  
    -@question.answers.each do|answer|   
      =answer.body             
-     -if user_signed_in? && current_user.permission?(answer)     
+     -if user_signed_in? && current_user.permission?(answer) && answer.persisted?     
       =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
       br
 

@@ -10,10 +10,6 @@ class AnswersController < ApplicationController
   def show
   end
 
-  def new
-    @answer = Answer.new
-  end
-
   def edit    
   end
 
@@ -22,8 +18,8 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     if @answer.save
       redirect_to @question, notice:'Your answer successfully added.'
-    else
-      render :new
+    else      
+      render "questions/show"
     end
   end
 
