@@ -23,7 +23,7 @@ class AnswersController < ApplicationController
 
   def update     
     if @answer.update(answer_params)
-      redirect_to question_path @answer.question, notice:'Your answer successfully updated'
+      redirect_to question_path(@answer.question, notice:'Your answer successfully updated')
     else
       render :edit
     end
@@ -38,7 +38,7 @@ class AnswersController < ApplicationController
   private
   def not_author?
     if !current_user.permission? @answer    
-      redirect_to question_path @answer.question, notice: 'Restricted' and return
+      redirect_to question_path @answer.question, notice: 'Restricted'
     end
   end
 
