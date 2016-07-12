@@ -22,10 +22,7 @@ feature 'answer aquestion', %q{
   context 'Non authenticated user creates question' do
     given(:not_auth_user){ create :user }
     scenario 'Non authenticated user whants to create an answer' do
-      visit question_path question           
-      within('div.create_answer') do  
-        expect(page).to have_button 'Create answer' 
-      end   
+      visit question_path question       
       fill_in 'Body', with: 'example answer'    
       click_on 'Create answer'
       expect(page).to have_content 'You need to sign in or sign up before continuing.'
