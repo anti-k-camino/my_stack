@@ -12,15 +12,21 @@ RSpec.describe User, type: :model do
   let(:user){ create :user } 
   let(:user1){ create :user }
   let(:question){ create :question, user: user }
-  let(:question1){ create :question, user: user1}
+  let(:answer){create :answer, user: user}
+  
 
-  it "returns true when user is the author || false when it is not" do   
-
-    expect(user.author_of? question ).to eq true
-    expect(user1.author_of? question).to eq false
-    expect(user.author_of? question1).to eq false
-    expect(user1.author_of? question1).to eq true
-
+  it "user is the author of a question" do
+   expect(user).to be_author_of question 
+  end   
+  it "user is not the author of a question" do
+   expect(user1).to_not be_author_of question 
   end
+  it "user is the author of a answer" do
+   expect(user).to be_author_of answer 
+  end   
+  it "user is not the author of an answer" do
+   expect(user1).to_not be_author_of answer 
+  end
+
 
 end
