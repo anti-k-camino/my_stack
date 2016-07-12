@@ -66,6 +66,13 @@ RSpec.describe QuestionsController, type: :controller do
       it 'saves the new question to db' do
         expect{ post :create, question: attributes_for(:question)}.to change(Question, :count).by 1
       end
+      it 'user  has this question as the author' do
+        post :create, question: attributes_for(:question)
+        expect((assigns :question).user_id).to eq @user.id
+      end
+      it 'increments user questions count' do
+        expect{ post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
+      end    
       it 'redirects to view show' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns :question)
