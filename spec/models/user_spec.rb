@@ -16,10 +16,10 @@ RSpec.describe User, type: :model do
 
   it "returns true when user is the author || false when it is not" do   
 
-    expect(user.permission? question ).to eq true
-    expect(user1.permission? question).to eq false
-    expect(user.permission? question1).to eq false
-    expect(user1.permission? question1).to eq true
+    expect(user.author_of? question ).to eq true
+    expect(user1.author_of? question).to eq false
+    expect(user.author_of? question1).to eq false
+    expect(user1.author_of? question1).to eq true
 
   end
 

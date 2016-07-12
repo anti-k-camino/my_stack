@@ -43,7 +43,7 @@ class QuestionsController < ApplicationController
   
   private
   def check_permission
-    if !current_user.permission? @question    
+    if !current_user.author_of? @question    
       render :show, id: @question, notice: 'Restricted' and return
     end
   end

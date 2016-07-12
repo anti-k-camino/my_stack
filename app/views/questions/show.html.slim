@@ -3,7 +3,7 @@ div.question
    =@question.title
   div.question_body
    =@question.body
-   -if user_signed_in? && current_user.permission?(@question)
+   -if user_signed_in? && current_user.author_of?(@question)
     =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
 
 -if @question.answers.count == 0 
@@ -12,7 +12,7 @@ div.question
  div.answers  
    -@question.answers.each do|answer|   
      =answer.body             
-     -if user_signed_in? && current_user.permission?(answer) && answer.persisted?     
+     -if user_signed_in? && current_user.author_of?(answer) && answer.persisted?     
       =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
       br
 

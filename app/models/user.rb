@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :name, uniqueness: { case_sensitive: false }
 
-  def permission?(comp)
+  def author_of?(comp)
     id == comp.user_id
   end
 end
