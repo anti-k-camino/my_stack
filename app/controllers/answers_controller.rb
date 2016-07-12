@@ -6,9 +6,7 @@ class AnswersController < ApplicationController
   def index
     @answers = @question.answers
   end
-  
-  def show
-  end
+
 
   def edit    
   end
