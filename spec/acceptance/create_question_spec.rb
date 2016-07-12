@@ -20,8 +20,7 @@ feature 'create question', %q{
       expect(page).to have_content 'test question'
     end
     within('div.question_body') do
-     expect(page).to have_content 'text text'
-     expect(page).to have_link 'Delete'
+     expect(page).to have_content 'text text'     
     end       
   end
   scenario 'Non authenticated user tries to create a question' do
