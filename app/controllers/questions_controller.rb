@@ -20,7 +20,7 @@ class QuestionsController < ApplicationController
   
   def update    
     if @question.update(question_params)
-      redirect_to @question
+      redirect_to @question, notice: 'Question successfully updated'
     else
       render :edit
     end

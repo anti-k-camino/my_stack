@@ -111,7 +111,7 @@ RSpec.describe AnswersController, type: :controller do
         end 
         it 'redirects to answer question' do
           patch :update, id: answer, answer: { body: 'NewBody' }
-          expect(response).to redirect_to question_path answer.question, notice:'Your answer successfully updated'
+          expect(response).to redirect_to question_path answer.question
         end   
       end
       context 'with invalid attriutes' do 
@@ -137,7 +137,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq @body        
       end
       it 'redirects to view show question answers' do        
-        expect(response).to redirect_to question_path answer.question, notice: 'Restricted'
+        expect(response).to redirect_to question_path answer.question
       end
     end
   end
@@ -165,7 +165,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirects to view show question' do
         delete :destroy, id: answer
-        expect(response).to redirect_to question_path answer.question, notice: 'Restricted'
+        expect(response).to redirect_to question_path answer.question
       end
     end
   end
