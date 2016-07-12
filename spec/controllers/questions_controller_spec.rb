@@ -116,9 +116,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
       context 'with invalid attriutes' do 
         before do
-          patch :update, id: question, question: { title: 'NewTitle', body: nil }
           @title = question.title
           @body = question.body
+          patch :update, id: question, question: { title: 'NewTitle', body: nil }
+          question.reload        
         end
 
         it 'does not change question attributes' do        
