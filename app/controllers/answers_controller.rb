@@ -12,13 +12,22 @@ class AnswersController < ApplicationController
   end
 
   def create    
+=begin
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
+    @answer.save
+=end
+
+    @answer = @question.answers.create(answer_params)
+    
+=begin
+   if @answer.save
       redirect_to @question, notice:'Your answer successfully added.'
     else      
-      render "questions/show"
+      
     end
+=end
+
   end
 
   def update     
@@ -51,6 +60,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body).merge(user_id: current_user.id)
   end
 end

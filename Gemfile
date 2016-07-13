@@ -38,13 +38,15 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'launchy'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
   gem 'byebug'
 end
 
 group :test do
   gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
-  gem 'capybara'
-  gem 'launchy'
 end
 
 group :development do
