@@ -62,10 +62,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     sign_in_user
-    context 'with valid attributes' do
-      it 'saves the new question to db' do
-        expect{ post :create, question: attributes_for(:question)}.to change(Question, :count).by 1
-      end
+    context 'with valid attributes' do      
       it 'user  has this question as the author' do
         post :create, question: attributes_for(:question)
         expect(assigns(:question).user_id).to eq @user.id
