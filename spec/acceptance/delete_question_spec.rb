@@ -25,7 +25,7 @@ feature 'User can delete a question', %q{
     end
   end
   context 'Non authenticated user wants to delete a question' do
-    scenario 'No authenticated user can not destroy a question' do
+    scenario 'No authenticated user can not delete a question' do
       visit question_path question      
       expect(page).to_not have_content 'Delete'
     end
