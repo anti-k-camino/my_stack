@@ -68,7 +68,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'user  has this question as the author' do
         post :create, question: attributes_for(:question)
-        expect((assigns :question).user_id).to eq @user.id
+        expect(assigns(:question).user_id).to eq @user.id
       end
       it 'increments user questions count' do
         expect{ post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
