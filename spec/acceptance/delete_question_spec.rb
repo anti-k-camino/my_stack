@@ -7,7 +7,7 @@ feature 'User can delete a question', %q{
 } do 
   given(:user){ create :user } 
   given(:question){ create :question, user: user }
-  context 'Athenticated user wants to delete a question' do    
+  context 'Authenticated user wants to delete a question' do    
     given(:malicious_user){ create :user }      
     scenario 'Author of a question deletes a question' do            
       sign_in user         
