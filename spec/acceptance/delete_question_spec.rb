@@ -11,14 +11,12 @@ feature 'User can delete a question', %q{
     given(:malicious_user){ create :user }      
     scenario 'Author of a question deletes a question' do            
       sign_in user         
-      visit question_path question
-      @title = question.title
-      @body = question.body
+      visit question_path question      
       within("div.question_body"){ click_on 'Delete' }             
       expect(page).to have_content 'Question successfully destroyed.'
       expect(current_path).to eq questions_path 
-      expect(page).to_not have_content "#{@body}"
-      expect(page).to_not have_content "#{@title}"      
+      expect(page).to_not have_content "#{ question.title }"
+      expect(page).to_not have_content "#{ question.body }"      
     end
     scenario 'Not the author of a question try to delete a question' do
       sign_in malicious_user
