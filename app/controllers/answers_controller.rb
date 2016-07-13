@@ -8,7 +8,6 @@ class AnswersController < ApplicationController
     @answers = @question.answers
   end
 
-
   def edit    
   end
 
@@ -38,7 +37,7 @@ class AnswersController < ApplicationController
 
   private
   def not_author?
-    if !current_user.author_of? @answer    
+    unless current_user.author_of?(@answer)    
       redirect_to @answer.question, notice: 'Restricted'
     end
   end
