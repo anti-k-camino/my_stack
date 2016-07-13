@@ -1,0 +1,5 @@
+-if(@users.empty?)
+  |No users currently
+-else
+  -@users.each do |user|
+    .li = user.name

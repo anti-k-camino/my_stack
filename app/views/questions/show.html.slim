@@ -1,8 +1,31 @@
-h1 Question
-a href="#{new_question_answer_path(@question)}" title="new answer" Create new answer
-br
-br
+div.question
+  div.question_title
+   =@question.title
+  div.question_body
+   =@question.body
+   -if user_signed_in? && current_user.author_of?(@question)
+    =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
 
-=@question.answers.each do |answer|
-  li "#{answer.body}"
-  
+-if @question.answers.count == 0 
+  |No answers currently.
+-else
+ div.answers  
+   -@question.answers.each do|answer|   
+     =answer.body             
+     -if user_signed_in? && current_user.author_of?(answer) && answer.persisted?     
+      =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+      br
+
+div.create_answer
+ =form_for [@question, @answer] do |f|
+  =render 'common/errors', resource:@answer  
+  = f.label :body
+  br 
+  = f.text_area :body, placeholder:'Create your answer' 
+  br
+  = f.submit 'Create answer'
+
+
+
+
+

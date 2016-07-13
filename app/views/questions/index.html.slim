@@ -1,0 +1,9 @@
+ul
+  -if(@questions.empty?)
+    |no questions available
+  -else
+   -@questions.each do|question|
+     li 
+      =link_to"#{ question.title } ", question_path(question)      
+
+p= link_to 'Ask question', new_question_path
