@@ -7,7 +7,7 @@ div.question
     =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
 
 div.answers 
-  =render 'answers/answers'
+  =render @question.answers
 
 div.create_answer
  =form_for [@question, @answer], remote: true do |f|   

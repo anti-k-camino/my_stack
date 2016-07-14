@@ -19,7 +19,8 @@ feature 'answer aquestion', %q{
       expect(page).to have_content 'example answer'   
     end
   end
-  context 'Non authenticated user creates question' do
+=begin
+  context 'Non authenticated user creates answer' do
     given(:not_auth_user){ create :user }
     scenario 'Non authenticated user whants to create an answer', js: true do
       visit question_path question       
@@ -31,4 +32,6 @@ feature 'answer aquestion', %q{
       expect(page).to_not have_content 'example answer'
     end
   end
+=end
+
 end
