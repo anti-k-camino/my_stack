@@ -15,8 +15,8 @@ feature 'answer aquestion', %q{
       fill_in 'Body', with: 'example answer'    
       click_on 'Create answer'
       expect(current_path).to eq question_path question
-      #expect(page).to have_content 'Your answer successfully added.'
-      expect(page).to have_content 'example answer'   
+      #expect(page).to have_content 'Your answer successfully added.'         
+      expect(page).to have_content 'example answer'             
     end
   end
 =begin

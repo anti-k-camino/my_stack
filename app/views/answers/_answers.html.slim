@@ -1,9 +1,0 @@
-=render 'common/errors', resource: @answer
--if @question.answers.count == 0 
-  |No answers currently.
--else
-  -@question.answers.each do|answer|   
-    =answer.body             
-    -if user_signed_in? && current_user.author_of?(answer) && answer.persisted?     
-      =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
-    br
