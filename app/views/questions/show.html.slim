@@ -4,11 +4,13 @@ div.question
   div.question_body
    =@question.body
    -if user_signed_in? && current_user.author_of?(@question)
-    =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' } 
+    =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' }
+     
 
+  
 div.answers 
   =render @question.answers
-
+div.errors
 div.create_answer
  =form_for [@question, @answer], remote: true do |f|   
   = f.label :body
