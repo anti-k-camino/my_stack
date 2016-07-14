@@ -11,9 +11,7 @@ feature "view question's answers", %q{
     scenario 'User sees the answers to chosen question' do
       visit question_path question_with_answers
 
-      expect(current_path).to eq question_path question_with_answers
-
-      expect(page).to have_selector 'div.answers'
+      expect(current_path).to eq question_path question_with_answers      
 
       expect(page).to have_content answers[0].body 
 
