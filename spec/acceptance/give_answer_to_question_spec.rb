@@ -6,6 +6,7 @@ feature 'answer aquestion', %q{
   given!(:question){ create :question } 
   given(:user){ create :user }  
   context 'Authenticated user creates answer' do
+
     scenario 'Authenticated user whants to create a question', js: true do
       sign_in user 
       visit question_path question            
@@ -17,6 +18,7 @@ feature 'answer aquestion', %q{
       expect(current_path).to eq question_path question              
       expect(page).to have_content 'example answer'             
     end
+
     scenario 'Authenticated user whants to create an empty question', js: true do
       sign_in user 
       visit question_path question            
@@ -28,19 +30,15 @@ feature 'answer aquestion', %q{
       expect(page).to have_content "Body can't be blank"
     end
   end
-=begin
-  context 'Non authenticated user creates answer' do
-    given(:not_auth_user){ create :user }
+
+
+
+  context 'Non authenticated user creates answer' do  #temporary test
+
     scenario 'Non authenticated user whants to create an answer', js: true do
       visit question_path question       
-      fill_in 'Body', with: 'example answer'    
-      click_on 'Create answer'
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
-      expect(current_path).to eq new_user_session_path 
-      visit question_path question
-      expect(page).to_not have_content 'example answer'
+      fill_in 'Body', with: 'example answer'     
+      expect(page).to_not have_content 'Create answer'        
     end
   end
-=end
-
 end
