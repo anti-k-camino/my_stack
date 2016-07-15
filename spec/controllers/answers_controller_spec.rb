@@ -5,6 +5,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:question_with_answers){ create(:question_with_answers) }
   let(:answer){ create :answer }
 
+=begin
   describe 'GET #index' do    
     before{ get :index, question_id: question_with_answers }
     it 'populates an array of answers to question' do      
@@ -14,7 +15,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-=begin
+
   describe 'GET #new' do
     sign_in_user
     before{ get :new, question_id: question }
@@ -69,23 +70,23 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user    
     context 'valid parameters' do      
       it 'saves new answer to db' do
-        expect{ post :create, question_id: question, answer:{ body:'TestBody', user: @user } }.to change(question.answers, :count).by 1
+        expect{ post :create,  answer:{ body:'TestBody', user: @user }, question_id: question, format: :js }.to change(question.answers, :count).by 1
       end
       it 'changes author user answers' do
-        expect{ post :create, question_id: question, answer:{ body:'TestBody', user: @user } }.to change(@user.answers, :count).by 1
+        expect{ post :create, question_id: question, answer:{ body:'TestBody', user: @user }, format: :js }.to change(@user.answers, :count).by 1
       end
-      it 'redirects to view question show' do
-        post :create, question_id: question, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(assigns :question)
+      it 'renders view question show' do
+        post :create, question_id: question, answer: attributes_for(:answer), format: :js
+        expect(response.body).to be_blank
       end
     end
     context 'invalid parameters' do
       it 'does not save answer to db' do
-        expect{ post :create, question_id: question, answer: attributes_for(:invalid_answer) }.to_not change(Answer, :count)      
+        expect{ post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js }.to_not change(Answer, :count)      
       end
-      it 'renders view new' do
-        post :create, question_id: question, answer: attributes_for(:invalid_answer)
-        expect(response).to render_template :show, question
+      it 'renders view question#show' do
+        post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js
+        expect(response).to render_template :create
       end
     end
   end
@@ -145,12 +146,10 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do       
     sign_in_user    
     context 'current user is the author of an answer' do 
-      let(:answer){ create :answer, user: @user }
-      
+      let(:answer){ create :answer, user: @user }      
       it 'deletes answer' do
         answer      
-        expect{ delete :destroy, id: answer }.to change(@user.answers, :count).by -1
-        #expect{ delete :destroy, id: answer }.to change(answer.question, :count).by -1 
+        expect{ delete :destroy, id: answer }.to change(@user.answers, :count).by -1        
       end
       it 'redirects to view show question' do
         delete :destroy, id: answer

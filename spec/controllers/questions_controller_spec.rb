@@ -2,34 +2,45 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   
+  
   describe 'GET #index' do
-    let(:questions){ create_list(:question, 2) }
+    let(:questions) { create_list(:question, 2) }
+
     before { get :index }
-    it 'populates an array of questions' do
-      expect(assigns :questions).to match_array questions
+
+    it 'populates an array of all questions' do
+      expect(assigns(:questions)).to match_array(questions)
     end
-    it 'renders view index' do
+
+    it 'renders index view' do
       expect(response).to render_template :index
     end
   end
 
   describe 'GET #show' do
-    let(:question){ create :question }    
+    let(:question){ create :question } 
+
     before { get :show, id: question}
+
     it 'assigns requested question to @question' do      
       expect(assigns :question).to eq question
     end
+    
     it 'renders view show' do      
       expect(response).to render_template :show
     end
   end
 
   describe 'GET #new' do
+
     sign_in_user
+
     before { get :new }
+
     it 'assigns Question to @question' do
       expect(assigns :question).to be_a_new Question      
     end
+
     it 'renders view new' do
       expect(response).to render_template :new
     end
@@ -37,22 +48,29 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #edit' do
     sign_in_user 
+
     context 'current user is the author of a question' do
-      let(:question){ create :question, user: @user }   
+      let(:question){ create :question, user: @user } 
+
       before{ get :edit, id: question }
+
       it 'assigns required question to @question' do
         expect(assigns :question).to eq question
       end
+
       it 'renders view edit' do
         expect(response).to render_template :edit
       end
     end
     context 'curent user is not the author of a question' do
       malicious_case
-      before{ get :edit, id: question }  
+
+      before{ get :edit, id: question } 
+
       it 'assigns required question to @question' do
         expect(assigns :question).to eq question
       end
+
       it 'renders view index' do
         expect(response).to render_template :show , notice:'Restricted'
       end
@@ -62,14 +80,17 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     sign_in_user
+
     context 'with valid attributes' do      
       it 'user  has this question as the author' do
         post :create, question: attributes_for(:question)
         expect(assigns(:question).user_id).to eq @user.id
       end
+
       it 'increments user questions count' do
         expect{ post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by 1
-      end    
+      end 
+
       it 'redirects to view show' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns :question)
@@ -79,6 +100,7 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not save new question to db' do
         expect{ post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end 
+      
       it 'renders view new' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new

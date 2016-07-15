@@ -7,7 +7,7 @@ feature 'User can delete a question', %q{
 } do 
   given(:user){ create :user } 
   given(:question){ create :question, user: user }
-  context 'Athenticated user wants to delete a question' do    
+  context 'Authenticated user wants to delete a question' do    
     given(:malicious_user){ create :user }      
     scenario 'Author of a question deletes a question' do            
       sign_in user         
@@ -25,7 +25,7 @@ feature 'User can delete a question', %q{
     end
   end
   context 'Non authenticated user wants to delete a question' do
-    scenario 'No authenticated user can not destroy a question' do
+    scenario 'No authenticated user can not delete a question' do
       visit question_path question      
       expect(page).to_not have_content 'Delete'
     end

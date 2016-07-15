@@ -1,0 +1,6 @@
+$('.answers').append("<%= j render @answer %>");
+$('#answer_body').val('');
+$('.errors').append("<div class='err'><%= j render 'common/errors', resource:@answer %></div>");
+$('.err').show('fast').delay(2000).hide('fast', function(){$('.err').remove();});
+
+
