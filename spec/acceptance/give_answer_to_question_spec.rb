@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 feature 'answer aquestion', %q{
   As an authenticated User
   I want to give an answer to a question

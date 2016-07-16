@@ -1,11 +1,12 @@
-div.question
+div.question  
   div.question_title
-   =@question.title
+    =@question.title    
   div.question_body
-   =@question.body
-   -if user_signed_in? && current_user.author_of?(@question)
-    =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' }
-     
+    =@question.body
+    -if user_signed_in? && current_user.author_of?(@question)
+      =link_to 'Edit', '', class: 'edit_question', data: { question_id: @question.id }     
+      =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' }
+  =render 'common/body_form', hidden: true 
 
   
 div.answers 
@@ -13,8 +14,7 @@ div.answers
 div.errors
 div.create_answer
  =form_for [@question, @answer], remote: true do |f|   
-  = f.label :body
-  br 
+  = f.label :body, class:'label_hidden'  
   = f.text_area :body, placeholder:'Create your answer' 
   br
   -if user_signed_in?#temporary solution
