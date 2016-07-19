@@ -10,11 +10,15 @@ div.question
 
   
 div.answers 
-  =render @question.answers
-div.errors
+  -@question.answers.each do |answer|
+    div id="error_#{ answer.id }"
+    div id="answer_#{ answer.id }"       
+      =render answer
+  end
 div.create_answer
  =form_for [@question, @answer], remote: true do |f|   
-  = f.label :body, class:'label_hidden'  
+  = f.label :body, class:'label_hidden'
+  div.errors  
   = f.text_area :body, placeholder:'Create your answer' 
   br
   -if user_signed_in?#temporary solution

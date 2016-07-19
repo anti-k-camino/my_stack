@@ -1,15 +1,10 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except:[:index, :show]
-  before_action :set_question, except:[:show, :edit, :update, :destroy]
-  before_action :set_answer, only:[:show, :edit, :update, :destroy]
-  before_action :not_author?, only:[:edit, :update, :destroy]
-  
-  def index
-    @answers = @question.answers
-  end
+  before_action :authenticate_user!
+  before_action :set_question, except:[:update, :destroy]
+  before_action :set_answer, only:[:update, :destroy]
+  before_action :not_author?, only:[:update, :destroy]
 
-  def edit    
-  end
+
 
   def create    
     @answer = @question.answers.new(answer_params)    
@@ -17,12 +12,8 @@ class AnswersController < ApplicationController
     @answer.save      
   end
 
-  def update     
-    if @answer.update(answer_params) 
-      redirect_to @answer.question, notice: 'Your answer successfully updated'
-    else
-      render :edit
-    end
+  def update    
+    @answer.update(answer_params);   
   end
 
   def destroy  

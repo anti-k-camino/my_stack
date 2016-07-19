@@ -1,6 +1,12 @@
--if answer.persisted?
-  div id="answer_#{ answer.id }"
-  =answer.body                 
-  -if user_signed_in? && current_user.author_of?(answer)     
-    =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+  -if answer.persisted?
+    div id="show_answer#{ answer.id }" 
+      div id="body_#{ answer.id }"
+        =answer.body                 
+      -if user_signed_in? && current_user.author_of?(answer)
+        div.panel
+          =link_to 'Edit', '' ,class: 'toggle_edit_button', data: { answer_id: answer.id }  
+          =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
+    div id="edit_answer#{ answer.id }" style="display:none"
+      =render 'answers/form', answer: answer
+      
   
