@@ -1,4 +1,5 @@
 =form_for answer, remote: true do |f|
   =f.label :body, class: 'label_hidden'
   =f.text_area :body
+  br
   =f.submit 'Edit', class:"answer_edit_button", data:{ answer_id: answer.id }   

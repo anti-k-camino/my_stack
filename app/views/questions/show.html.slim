@@ -1,21 +1,14 @@
 div id="overlay"
+div.question_errors
 div.question  
-  div.question_title
-    =@question.title    
-  div.question_body
-    =@question.body
-    -if user_signed_in? && current_user.author_of?(@question)
-      =link_to 'Edit', '', class: 'edit_question', data: { question_id: @question.id }     
-      =link_to 'Delete', @question, method: :delete, data: { confirm: 'Are you sure?' }
-  =render 'common/body_form', hidden: true 
-
+  =render @question, question: @question
   
 div.answers 
   -@question.answers.each do |answer|
-    div id="error_#{ answer.id }"
-    div id="answer_#{ answer.id }"       
+    div id="error_#{ answer.id }"     
+    div id="answer_#{ answer.id }"            
       =render answer
-  end
+
 div.create_answer
  =form_for [@question, @answer], remote: true do |f|   
   = f.label :body, class:'label_hidden'

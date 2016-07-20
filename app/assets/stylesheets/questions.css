@@ -1,0 +1,9 @@
+.label_hidden{
+  display: none
+}
+.edit_question{  
+  position:relative;
+  display: none;
+  z-index:5;
+}
+

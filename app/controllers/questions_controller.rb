@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
-  before_action :set_question, only:[:show, :edit, :update, :destroy]
-  before_action :check_permission, only:[:edit, :update, :destroy]
+  before_action :set_question, only:[:show, :update, :destroy]
+  before_action :check_permission, only:[:update, :destroy]
 
   def index
     @questions = Question.all    
@@ -13,17 +13,10 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
-  end
-
-  def edit 
-  end
+  end  
   
   def update    
-    if @question.update(question_params)
-      redirect_to @question, notice: 'Question successfully updated'
-    else
-      render :edit
-    end
+    @question.update(question_params)  
   end
 
   def create

@@ -1,8 +1,9 @@
-$("#overlay").hide();
 <% if @answer.errors.present? %>
   $("#error_<%= @answer.id %>").html("<%= j render 'common/errors', resource:@answer %>");
-<% else %>
-  $("#answer_<%= @answer.id %>").html('<%= j render @answer %>');  
+<% else %> 
+  $("#overlay").hide(); 
+  $("#answer_<%= @answer.id %>").html('<%= j render @answer %>'); 
+   $("#error_<%= @answer.id %>").html(""); 
 <% end %>
 
 
