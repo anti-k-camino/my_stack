@@ -9,6 +9,7 @@ feature 'Answer editing', %q{
   given(:user_non_author){ create(:user) }
   given!(:question){ create(:question) }
   given!(:answer){ create(:answer, question: question, user: user) }
+  given!(:more_answer){ create(:answer, question: question, user: user) }  
 
   scenario 'Non-authenticated user try to edit answer' do
     visit question_path(question)
@@ -34,7 +35,7 @@ feature 'Answer editing', %q{
     end
 
     context "Author try's to edit answer" do      
-      before do
+      before(:each) do
         sign_in user
         visit question_path(question)
       end
@@ -59,6 +60,17 @@ feature 'Answer editing', %q{
         expect(page).to have_content "edited message"
       end
 
+      scenario "can't update two answers at one time" do
+        expect(page).to have_selector "#show_answer#{ answer.id }"     
+        expect(page).to have_selector "#show_answer#{ more_answer.id }"
+        within "#show_answer#{ answer.id }" do
+          expect(page).to have_content answer.body
+          click_on 'Edit'                  
+        end
+        expect(page).to_not have_selector "#show_answer#{ more_answer.id }"                  
+        expect(page).to_not have_selector "#edit_answer#{ more_answer.id }"
+      end
+
       scenario 'with invalid attributes', js: true do       
         within "#answer_#{ answer.id }" do
           expect(page).to_not have_content 'textarea'
@@ -77,6 +89,7 @@ feature 'Answer editing', %q{
           expect(page).to have_selector 'textarea'
         end        
       end
+
     end    
   end
 end
