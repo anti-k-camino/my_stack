@@ -4,6 +4,8 @@
         =answer.body                 
       -if user_signed_in? && current_user.author_of?(answer)
         div.panel
+          -if answer.best == false          
+            =link_to 'Vote', best_answer_path(answer), method: :patch, remote: true
           =link_to 'Edit', '' ,class: 'toggle_edit_button', data: { answer_id: answer.id }  
           =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }
     div.modal id="edit_answer#{ answer.id }" 

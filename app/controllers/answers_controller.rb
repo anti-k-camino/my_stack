@@ -1,10 +1,9 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, except:[:update, :destroy]
-  before_action :set_answer, only:[:update, :destroy]
-  before_action :not_author?, only:[:update, :destroy]
-
-
+  before_action :set_question, except:[:update, :destroy, :best]
+  before_action :set_answer, only:[:update, :destroy, :best]
+  before_action :get_question, only:[:best, :destroy]
+  before_action :not_author?, except:[:create]
 
   def create    
     @answer = @question.answers.new(answer_params)    
@@ -16,8 +15,11 @@ class AnswersController < ApplicationController
     @answer.update(answer_params);   
   end
 
-  def destroy  
-    @question = @answer.question      
+  def best    
+    @answer.the_best!
+  end
+
+  def destroy           
     @answer.destroy
     redirect_to @question, notice: 'Answer successfully destroyed.'    
   end
@@ -27,6 +29,9 @@ class AnswersController < ApplicationController
     unless current_user.author_of?(@answer)    
       redirect_to @answer.question, notice: 'Restricted'
     end
+  end
+  def get_question
+    @question = @answer.question
   end
 
   def set_question

@@ -4,7 +4,7 @@ div.question
   =render @question, question: @question
   
 div.answers 
-  -@question.answers.each do |answer|
+  -@question.answers.order_by_best.each do |answer|
     div id="error_#{ answer.id }"     
     div id="answer_#{ answer.id }"            
       =render answer
