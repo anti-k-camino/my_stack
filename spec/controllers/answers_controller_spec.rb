@@ -113,6 +113,70 @@ RSpec.describe AnswersController, type: :controller do
     end    
   end
 
+  describe 'PATCH best' do
+     
+    context 'Non authenticated user' do
+      let(:question){ create :question }
+      let!(:answer){ create :vote_answer, question: question }
+      let!(:best_answer){ create :vote_answer, question: question, best: true}        
+      before do
+        patch :best, id: answer, format: :js
+      end
+
+      it 'changes answer best attribute to true' do          
+        answer.reload
+        expect(answer.best).to_not be_truthy
+      end
+
+      it 'changes other answers attribute to false' do          
+        best_answer.reload
+        expect(best_answer.best).to_not be_falsy
+      end
+    end
+
+    context 'Authenticated user' do
+      sign_in_user
+      let!(:sample_question){ create :question, user: @user}
+      let!(:non_author_question){ create :question }
+      let!(:answer){ create :vote_answer, question: sample_question }
+      let!(:best_answer){ create :vote_answer, question: sample_question, best: true}
+      let!(:non_answer){ create :vote_answer, question: non_author_question }
+      let!(:non_best_answer){ create :vote_answer, question: non_author_question, best: true}
+
+      context 'Author of a question' do    
+        before do
+          patch :best, id: answer, format: :js
+        end
+
+        it 'changes answer best attribute to true' do          
+          answer.reload
+          expect(answer.best).to be_truthy
+        end
+
+        it 'changes other answers attribute to false' do          
+          best_answer.reload
+          expect(best_answer.best).to be_falsy
+        end
+      end
+
+      context 'Non author of a question' do        
+        before do
+          patch :best, id: non_answer, format: :js
+        end
+
+        it 'changes answer best attribute to true' do          
+          answer.reload
+          expect(answer.best).to_not be_truthy
+        end
+
+        it 'changes other answers attribute to false' do          
+          best_answer.reload
+          expect(best_answer.best).to_not be_falsy
+        end
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do       
     sign_in_user    
     context 'current user is the author of an answer' do 

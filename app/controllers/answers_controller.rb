@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
   before_action :set_question, except:[:update, :destroy, :best]
   before_action :set_answer, only:[:update, :destroy, :best]
   before_action :get_question, only:[:best, :destroy]
-  before_action :not_author?, except:[:create]
+  before_action :not_author?, except:[:create, :best]
 
   def create    
     @answer = @question.answers.new(answer_params)    
@@ -15,7 +15,8 @@ class AnswersController < ApplicationController
     @answer.update(answer_params);   
   end
 
-  def best    
+  def best
+    not_author?(@answer.question)    
     @answer.the_best!
   end
 
@@ -25,11 +26,12 @@ class AnswersController < ApplicationController
   end
 
   private
-  def not_author?
-    unless current_user.author_of?(@answer)    
+  def not_author?(obj = @answer)
+    unless current_user.author_of?(obj)    
       redirect_to @answer.question, notice: 'Restricted'
     end
   end
+  
   def get_question
     @question = @answer.question
   end
@@ -43,6 +45,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :best)
   end
 end
