@@ -3,11 +3,8 @@ div.question_errors
 div.question  
   =render @question, question: @question
   
-div.answers 
-  -@question.answers.order_by_best.each do |answer|
-    div id="error_#{ answer.id }"     
-    div id="answer_#{ answer.id }"            
-      =render answer
+div.answers                
+  =render @question.answers.order_by_best
 
 div.create_answer
  =form_for [@question, @answer], remote: true do |f|   

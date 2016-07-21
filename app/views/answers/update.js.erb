@@ -2,8 +2,8 @@
   $("#error_<%= @answer.id %>").html("<%= j render 'common/errors', resource:@answer %>");
 <% else %> 
   $("#overlay").hide(); 
-  $("#answer_<%= @answer.id %>").html('<%= j render @answer %>'); 
-   $("#error_<%= @answer.id %>").html(""); 
+  $("#answer_<%= @answer.id %>").replaceWith('<%= j render @answer %>'); 
+  $("#error_<%= @answer.id %>").html(""); 
 <% end %>
 
 
