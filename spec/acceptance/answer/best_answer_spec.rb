@@ -12,6 +12,14 @@ feature 'answers order best', %q{
     given!(:answer1){ create :vote_answer, question: question }
     given!(:best_answer){ create :vote_answer, question: question, best: true }
 
+    scenario 'Best answer is shown first' do
+      visit question_path(question)
+      within('.answers') do
+        answers_all = page.all("div")
+        expect(answers_all[1][:id]).to eq "answer_#{ best_answer.id }"
+      end
+    end
+
     scenario 'Non authenticted user can not vote for best answer' do
       visit question_path(question)
       expect(page).to have_content question.body
@@ -32,20 +40,43 @@ feature 'answers order best', %q{
     end
 
     context "Author of a question" do
-      scenario 'can vote for answer  in question that not have been voted yet as best ', js: true do
+      before do
         sign_in user
         visit question_path(question)        
         expect(page).to have_content answer.body 
         expect(page).to have_selector "#answer_#{ answer.id }"
+      end
+      scenario 'can vote for answer  in that not have been voted yet as best ', js: true do        
         within("#answer_#{ answer.id }") do                           
           click_link "Vote"
           wait_for_ajax
-          expect(page).to_not have_content "Vote"
-        end      
-        
+          expect(page).to_not have_content "Vote"                
+        end         
       end
-      scenario 'can vote for answer in question that was already voted' do
+      scenario 'best answer after vote is shown first', js: true do
+        within('.answers') do
+          answers_all = page.all("div")
+          expect(answers_all[1][:id]).to eq "answer_#{ best_answer.id }"
+        end
+        within("#answer_#{ answer.id }") do                           
+          click_link "Vote"
+          wait_for_ajax
+          expect(page).to_not have_content "Vote"                
+        end
+        within('.answers') do
+          answers_all = page.all("div")
+          expect(answers_all[1][:id]).to eq "answer_#{ answer.id }"
+        end
+        within("#answer_#{ answer.id }") do           
+          expect(page).to_not have_content "Vote"                   
+        end
       end
+      scenario 'can not vote for answer that was already voted', js: true do
+        within("#answer_#{ best_answer.id }") do           
+          expect(page).to_not have_content "Vote"                   
+        end
+      end
+
     end
     
   end
