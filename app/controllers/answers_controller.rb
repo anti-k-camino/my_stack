@@ -21,8 +21,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy           
-    @answer.destroy
-    redirect_to @question, notice: 'Answer successfully destroyed.'    
+    @answer.destroy        
   end
 
   private
