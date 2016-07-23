@@ -7,8 +7,8 @@ class AnswersController < ApplicationController
 
   def create    
     @answer = @question.answers.new(answer_params)    
-    @answer.user = current_user   
-    @answer.save      
+    @answer.user = current_user       
+    @answer.save              
   end
 
   def update    

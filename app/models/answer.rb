@@ -8,9 +8,9 @@ class Answer < ActiveRecord::Base
 
   def the_best!
     transaction do
-      self.question.answers.where(best: true).update_all(best: false)
-    end
-    update! best: true       
+      self.question.answers.where(best: true).update_all(best: false)    
+      update! best: true
+    end      
   end 
   
   def best?
