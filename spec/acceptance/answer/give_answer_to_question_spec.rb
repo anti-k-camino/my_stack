@@ -16,8 +16,7 @@ feature 'answer aquestion', %q{
       end  
       click_on 'Create answer'      
       expect(current_path).to eq question_path(question)             
-      expect(page).to have_content 'example answer'
-      expect(page).to have_content 'Successfully created'             
+      expect(page).to have_content 'example answer'                   
     end
 
     scenario 'Authenticated user whants to create an empty answer', js: true do
