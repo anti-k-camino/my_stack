@@ -6,6 +6,12 @@ div.show_question
     div.panel
       =link_to 'Edit', '', class: 'edit_question_button'     
       =link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' }
+  p Attachments:
+  ul
+    - @question.attachments.each do |a|
+      li= link_to a.file.filename, a.file.url
+
+
 div.edit_question
   =form_for @question, remote: true do |f|  
     = f.label :title, class: 'label_hidden' 
