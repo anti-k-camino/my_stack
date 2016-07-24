@@ -11,9 +11,5 @@ class Answer < ActiveRecord::Base
       self.question.answers.where(best: true).update_all(best: false)    
       update! best: true
     end      
-  end 
-  
-  def best?
-   self.best
-  end  
+  end    
 end
