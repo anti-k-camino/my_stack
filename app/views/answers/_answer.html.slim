@@ -4,7 +4,11 @@ div id="answer_dom_#{ answer.id }"
     -if answer.persisted?
       div id="show_answer#{ answer.id }"
         div id="body_#{ answer.id }"
-          =answer.body                 
+          =answer.body
+          ul
+            - answer.attachments.each do |a|
+              li= link_to a.file.filename, a.file.url
+
         div.panel
           -if user_signed_in? && current_user.author_of?(answer.question)
             -unless answer.best?
