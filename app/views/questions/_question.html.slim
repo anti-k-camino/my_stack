@@ -1,0 +1,18 @@
+div.show_question
+  =question.title
+  br 
+  =question.body
+  -if user_signed_in? && current_user.author_of?(question)
+    div.panel
+      =link_to 'Edit', '', class: 'edit_question_button'     
+      =link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' }
+div.edit_question
+  =form_for @question, remote: true do |f|  
+    = f.label :title, class: 'label_hidden' 
+    = f.text_field :title
+    br
+    = f.label :body, class: 'label_hidden'
+    = f.text_area :body
+    br
+    = f.submit 'Update'
+  

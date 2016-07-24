@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative  '../acceptance_helper'
 
 feature 'User can delete a question', %q{
   In order to manage my publications
@@ -12,7 +12,7 @@ feature 'User can delete a question', %q{
     scenario 'Author of a question deletes a question' do            
       sign_in user         
       visit question_path question      
-      within("div.question_body"){ click_on 'Delete' }             
+      within('.question'){ click_on 'Delete' }             
       expect(page).to have_content 'Question successfully destroyed.'
       expect(current_path).to eq questions_path 
       expect(page).to_not have_content "#{ question.title }"
@@ -21,7 +21,7 @@ feature 'User can delete a question', %q{
     scenario 'Not the author of a question try to delete a question' do
       sign_in malicious_user
       visit question_path question       
-      within("div.question_body"){ expect(page).to_not have_content 'Delete' }              
+      within(".question"){ expect(page).to_not have_content 'Delete' }              
     end
   end
   context 'Non authenticated user wants to delete a question' do

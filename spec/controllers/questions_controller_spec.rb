@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe QuestionsController, type: :controller do
-  
+RSpec.describe QuestionsController, type: :controller do  
   
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -32,9 +31,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-
     sign_in_user
-
     before { get :new }
 
     it 'assigns Question to @question' do
@@ -46,36 +43,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    sign_in_user 
-
-    context 'current user is the author of a question' do
-      let(:question){ create :question, user: @user } 
-
-      before{ get :edit, id: question }
-
-      it 'assigns required question to @question' do
-        expect(assigns :question).to eq question
-      end
-
-      it 'renders view edit' do
-        expect(response).to render_template :edit
-      end
-    end
-    context 'curent user is not the author of a question' do
-      malicious_case
-
-      before{ get :edit, id: question } 
-
-      it 'assigns required question to @question' do
-        expect(assigns :question).to eq question
-      end
-
-      it 'renders view index' do
-        expect(response).to render_template :show , notice:'Restricted'
-      end
-    end
-  end
 
 
   describe 'POST #create' do
@@ -113,31 +80,35 @@ RSpec.describe QuestionsController, type: :controller do
     context 'user is author of a question' do
       let(:question){ create :question, user: @user}
       context 'with valid attributes' do
+        
         it 'assigns question to @question' do
-          patch :update, id: question, question: attributes_for(:question)
+          patch :update, id: question, question: attributes_for(:question), format: :js
           expect(assigns :question).to eq question
-        end  
+        end 
+
         it 'changes question attributes' do
-          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
+          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}, format: :js
           question.reload
           expect(question.title).to eq 'NewTitle'
           expect(question.body).to eq 'NewBody'
         end 
+
         it 'question has current user as an author' do
-          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
+          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}, format: :js
           question.reload
           expect(question.user_id).to eq @user.id
         end
+
         it 'redirects to updated question' do
-          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}
-          expect(response).to redirect_to question
+          patch :update, id: question, question: {title: 'NewTitle', body: 'NewBody'}, format: :js
+          expect(response).to render_template :update
         end   
       end
       context 'with invalid attriutes' do 
         before do
           @title = question.title
           @body = question.body
-          patch :update, id: question, question: { title: 'NewTitle', body: nil }
+          patch :update, id: question, question: { title: 'NewTitle', body: nil }, format: :js
           question.reload        
         end
 
@@ -145,8 +116,9 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.title).to eq @title
           expect(question.body).to eq @body
         end
+
         it 'renders view edit' do        
-          expect(response).to render_template :edit
+          expect(response).to render_template :update
         end
       end
     end
@@ -155,18 +127,21 @@ RSpec.describe QuestionsController, type: :controller do
       before do
         @body = question.body
         @title = question.title       
-        patch :update, id: question, question: attributes_for(:question)
+        patch :update, id: question, question: attributes_for(:question), format: :js
         question.reload       
-      end      
+      end 
+
       it 'does not modify @question' do              
         expect(question.title).to eq @title
         expect(question.body).to eq @body        
       end
+
       it 'does not changes the author' do
         expect(question.user_id).to_not eq @user.id
       end
+
       it 'renders view show' do        
-        expect(response).to render_template :show, id: question, notice: 'Restricted'
+        expect(response).to render_template :show
       end
     end
   end
@@ -181,6 +156,7 @@ RSpec.describe QuestionsController, type: :controller do
         question      
         expect{ delete :destroy, id: question }.to change(@user.questions, :count).by -1 #if subject.current_user.permission? question
       end
+
       it 'redirects to view index' do
         delete :destroy, id: question
         expect(response).to redirect_to questions_path
@@ -192,6 +168,7 @@ RSpec.describe QuestionsController, type: :controller do
         question
         expect{ delete :destroy, id: question }.to_not change(Question, :count)
       end
+
       it 'renders view show' do
         delete :destroy, id: question
         expect(response).to render_template :show, id: question, notice: 'Restricted'

@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
+  revision: d3776ddd0b89d28fdebfd6e1c1541348cc90e5cc
+  specs:
+    twitter-bootstrap-rails (3.2.2)
+      actionpack (>= 3.1)
+      execjs (>= 2.2.2, >= 2.2)
+      less-rails (>= 2.5.0)
+      railties (>= 3.1)
+
+GIT
   remote: git://github.com/thoughtbot/shoulda-matchers.git
   revision: bb76d55e5939a5c8306b2d5b4d0d42302c583d8b
   specs:
@@ -57,8 +67,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    childprocess (0.5.9)
-      ffi (~> 1.0, >= 1.0.11)
+    capybara-webkit (1.11.1)
+      capybara (>= 2.3.0, < 2.8.0)
+      json
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.1.x)
@@ -66,6 +77,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    commonjs (0.2.7)
     concurrent-ruby (1.0.2)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -83,7 +95,6 @@ GEM
     factory_girl_rails (4.7.0)
       factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
-    ffi (1.9.14)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -97,6 +108,14 @@ GEM
     json (1.8.3)
     launchy (2.4.3)
       addressable (~> 2.3)
+    less (2.6.0)
+      commonjs (~> 0.2.7)
+    less-rails (2.7.1)
+      actionpack (>= 4.0)
+      less (~> 2.6.0)
+      sprockets (> 2, < 4)
+      tilt
+    libv8 (3.16.14.15)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -143,6 +162,7 @@ GEM
     rake (11.2.2)
     rdoc (4.2.2)
       json (~> 1.4)
+    ref (2.0.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     rspec-core (3.4.4)
@@ -162,7 +182,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubyzip (1.2.0)
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -173,10 +192,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    selenium-webdriver (2.53.4)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.0)
-      websocket (~> 1.0)
     slim (3.0.7)
       temple (~> 0.7.6)
       tilt (>= 1.3.3, < 2.1)
@@ -193,6 +208,9 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     temple (0.7.7)
+    therubyracer (0.12.2)
+      libv8 (~> 3.16.14.0)
+      ref
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
@@ -209,7 +227,6 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    websocket (1.2.3)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -219,6 +236,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   capybara
+  capybara-webkit
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise
@@ -231,11 +249,12 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  selenium-webdriver
   shoulda-matchers!
   slim-rails
   spring
+  therubyracer
   turbolinks
+  twitter-bootstrap-rails!
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
 

@@ -1,41 +1,38 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except:[:index, :show]
-  before_action :set_question, except:[:show, :edit, :update, :destroy]
-  before_action :set_answer, only:[:show, :edit, :update, :destroy]
-  before_action :not_author?, only:[:edit, :update, :destroy]
-  
-  def index
-    @answers = @question.answers
-  end
-
-  def edit    
-  end
+  before_action :authenticate_user!
+  before_action :set_question, except:[:update, :destroy, :best]
+  before_action :set_answer, only:[:update, :destroy, :best]
+  before_action :get_question, only:[:best, :destroy]
+  before_action :not_author?, except:[:create, :best]
 
   def create    
     @answer = @question.answers.new(answer_params)    
-    @answer.user = current_user   
-    @answer.save      
+    @answer.user = current_user       
+    @answer.save              
   end
 
-  def update     
-    if @answer.update(answer_params)
-      redirect_to @answer.question, notice:'Your answer successfully updated'
-    else
-      render :edit
-    end
+  def update    
+    @answer.update(answer_params);   
   end
 
-  def destroy  
-    @question = @answer.question      
-    @answer.destroy
-    redirect_to @question, notice: 'Answer successfully destroyed.'    
+  def best
+    not_author?(@answer.question)    
+    @answer.the_best!
+  end
+
+  def destroy           
+    @answer.destroy        
   end
 
   private
-  def not_author?
-    unless current_user.author_of?(@answer)    
+  def not_author?(obj = @answer)
+    unless current_user.author_of?(obj)    
       redirect_to @answer.question, notice: 'Restricted'
     end
+  end
+  
+  def get_question
+    @question = @answer.question
   end
 
   def set_question
@@ -47,6 +44,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :best)
   end
 end
