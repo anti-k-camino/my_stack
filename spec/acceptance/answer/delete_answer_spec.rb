@@ -17,6 +17,8 @@ feature 'User can delete an answer', %q{
       visit question_path question        
       within("#answer_#{ answer.id }"){ click_on 'Delete' }      
       expect(page).to_not have_content "#{ answer.body }"
+      expect(page).to_not have_selector "#error_#{ answer.id }"
+      expect(page).to_not have_selector "#answer_dom_#{ answer.id }"
       expect(current_path).to eq question_path question      
     end
 
