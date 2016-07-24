@@ -5,9 +5,9 @@ div id="answer_dom_#{ answer.id }"
       div id="show_answer#{ answer.id }"
         div id="body_#{ answer.id }"
           =answer.body
-          ul
-            - answer.attachments.each do |a|
-              li= link_to a.file.filename, a.file.url
+        -if answer.attachments.any?
+          div id="attachchments#{ answer.id }"
+            =render 'common/attachments', res: answer
 
         div.panel
           -if user_signed_in? && current_user.author_of?(answer.question)

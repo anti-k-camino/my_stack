@@ -7,9 +7,10 @@ h1 Question
     = f.label :body, class: 'label_hidden'     
     = f.text_area :body, placeholder:"Input body of a question"     
   p Attachments: 
-  p   
+  p  
     = f.fields_for :attachments do |a|
-      = a.label :file, class: 'label_hidden'
-      = a.file_field :file  
+      = render 'attachment_fields', f: a
+      .links
+        = link_to_add_association 'add file', f, :attachments  
   p 
     = f.submit 'Create'
