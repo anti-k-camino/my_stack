@@ -16,7 +16,7 @@ feature 'answers order best', %q{
       visit question_path(question)
       within('.answers') do
         answers_all = page.all("div")
-        expect(answers_all[1][:id]).to eq "answer_#{ best_answer.id }"
+        expect(answers_all[0][:id]).to eq "answer_dom_#{ best_answer.id }"
       end
     end
 
@@ -56,7 +56,7 @@ feature 'answers order best', %q{
       scenario 'best answer after vote is shown first', js: true do
         within('.answers') do
           answers_all = page.all("div")
-          expect(answers_all[1][:id]).to eq "answer_#{ best_answer.id }"
+          expect(answers_all[0][:id]).to eq "answer_dom_#{ best_answer.id }"
         end
         within("#answer_#{ answer.id }") do                           
           click_link "Vote"
@@ -65,7 +65,7 @@ feature 'answers order best', %q{
         end
         within('.answers') do
           answers_all = page.all("div")
-          expect(answers_all[1][:id]).to eq "answer_#{ answer.id }"
+          expect(answers_all[0][:id]).to eq "answer_dom_#{ answer.id }"
         end
         within("#answer_#{ answer.id }") do           
           expect(page).to_not have_content "Vote"                   

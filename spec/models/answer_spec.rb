@@ -26,22 +26,4 @@ RSpec.describe Answer, type: :model do
       expect(best_answer).to_not be_best
     end
   end
-
-  describe 'best?' do
-    let!(:question){ create :question }
-    let!(:answer){ create :answer , question: question }
-    let!(:best_answer){ create :answer, question: question, best: true }
-    before do
-      answer.the_best!  #ze best  ))))
-    end
-
-    it 'expect the best? to return true' do                 
-      expect(answer.best?).to eq true      
-    end
-
-    it 'expect the best? to return false' do
-      best_answer.reload                
-      expect(best_answer.best?).to eq false      
-    end
-  end
 end
