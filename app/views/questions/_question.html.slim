@@ -11,12 +11,18 @@ div.show_question
 
 
 div.edit_question
-  =form_for @question, remote: true do |f|  
+  =form_for @question, remote: true do |f|     
     = f.label :title, class: 'label_hidden' 
     = f.text_field :title
     br
     = f.label :body, class: 'label_hidden'
-    = f.text_area :body
+    = f.text_area :body 
+    br
+    -@question.attachments.each do |att|
+      div id="attachment_#{ att.id }"
+        =att.file.filename
+        =link_to 'Remove', attachment_path(att), method: :delete, remote: true
+    end     
     br
     = f.submit 'Update'
   
