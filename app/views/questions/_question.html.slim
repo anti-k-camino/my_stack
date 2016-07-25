@@ -20,8 +20,8 @@ div.edit_question
     br
     -@question.attachments.each do |att|
       div id="attachment_#{ att.id }"
-        =att.file.filename
-        =link_to 'Remove', attachment_path(att), method: :delete, remote: true
+        = att.file.filename
+        = link_to 'Remove', attachment_path(att), method: :delete, remote: true
     end     
     br
     = f.submit 'Update'
