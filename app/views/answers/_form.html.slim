@@ -2,4 +2,11 @@
   =f.label :body, class: 'label_hidden'
   =f.text_area :body
   br
+  -if answer.attachments.any?
+    -answer.attachments.each do |att|
+      div id="attachment_#{ att.id }"
+        =att.file.filename
+        =link_to 'Remove', attachment_path(att), method: :delete, remote: true
+    end
+  br  
   =f.submit 'Edit', class:"answer_edit_button", data:{ answer_id: answer.id }   

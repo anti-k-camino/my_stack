@@ -17,6 +17,21 @@ RSpec.describe AttachmentsController, type: :controller do
       end
     end
 
+    context 'current user is the author of an answer' do 
+      let!(:question){ create :question }
+      let!(:answer){ create :answer, question: question, user: @user }
+      let!(:attachment){ create(:attachment, attachable: answer) }
+      
+      it 'deletes attachment' do                 
+        expect{ delete :destroy, id: attachment, format: :js }.to change(answer.attachments, :count).by -1 
+      end
+
+      it 'redirects to view index' do
+        delete :destroy, id: attachment, format: :js
+        expect(response).to render_template :destroy
+      end
+    end
+
     context 'current user is not the owner of a question' do      
       let!(:question_another){ create :question }
       let!(:attachment_another){ create(:attachment, attachable: question_another) }      

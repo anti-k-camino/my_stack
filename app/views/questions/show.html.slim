@@ -12,9 +12,10 @@ div.create_answer
   div.errors  
   = f.text_area :body, placeholder:'Create your answer' 
   br
-  = f.fields_for :attachments do |a|
-    =a.label :file, class:'label_hidden'
-    =a.file_field :file
+  = f.fields_for :attachments do |a|    
+    = render 'common/attachment_fields', f: a
+    .links
+      = link_to_add_association 'add file', f, :attachments, partial:'common/attachment_fields'    
   -if user_signed_in?#temporary solution
     = f.submit 'Create answer'
 
