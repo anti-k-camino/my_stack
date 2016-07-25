@@ -27,7 +27,7 @@ feature 'Remove attached files from question', %q{
     expect(page).to_not have_link attachment.file.filename
   end
 
-  scenario 'Not author of a question can not remove attached files', js: true do
+  scenario 'Author of a question can remove one attached file and left the other', js: true do
     
     within('.show_question') do
       expect(page).to have_link attachment.file.filename
