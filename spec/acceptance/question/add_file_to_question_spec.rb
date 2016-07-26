@@ -21,7 +21,7 @@ feature 'Add files to question', %q{
     expect(page).to have_link "spec_helper.rb", href:"/uploads/attachment/file/1/spec_helper.rb"
   end
 
-  scenario 'User adds several files to question', js: true do    
+  scenario 'User can add several files to question', js: true do    
     click_on "add file"
     wait_for_ajax
     files = page.all("input[type='file']")
@@ -34,7 +34,7 @@ feature 'Add files to question', %q{
     expect(page).to have_link "rails_helper.rb", href:"/uploads/attachment/file/2/rails_helper.rb"
   end
 
-  scenario "Blank files are not added", js: true do
+  scenario "blank fields are not treated as files", js: true do
     click_on "add file"
     click_on "add file"
     wait_for_ajax
