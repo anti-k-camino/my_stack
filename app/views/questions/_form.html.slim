@@ -1,8 +1,9 @@
-=form_for @question, remote: true do |f|  
-  = f.label :title, class: 'label_hidden' 
-  = f.text_field :title
-  br
-  = f.label :body, class: 'label_hidden'
-  = f.text_area :body
-  br
-  = f.submit 'Update'
+=form_for @question, remote: true do |f|
+  p  
+    = f.label :title, class: 'label_hidden' 
+    = f.text_field :title
+  p
+    = f.label :body, class: 'label_hidden'
+    = f.text_area :body  
+  p
+    = f.submit 'Update'

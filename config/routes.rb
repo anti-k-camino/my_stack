@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :users, only:[:index, :show]
+  resources :attachments, only:[:destroy]
   resources :questions do
     resources :answers, only:[:create, :destroy, :update], shallow: true do
       patch :best, on: :member

@@ -2,7 +2,7 @@ require_relative '../acceptance_helper'
 
 feature 'answers order best', %q{
   In order to help users get best answer quicker
-  As an authenticated user and  question author 
+  As an authenticated user and  question author
   I want to mark best answer
   } do
     given!(:user){ create :user }
@@ -46,6 +46,7 @@ feature 'answers order best', %q{
         expect(page).to have_content answer.body 
         expect(page).to have_selector "#answer_#{ answer.id }"
       end
+
       scenario 'can vote for answer  in that not have been voted yet as best ', js: true do        
         within("#answer_#{ answer.id }") do                           
           click_link "Vote"
@@ -53,6 +54,7 @@ feature 'answers order best', %q{
           expect(page).to_not have_content "Vote"                
         end         
       end
+
       scenario 'best answer after vote is shown first', js: true do
         within('.answers') do
           answers_all = page.all("div")
@@ -71,6 +73,7 @@ feature 'answers order best', %q{
           expect(page).to_not have_content "Vote"                   
         end
       end
+      
       scenario 'can not vote for answer that was already voted', js: true do
         within("#answer_#{ best_answer.id }") do           
           expect(page).to_not have_content "Vote"                   
