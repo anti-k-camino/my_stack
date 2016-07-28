@@ -52,6 +52,7 @@ RSpec.describe AttachmentsController, type: :controller do
     let!(:question){ create :question}
     context 'question attachments' do
       let!(:attachment){ create(:attachment, attachable: question) }
+      
       it 'fails to delete' do        
         expect{ delete :destroy, id: attachment, format: :js }.to_not change(Attachment, :count)
       end
@@ -59,6 +60,7 @@ RSpec.describe AttachmentsController, type: :controller do
     context 'answer attachments' do
       let!(:answer){ create :answer, question: question }
       let!(:attachment){ create(:attachment, attachable: answer) }
+
       it 'fails to delete' do        
         expect{ delete :destroy, id: attachment, format: :js }.to_not change(Attachment, :count)
       end
