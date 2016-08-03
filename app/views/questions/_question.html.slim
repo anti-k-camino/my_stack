@@ -7,8 +7,9 @@ div.show_question
       =link_to 'Edit', '', class: 'edit_question_button'     
       =link_to 'Delete', question, method: :delete, data: { confirm: 'Are you sure?' }
   -if question.attachments.any?
-    =render 'common/attachments', res: question
-
+    =render 'common/attachments', res: question   
+  div.voting_dom
+    = render 'votes/vote'
 
 div.edit_question
   =form_for @question, remote: true do |f|     

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
-  before_action :set_question, only:[:show, :update, :destroy]
+  before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
   before_action :check_permission, only:[:update, :destroy]
 
   def index
@@ -10,6 +10,11 @@ class QuestionsController < ApplicationController
   def show   
     @answer = @question.answers.new
     @answer.attachments.build
+    if @question.users.include? current_user
+      @vote = @question.votes.where(user_id: current_user).first
+    else
+      @vote = Vote.new
+    end  
   end
 
   def new
@@ -30,6 +35,28 @@ class QuestionsController < ApplicationController
       render :new
     end
   end
+
+  def upvote     
+    @vote = Vote.new(votable_id: @question.id, user_id: current_user.id, votable_type: 'Question', vote_field: 1)
+    respond_to do |format|
+      if @vote.save
+        format.json{ render json: { vote: @vote, rating: @question.rating } }
+      else
+        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def downvote     
+    @vote = Vote.new(votable_id: @question.id, user_id: current_user.id, votable_type: 'Question', vote_field: -1)
+    respond_to do |format|
+      if @vote.save
+        format.json{ render json: { vote: @vote, rating: @question.rating } }
+      else
+        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
+  end 
 
   def destroy    
     @question.destroy

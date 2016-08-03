@@ -1,0 +1,9 @@
+-if user_signed_in?
+  div.voting
+    -if @vote.persisted?
+      =render 'votes/create_vote'   
+    -else
+      =render 'votes/create_vote'
+
+   
+     
