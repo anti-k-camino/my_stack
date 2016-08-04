@@ -1,11 +1,13 @@
-class Question < ActiveRecord::Base
+class Question < ActiveRecord::Base 
+  
+  include HasUser
+
   has_many :answers, dependent: :destroy 
-  has_many :attachments, as: :attachable, dependent: :destroy
-  belongs_to :user
+  has_many :attachments, as: :attachable, dependent: :destroy  
   has_many :votes, as: :votable, dependent: :destroy
   has_many :users, through: :votes
   
-  validates :title, :body, :user_id,  presence: true  
+  validates :title, :body, presence: true  
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 

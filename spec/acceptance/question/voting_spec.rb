@@ -23,8 +23,7 @@ feature 'Vote for question', %q{
     given!(:question){ create :question }
     scenario 'Can see links to vote' do
       sign_in user
-      visit question_path(question)
-      save_and_open_page
+      visit question_path(question)      
       expect(page).to have_css("img[src*='/assets/up-81cf844a88967b28f9245b872e7d05da828bafb92c6dae1df0ed48a41f0e6736.png']")
       expect(page).to have_css("img[src*='/assets/down-1d68ce8366be14be3b4352d42e0aaf6e8f5ebb97690b3a8646bf774e31486249.png']")
     end
