@@ -63,24 +63,7 @@ feature 'Question editing', %q{
         expect(page).to have_content "edited title"  
         expect(page).to have_content "edited body"
       end
-
-=begin
-    scenario "can't update two objects at one time", js: true do
-        expect(page).to have_selector ".show_question"     
-        expect(page).to have_selector "#show_answer#{ answer.id }"
-        within ".question" do
-          expect(page).to have_content question.body
-          click_on 'Edit'                  
-        end
-        expect(page).to_not have_selector ".show_question"
-        within '.answers' do
-          expect(find('a',text: "Edit").click).to raise_error('Failed to click element')
-        end                   
-        expect(page).to_not have_selector "#edit_answer#{ answer.id }"
-      end
-=end
-
-
+      
       scenario 'with invalid attributes', js: true do       
         within ".question" do
           expect(page).to_not have_content 'textarea'

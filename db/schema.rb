@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729203107) do
+ActiveRecord::Schema.define(version: 20160804092239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20160729203107) do
     t.integer  "vote_field"
   end
 
-  add_index "votes", ["user_id", "votable_id"], name: "index_votes_on_user_id_and_votable_id", unique: true, using: :btree
+  add_index "votes", ["user_id", "votable_id", "votable_type"], name: "index_votes_on_user_id_and_votable_id_and_votable_type", using: :btree
 
   add_foreign_key "answers", "questions", on_delete: :cascade
   add_foreign_key "questions", "users", on_delete: :cascade
