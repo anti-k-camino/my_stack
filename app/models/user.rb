@@ -6,8 +6,7 @@ class User < ActiveRecord::Base
   has_many :questions, dependent: :destroy #foreign_key on_delete: :cascade is set in db
   has_many :answers, dependent: :destroy #foreign_key on_delete: :cascade is set in db
 
-  has_many :votes, dependent: :destroy
-  has_many :votes_on_questions, through: :votes, source: :votable, source_type: 'Question'
+  has_many :votes, dependent: :destroy  
 
   validates :name, presence: true
   validates :name, uniqueness: { case_sensitive: false }

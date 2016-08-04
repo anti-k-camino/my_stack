@@ -10,8 +10,8 @@ class QuestionsController < ApplicationController
   def show   
     @answer = @question.answers.new
     @answer.attachments.build
-    if @question.users.include? current_user
-      @vote = @question.votes.where(user_id: current_user).first
+    if @question.check_if_voted? current_user
+      @vote = @question.get_vote current_user
     else
       @vote = Vote.new
     end  

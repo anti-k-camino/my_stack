@@ -9,7 +9,15 @@ class Question < ActiveRecord::Base
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
+  def check_if_voted? user
+    self.users.include? user
+  end
+
+  def get_vote user
+    self.votes.where(user: user).first
+  end
+
   def rating
-    self.votes.inject(0){|sum,x| sum + x.vote_field }   
+    self.votes.sum(:vote_field)  
   end
 end
