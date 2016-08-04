@@ -1,7 +1,7 @@
 -if user_signed_in?
   div.voting
     -if @vote.persisted?
-      =render 'votes/create_vote'   
+      =render 'votes/delete_vote'   
     -else
       =render 'votes/create_vote'
 

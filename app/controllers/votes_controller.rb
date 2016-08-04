@@ -3,12 +3,8 @@ class VotesController < ApplicationController
   def destroy
     @vote = Vote.find(params[:id])
     @vote.destroy
-    respond_to do |format|
-      if @vote.errors.any?        
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      else
-        format.json{ render json: @vote.votable.rating }
-      end
+    respond_to do |format|      
+      format.json{ render json: { rating: @vote.votable.rating, votable: @vote.votable.id } }    
     end    
   end  
 end

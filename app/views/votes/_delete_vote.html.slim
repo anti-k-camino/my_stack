@@ -1,4 +1,4 @@
-=link_to image_tag('up.png'), @vote, method: :delete, remote: true, class:'delete_vote'
-span.question_rating
-  = @vote.rating 
 =link_to image_tag('down.png'), @vote, method: :delete, remote: true, class:'delete_vote'
+span.rating
+  = @question.rating 
+=link_to image_tag('up.png'), @vote, method: :delete, remote: true, class:'delete_vote'

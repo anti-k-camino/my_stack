@@ -7,7 +7,6 @@ ready = ->
     $('#overlay').show();
     show.hide()
     edit.show()
-
   $(document).on 'click', '.edit_question_button', (e) ->
     e.preventDefault()   
     $('#overlay').show()
@@ -24,28 +23,37 @@ ready = ->
     if res.vote.vote_field == -1      
       result = JST["create_vote"]
              rate: res.rating
-             vote: { id: res.vote.id, name: "/assets/up.png" }
-             linkTo: (vote) ->
-               url  = "/votes/#{vote.id}"             
-               @safe "<a data-confirm='Are you sure?' data-method='delete' data-remote=true href='#{url}'\
-                 ><img src='#{vote.name}'/></a>"
-             votee: { name: "/assets/down.png" }
+             votee: { name: "/assets/down_red.png" }
              linkToo: (votee) ->
                url  = ""             
                @safe "<a href='' class='empty_vote'><img src='#{votee.name}'/></a>"
+             vote: { id: res.vote.id, name: "/assets/up.png" }
+             linkTo: (vote) ->
+               url  = "/votes/#{vote.id}"             
+               @safe "<a data-confirm='Are you sure?' data-method='delete' class='delete_vote' \
+               data-remote=true href='#{url}'\
+                 ><img src='#{vote.name}'/></a>"             
     else
       result = JST["create_vote"]
              rate: res.rating
-             votee: { id: res.vote.id, name: "/assets/up.png" }
+             votee: { id: res.vote.id, name: "/assets/down.png" }
              linkToo: (votee) ->
                url  = "/votes/#{votee.id}"             
-               @safe "<a data-confirm='Are you sure?' data-method='delete' data-remote=true href='#{url}'\
+               @safe "<a data-confirm='Are you sure?' data-method='delete' class='delete_vote'\
+                data-remote=true href='#{url}'\
                  ><img src='#{votee.name}'/></a>"
-             vote: { name: "/assets/down.png" }
+             vote: { name: "/assets/up_red.png" }             
              linkTo: (vote) ->
                url  = ""             
-               @safe "<a href='' class='empty_vote'><img src='#{vote.name}'/></a>"
-    $('.voting_dom').html(result)  
+               @safe "<a href='' class='empty_vote'><img src='#{vote.name}'/></a>"                           
+    $('.voting_dom').html(result)
+  $('.delete_vote').bind 'ajax:success', (e, data, status, xhr) -> 
+    res = $.parseJSON(xhr.responseText)
+    result = JST["delete_vote"]
+      rate: res.rating
+      id: res.votable
+    $('.voting_dom').html(result)
+    alert('Thats all folks!!!')
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
