@@ -17,16 +17,16 @@ div.panel-body id="answer_dom_#{ answer.id }"
               =link_to image_tag("up.png"), upvote_answer_path(answer), remote: true, class: 'create_answer_vote'
           div.col-sm-6 id="body_#{ answer.id }"
             =answer.body
-      -if answer.attachments.any?
-        div id="attachchments#{ answer.id }"
-          =render 'common/attachments', res: answer           
-      div.panel
-        -if user_signed_in? && current_user.author_of?(answer.question)
-          -unless answer.best?
-            =link_to 'Vote', best_answer_path(answer), method: :patch, remote: true
-        -if user_signed_in? && current_user.author_of?(answer)
-          =link_to 'Edit', '' ,class: 'toggle_edit_button', data: { answer_id: answer.id }  
-          =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }, remote: true             
+        -if answer.attachments.any?
+          div id="attachchments#{ answer.id }"
+            =render 'common/attachments', res: answer           
+        div.panel
+          -if user_signed_in? && current_user.author_of?(answer.question)
+            -unless answer.best?
+              =link_to 'Vote', best_answer_path(answer), method: :patch, remote: true
+          -if user_signed_in? && current_user.author_of?(answer)
+            =link_to 'Edit', '' ,class: 'toggle_edit_button', data: { answer_id: answer.id }  
+            =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }, remote: true           
       div.modal id="edit_answer#{ answer.id }" 
         =render 'answers/form', answer: answer
        

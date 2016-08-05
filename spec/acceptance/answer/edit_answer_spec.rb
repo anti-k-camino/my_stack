@@ -43,10 +43,11 @@ feature 'Answer editing', %q{
       scenario 'with valid attributes', js: true do          
         within "#answer_#{ answer.id }" do
           expect(page).to_not have_content 'textarea'
-        end
+        end        
         within "#show_answer#{ answer.id }" do
-          expect(page).to have_content answer.body          
-          click_on 'Edit'        
+          expect(page).to have_content answer.body
+          save_and_open_page          
+          click_on 'Edit'                 
         end 
         expect(page).to_not have_content answer.body
         within "#edit_answer#{ answer.id }" do
