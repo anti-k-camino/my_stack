@@ -1,22 +1,35 @@
-div id="answer_dom_#{ answer.id }"
+div.panel-body id="answer_dom_#{ answer.id }" 
   div id="error_#{ answer.id }"
   div id="answer_#{ answer.id }"  
     -if answer.persisted?
-      div id="show_answer#{ answer.id }"
-        div id="body_#{ answer.id }"
-          =answer.body
-        -if answer.attachments.any?
-          div id="attachchments#{ answer.id }"
-            =render 'common/attachments', res: answer
-
+      div.container id="show_answer#{ answer.id }"
+        div.row
+          div.col-sm-3 id="vote_answer_dom_#{ answer.id }"
+            -if answer.check_if_voted? current_user
+              =link_to image_tag('down.png'), answer.get_vote(current_user), method: :delete, remote: true, class:'delete_answer_vote'
+              span.rating
+                = answer.rating 
+              =link_to image_tag('up.png'), answer.get_vote(current_user), method: :delete, remote: true, class:'delete_answer_vote'
+            -else
+              =link_to image_tag("down.png"), downvote_answer_path(answer), remote: true, class: 'create_answer_vote'
+              span.answer_rating
+                =answer.rating
+              =link_to image_tag("up.png"), upvote_answer_path(answer), remote: true, class: 'create_answer_vote'
+          div.col-sm-6 id="body_#{ answer.id }"
+            =answer.body
+          -if answer.attachments.any?
+            div id="attachchments#{ answer.id }"
+              =render 'common/attachments', res: answer           
         div.panel
           -if user_signed_in? && current_user.author_of?(answer.question)
             -unless answer.best?
               =link_to 'Vote', best_answer_path(answer), method: :patch, remote: true
-          -if user_signed_in? && current_user.author_of?(answer)
-            =link_to 'Edit', '' ,class: 'toggle_edit_button', data: { answer_id: answer.id }  
-            =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }, remote: true
+            -if user_signed_in? && current_user.author_of?(answer)
+              =link_to 'Edit', '' ,class: 'toggle_edit_button', data: { answer_id: answer.id }  
+              =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }, remote: true
+              
       div.modal id="edit_answer#{ answer.id }" 
         =render 'answers/form', answer: answer
-      
+       
+
   

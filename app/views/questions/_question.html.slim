@@ -9,8 +9,7 @@ div.show_question
   -if question.attachments.any?
     =render 'common/attachments', res: question   
   div.voting_dom
-    = render 'votes/vote'
-
+    = render 'votes/vote', resource: @question
 div.edit_question
   =form_for @question, remote: true do |f|     
     = f.label :title, class: 'label_hidden' 

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     get :upvote, on: :member
     get :downvote, on: :member
     resources :answers, only:[:create, :destroy, :update], shallow: true do
+      get :upvote, on: :member
+      get :downvote, on: :member
       patch :best, on: :member      
     end
   end  

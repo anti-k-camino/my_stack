@@ -1,9 +1,9 @@
 class Question < ActiveRecord::Base 
   
   include HasUser
-  include Rating
   include Attachments
-
+  include Rating
+  
   has_many :answers, dependent: :destroy  
   validates :title, :body, presence: true 
   

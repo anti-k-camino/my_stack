@@ -1,3 +1,3 @@
-<a data-remote=true class='create_vote' href='#{@id}/downvote' ><img src='/assets/down.png'/></a>
+<a data-remote=true class='#{@create_class}' href='#{@id}/downvote' ><img src='/assets/down.png'/></a>
 span.raiting #{@rate}
-<a data-remote=true class='create_vote' href='#{@id}/upvote' ><img src='/assets/up.png'/></a>
+<a data-remote=true class='#{@create_class}' href='#{@id}/upvote' ><img src='/assets/up.png'/></a>

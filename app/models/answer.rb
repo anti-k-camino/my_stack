@@ -2,6 +2,7 @@ class Answer < ActiveRecord::Base
 
   include HasUser
   include Attachments
+  include Rating
   
   belongs_to :question
   validates :body, :question_id, presence: true

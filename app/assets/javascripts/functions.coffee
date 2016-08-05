@@ -7,19 +7,16 @@ ready = ->
     $('#overlay').show();
     show.hide()
     edit.show()
+    
   $(document).on 'click', '.edit_question_button', (e) ->
     e.preventDefault()   
     $('#overlay').show()
     show = $('.show_question')
     edit = $('.edit_question')
     show.hide()
-    edit.show()
-  $(document).on 'click', '.empty_vote', (e) ->
-    e.preventDefault()    
-    $('.voting_div').prepend('<p>You can vote only once</p>')    
+    edit.show()  
 
-  $('.create_vote').bind 'ajax:success', (e, data, status, xhr) ->    
-    res = $.parseJSON(xhr.responseText)
+  createVotes = (res, param) ->
     if res.vote.vote_field == -1      
       result = JST["create_vote"]
              rate: res.rating
@@ -30,7 +27,7 @@ ready = ->
              vote: { id: res.vote.id, name: "/assets/up.png" }
              linkTo: (vote) ->
                url  = "/votes/#{vote.id}"             
-               @safe "<a data-confirm='Are you sure?' data-method='delete' class='delete_vote' \
+               @safe "<a data-confirm='Are you sure?' data-method='delete' class='#{param}' \
                data-remote=true href='#{url}'\
                  ><img src='#{vote.name}'/></a>"             
     else
@@ -39,21 +36,42 @@ ready = ->
              votee: { id: res.vote.id, name: "/assets/down.png" }
              linkToo: (votee) ->
                url  = "/votes/#{votee.id}"             
-               @safe "<a data-confirm='Are you sure?' data-method='delete' class='delete_vote'\
+               @safe "<a data-confirm='Are you sure?' data-method='delete' class='#{param}'\
                 data-remote=true href='#{url}'\
                  ><img src='#{votee.name}'/></a>"
              vote: { name: "/assets/up_red.png" }             
              linkTo: (vote) ->
                url  = ""             
-               @safe "<a href='' class='empty_vote'><img src='#{vote.name}'/></a>"                           
+               @safe "<a href='' class='empty_vote'><img src='#{vote.name}'/></a>"
+    result
+
+  $('.create_vote').bind 'ajax:success', (e, data, status, xhr) ->    
+    res = $.parseJSON(xhr.responseText)
+    result = createVotes(res, 'delete_vote')                           
     $('.voting_dom').html(result)
+
+  $('.create_answer_vote').bind 'ajax:success', (e, data, status, xhr) ->    
+    res = $.parseJSON(xhr.responseText)
+    result = createVotes(res, 'delete_answer_vote')       
+    selector = '#vote_answer_dom_' + res.vote.votable_id                           
+    $(selector).html(result)
+
   $('.delete_vote').bind 'ajax:success', (e, data, status, xhr) -> 
     res = $.parseJSON(xhr.responseText)
     result = JST["delete_vote"]
       rate: res.rating
       id: res.votable
+      create_class: 'create_vote'
     $('.voting_dom').html(result)
-    alert('Thats all folks!!!')
+
+  $('.delete_answer_vote').bind 'ajax:success', (e, data, status, xhr) -> 
+    res = $.parseJSON(xhr.responseText)
+    result = JST["delete_vote"]
+      rate: res.rating
+      id: ('/answers/' + res.votable)
+      create_class: 'create_answer_vote'
+    selector = '#vote_answer_dom_' + res.votable
+    $(selector).html(result)    
 
 $(document).ready(ready)
 $(document).on('page:load', ready)

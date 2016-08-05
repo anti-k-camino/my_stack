@@ -1,4 +1,4 @@
--if user_signed_in? && !current_user.author_of?(@question)
+-if user_signed_in? && !current_user.author_of?(resource)
   div.voting
     -if @vote.persisted?
       =render 'votes/delete_vote'   
