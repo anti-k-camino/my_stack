@@ -7,7 +7,7 @@ ready = ->
     $('#overlay').show();
     show.hide()
     edit.show()
-    
+
   $(document).on 'click', '.edit_question_button', (e) ->
     e.preventDefault()   
     $('#overlay').show()
@@ -21,9 +21,8 @@ ready = ->
       result = JST["create_vote"]
              rate: res.rating
              votee: { name: "/assets/down_red.png" }
-             linkToo: (votee) ->
-               url  = ""             
-               @safe "<a href='' class='empty_vote'><img src='#{votee.name}'/></a>"
+             linkToo: (votee) ->                           
+               @safe "<img src='#{votee.name}'/>"
              vote: { id: res.vote.id, name: "/assets/up.png" }
              linkTo: (vote) ->
                url  = "/votes/#{vote.id}"             
@@ -40,9 +39,8 @@ ready = ->
                 data-remote=true href='#{url}'\
                  ><img src='#{votee.name}'/></a>"
              vote: { name: "/assets/up_red.png" }             
-             linkTo: (vote) ->
-               url  = ""             
-               @safe "<a href='' class='empty_vote'><img src='#{vote.name}'/></a>"
+             linkTo: (vote) ->                           
+               @safe "<img src='#{vote.name}'/>"
     result
 
   $('.create_vote').bind 'ajax:success', (e, data, status, xhr) ->    
