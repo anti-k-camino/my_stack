@@ -5,22 +5,8 @@ div.panel-body id="answer_dom_#{ answer.id }"
       div.container id="show_answer#{ answer.id }"
         div.row
           div.col-sm-3 id="vote_answer_dom_#{ answer.id }"
-            -if answer.check_if_voted? current_user
-              -if answer.get_vote(current_user).vote_field == -1 
-                =image_tag('down_red.png')
-                span.rating
-                  = answer.rating 
-                =link_to image_tag('up.png'), answer.get_vote(current_user), method: :delete, remote: true, class:'delete_answer_vote'
-              -elsif answer.get_vote(current_user).vote_field == 1 
-                =link_to image_tag('down.png'), answer.get_vote(current_user), method: :delete, remote: true, class:'delete_answer_vote'                
-                span.rating
-                  = answer.rating
-                =image_tag('up_red.png')
-            -else
-              =link_to image_tag("down.png"), downvote_answer_path(answer), remote: true, class: 'create_answer_vote'
-              span.answer_rating
-                =answer.rating
-              =link_to image_tag("up.png"), upvote_answer_path(answer), remote: true, class: 'create_answer_vote'
+            -if user_signed_in?
+              =render 'answers/answer_vote', answer: answer             
           div.col-sm-6 id="body_#{ answer.id }"
             =answer.body
         -if answer.attachments.any?

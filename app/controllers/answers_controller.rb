@@ -25,7 +25,8 @@ class AnswersController < ApplicationController
   end
   
   def upvote     
-    @vote = Vote.new(votable_id: @answer.id, user_id: current_user.id, votable_type: 'Answer', vote_field: 1)
+    @vote = Vote.new(votable_id: @answer.id, user_id: current_user.id, votable_type: 'Answer', vote_field: 1)    
+    @vote.errors[:base] << "Author can not vote for his resource" if @vote.user == @vote.votable.user
     respond_to do |format|
       if @vote.save
         format.json{ render json: { vote: @vote, rating: @answer.rating } }
@@ -37,6 +38,7 @@ class AnswersController < ApplicationController
 
   def downvote     
     @vote = Vote.new(votable_id: @answer.id, user_id: current_user.id, votable_type: 'Answer', vote_field: -1)
+    @vote.errors[:base] << "Author can not vote for his resource" if @vote.user == @vote.votable.user
     respond_to do |format|
       if @vote.save
         format.json{ render json: { vote: @vote, rating: @answer.rating } }
@@ -52,7 +54,7 @@ class AnswersController < ApplicationController
       redirect_to @answer.question, notice: 'Restricted'
     end
   end
-  
+
   def get_question
     @question = @answer.question
   end
