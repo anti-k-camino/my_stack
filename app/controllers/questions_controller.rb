@@ -69,7 +69,7 @@ class QuestionsController < ApplicationController
       render :show, id: @question, notice: 'Restricted' and return
     end
   end
-
+ 
   def set_question
     @question = Question.find params[:id]
   end
