@@ -190,6 +190,100 @@ RSpec.describe AnswersController, type: :controller do
    
   end
 
+
+
+  describe 'GET #upvote' do
+    context 'Non authenticated user' do
+      let!(:answer){ create :answer }      
+      it 'does not create upvote' do
+        expect{ get :upvote, id: answer.id, format: :json }.to_not change(Vote, :count)
+      end
+      it 'responds with error' do
+        get :upvote, id: answer.id, format: :json        
+        expect(JSON.parse(response.body)["error"]).to eq 'You need to sign in or sign up before continuing.'
+      end
+    end
+    context 'Authenticated user' do
+      sign_in_user      
+      context 'Author of a resource' do
+        let!(:answer){ create :answer, user: @user }
+        it 'can not create upvote' do
+          expect{ get :upvote, id: answer.id, format: :json }.to_not change(Vote, :count)
+        end
+        it 'responds with error' do
+          get :upvote, id: answer.id, format: :json                 
+          expect(JSON.parse(response.body)).to eq ["Author can not vote for his resource"]
+        end
+      end
+      context 'Non author of a resource' do
+        let!(:answer){ create :answer }
+
+        it 'can not create upvote' do
+          expect{ get :upvote, id: answer.id, format: :json }.to change(answer.votes, :count).by 1
+        end
+
+        it 'responds with propper json' do
+          get :upvote, id: answer.id, format: :json                         
+          expect(JSON.parse(response.body)['vote']['votable_id']).to eq answer.id
+          expect(JSON.parse(response.body)['vote']['votable_type']).to eq 'Answer'
+          expect(JSON.parse(response.body)['vote']['vote_field']).to eq 1
+        end
+
+        it 'sets question rating' do
+          get :upvote, id: answer.id, format: :json
+          expect(answer.rating).to eq 1
+        end
+
+      end
+    end
+  end
+
+  describe 'GET #downvote' do
+    context 'Non authenticated user' do
+      let!(:answer){ create :answer }      
+      it 'does not create upvote' do
+        expect{ get :downvote, id: answer.id, format: :json }.to_not change(Vote, :count)
+      end
+      it 'responds with error' do
+        get :downvote, id: answer.id, format: :json        
+        expect(JSON.parse(response.body)["error"]).to eq 'You need to sign in or sign up before continuing.'
+      end
+    end
+    context 'Authenticated user' do
+      sign_in_user      
+      context 'Author of a resource' do
+        let!(:answer){ create :answer, user: @user }
+        it 'can not create upvote' do
+          expect{ get :downvote, id: answer.id, format: :json }.to_not change(Vote, :count)
+        end
+        it 'responds with error' do
+          get :downvote, id: answer.id, format: :json                 
+          expect(JSON.parse(response.body)).to eq ["Author can not vote for his resource"]
+        end
+      end
+      context 'Non author of a resource' do
+        let!(:answer){ create :answer }
+
+        it 'can not create upvote' do
+          expect{ get :downvote, id: answer.id, format: :json }.to change(answer.votes, :count).by 1
+        end
+
+        it 'responds with propper json' do
+          get :downvote, id: answer.id, format: :json                         
+          expect(JSON.parse(response.body)['vote']['votable_id']).to eq answer.id
+          expect(JSON.parse(response.body)['vote']['votable_type']).to eq 'Answer'
+          expect(JSON.parse(response.body)['vote']['vote_field']).to eq -1
+        end
+
+        it 'sets question rating' do
+          get :downvote, id: answer.id, format: :json
+          expect(answer.rating).to eq -1
+        end
+
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     sign_in_user    
     let(:answer){ create :answer, user: @user } 
