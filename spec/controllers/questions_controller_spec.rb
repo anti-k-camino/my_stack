@@ -34,6 +34,34 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'GET #upvote' do
+    context 'Non authenticated user' do
+      let!(:question){ create :question }      
+      it 'does not create upvote' do
+        expect{ get :upvote, id: question.id, format: :json }.to_not change(Vote, :count)
+      end
+      it 'responds with error' do
+        get :upvote, id: question.id, format: :json        
+        expect(JSON.parse(response.body)["error"]).to eq 'You need to sign in or sign up before continuing.'
+      end
+    end
+    context 'Authenticated user' do
+      sign_in_user
+      let!(:question){ create :question, user: @user }
+      context 'Author of a resource' do
+        it 'can not create upvote' do
+          expect{ get :upvote, id: question.id, format: :json }.to_not change(Vote, :count)
+        end
+        it 'responds with error' do
+          get :upvote, id: question.id, format: :json                 
+          expect(JSON.parse(response.body)).to eq ["Author can not vote for his resource"]
+        end
+      end
+      context 'Non author of a resource' do
+      end
+    end
+  end
+
   describe 'GET #new' do
     sign_in_user
     before { get :new }
