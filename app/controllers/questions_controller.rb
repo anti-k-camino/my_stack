@@ -53,7 +53,10 @@ class QuestionsController < ApplicationController
 
   def downvote     
     @vote = Vote.new(votable_id: @question.id, user_id: current_user.id, votable_type: 'Question', vote_field: -1)
-    @vote.errors[:base] << "Author can not vote for his resource" if @vote.user == @vote.votable.user
+    if @vote.check_vote_permission?     
+      @vote.errors[:base] << "Author can not vote for his resource"
+      render json: @vote.errors.full_messages, status: 403 and return 
+    end
     respond_to do |format|
       if @vote.save
         format.json{ render json: { vote: @vote, rating: @question.rating } }
