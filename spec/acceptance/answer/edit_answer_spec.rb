@@ -45,8 +45,7 @@ feature 'Answer editing', %q{
           expect(page).to_not have_content 'textarea'
         end        
         within "#show_answer#{ answer.id }" do
-          expect(page).to have_content answer.body
-          save_and_open_page          
+          expect(page).to have_content answer.body                    
           click_on 'Edit'                 
         end 
         expect(page).to_not have_content answer.body

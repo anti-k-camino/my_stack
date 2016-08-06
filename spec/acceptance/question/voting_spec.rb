@@ -39,6 +39,7 @@ feature 'Vote for question', %q{
         sign_in user
         visit question_path(question)
       end
+
       scenario 'can see links to vote' do             
         expect(page).to have_link "Up", href: upvote_question_path(question)
         expect(page).to have_link "Down", href: downvote_question_path(question)
@@ -48,10 +49,74 @@ feature 'Vote for question', %q{
         within('.rating') do
           expect(page).to have_content 0
         end
-      end   
+      end
 
+      context 'can create a vote' do
+        scenario 'can upvote a question', js: true do          
+          click_on "Up"
+          wait_for_ajax          
+          within('.raiting') do
+            expect(page).to have_content 1
+          end
+          within('.voting_dom') do
+            expect(page).to have_link 'Delete'
+          end
+        end
+
+        scenario 'can downvote a question', js: true do          
+          click_on "Down"
+          wait_for_ajax          
+          within('.raiting') do
+            expect(page).to have_content -1
+          end
+          within('.voting_dom') do
+            expect(page).to have_link 'Delete'
+          end
+        end          
+      end
+
+      context 'can delete a vote' do
+        scenario 'when upvoted', js: true do          
+          click_on "Up"
+          wait_for_ajax          
+          within('.raiting') do
+            expect(page).to have_content 1
+          end
+          within('.voting_dom') do
+            expect(page).to have_link 'Delete'
+          end
+          click_on 'Delete'
+          wait_for_ajax
+          within('.raiting') do
+            expect(page).to have_content 0
+          end
+          within('.voting_dom') do
+            expect(page).to have_link 'Up', href:"#{question.id}/upvote"
+            expect(page).to have_link 'Down', href:"#{question.id}/downvote"
+          end
+        end
+
+        scenario 'can downvote a question', js: true do          
+          click_on "Down"
+          wait_for_ajax          
+          within('.raiting') do
+            expect(page).to have_content -1
+          end
+          within('.voting_dom') do
+            expect(page).to have_link 'Delete'
+          end
+          click_on 'Delete'
+          wait_for_ajax
+          within('.raiting') do
+            expect(page).to have_content 0
+          end
+          within('.voting_dom') do
+            expect(page).to have_link 'Up', href:"#{question.id}/upvote"
+            expect(page).to have_link 'Down', href:"#{question.id}/downvote"
+          end
+        end
+      end
     end
-
   end
   
 end

@@ -28,16 +28,16 @@ ready = ->
                url  = "/votes/#{vote.id}"             
                @safe "<a data-confirm='Are you sure?' data-method='delete' class='#{param}' \
                data-remote=true href='#{url}'\
-                 ><img src='#{vote.name}'/></a>"             
+                 ><img alt='Delete' src='#{vote.name}'/></a>"             
     else
       result = JST["create_vote"]
              rate: res.rating
              votee: { id: res.vote.id, name: "/assets/down.png" }
              linkToo: (votee) ->
                url  = "/votes/#{votee.id}"             
-               @safe "<a data-confirm='Are you sure?' data-method='delete' class='#{param}'\
+               @safe "<a data-confirm='Are you sure?' alt='Delete' data-method='delete' class='#{param}'\
                 data-remote=true href='#{url}'\
-                 ><img src='#{votee.name}'/></a>"
+                 ><img  alt='Delete' src='#{votee.name}'/></a>"
              vote: { name: "/assets/up_red.png" }             
              linkTo: (vote) ->                           
                @safe "<img src='#{vote.name}'/>"
