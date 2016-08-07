@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :get_question, only:[:best, :destroy]
   before_action :not_author?, except:[:create, :best, :upvote, :downvote]
 
+  include Voted
+
   def create    
     @answer = @question.answers.new(answer_params)    
     @answer.user = current_user       
@@ -23,37 +25,6 @@ class AnswersController < ApplicationController
   def destroy           
     @answer.destroy        
   end
-  
-  def upvote     
-    @vote = Vote.new(votable_id: @answer.id, user_id: current_user.id, votable_type: 'Answer', vote_field: 1)    
-    if @vote.check_vote_permission?     
-      @vote.errors[:base] << "Author can not vote for his resource"
-      render json: @vote.errors.full_messages, status: 403 and return 
-    end
-    respond_to do |format|
-      if @vote.save
-        format.json{ render json: { vote: @vote, rating: @answer.rating } }
-      else
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def downvote     
-    @vote = Vote.new(votable_id: @answer.id, user_id: current_user.id, votable_type: 'Answer', vote_field: -1)
-    if @vote.check_vote_permission?     
-      @vote.errors[:base] << "Author can not vote for his resource"
-      render json: @vote.errors.full_messages, status: 403 and return 
-    end
-    @vote.errors[:base] << "Author can not vote for his resource" if @vote.user == @vote.votable.user
-    respond_to do |format|
-      if @vote.save
-        format.json{ render json: { vote: @vote, rating: @answer.rating } }
-      else
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end 
 
   private
   def not_author?(obj = @answer)

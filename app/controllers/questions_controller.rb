@@ -3,6 +3,8 @@ class QuestionsController < ApplicationController
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
   before_action :check_permission, only:[:update, :destroy]
 
+  include Voted
+
   def index
     @questions = Question.all    
   end
@@ -35,36 +37,6 @@ class QuestionsController < ApplicationController
       render :new
     end
   end
-
-  def upvote     
-    @vote = Vote.new(votable_id: @question.id, user_id: current_user.id, votable_type: 'Question', vote_field: 1)
-    if @vote.check_vote_permission?     
-      @vote.errors[:base] << "Author can not vote for his resource"
-      render json: @vote.errors.full_messages, status: 403 and return 
-    end
-    respond_to do |format|
-      if @vote.save        
-        format.json{ render json: { vote: @vote, rating: @question.rating } }
-      else
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def downvote     
-    @vote = Vote.new(votable_id: @question.id, user_id: current_user.id, votable_type: 'Question', vote_field: -1)
-    if @vote.check_vote_permission?     
-      @vote.errors[:base] << "Author can not vote for his resource"
-      render json: @vote.errors.full_messages, status: 403 and return 
-    end
-    respond_to do |format|
-      if @vote.save
-        format.json{ render json: { vote: @vote, rating: @question.rating } }
-      else
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end 
 
   def destroy    
     @question.destroy
