@@ -1,12 +1,12 @@
 -if answer.user_voted? current_user
-  -if answer.get_vote(current_user).vote_field == -1 
-    =votee = answer.get_vote(current_user)
+  -@votee = answer.get_vote(current_user)
+  -if @votee.vote_field == -1    
     =image_tag('down_red.png')
     span.rating
     = answer.rating 
-    =link_to image_tag('up.png'),votee , method: :delete, remote: true, class:'delete_answer_vote'
-  -elsif answer.get_vote(current_user).vote_field == 1 
-    =link_to image_tag('down.png'),votee , method: :delete, remote: true, class:'delete_answer_vote'                
+    =link_to image_tag('up.png'),@votee , method: :delete, remote: true, class:'delete_answer_vote'
+  -elsif @votee.vote_field == 1 
+    =link_to image_tag('down.png'),@votee , method: :delete, remote: true, class:'delete_answer_vote'                
     span.rating
       = answer.rating
     =image_tag('up_red.png')
