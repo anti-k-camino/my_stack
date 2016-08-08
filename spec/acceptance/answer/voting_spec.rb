@@ -11,8 +11,8 @@ feature 'Vote for answer', %q{
     scenario 'can not vote for an answer' do
       visit question_path(question)
       within('.answers') do        
-        expect(page).to_not have_css("img[src*='/assets/up-81cf844a88967b28f9245b872e7d05da828bafb92c6dae1df0ed48a41f0e6736.png']")
-        expect(page).to_not have_css("img[src*='/assets/down-1d68ce8366be14be3b4352d42e0aaf6e8f5ebb97690b3a8646bf774e31486249.png']")
+        expect(page).to_not have_link "Up", href: upvote_question_path(question)
+        expect(page).to_not have_link "Down", href: downvote_question_path(question)
       end      
     end
   end
@@ -87,8 +87,7 @@ feature 'Vote for answer', %q{
             wait_for_ajax          
             within('.raiting') do
               expect(page).to have_content 1
-            end
-            expect(page).to have_link 'Delete'
+            end            
             click_on 'Delete'
             wait_for_ajax
             within('.raiting') do
