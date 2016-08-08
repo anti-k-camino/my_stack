@@ -4,8 +4,8 @@ module Votings
     has_many :votes, as: :votable, dependent: :destroy
     has_many :users, through: :votes    
   end
-  def check_if_voted? user
-    self.users.include? user
+  def check_if_voted? user    
+    self.votes.where(user: user).exists?
   end
 
   def get_vote user

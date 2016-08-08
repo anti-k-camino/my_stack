@@ -6,12 +6,12 @@ module Voted
   end
 
   def downvote
-    @vote = Vote.new(votable_id: @votable.id, user_id: current_user.id, votable_type: "#{model_klass}", vote_field: -1)
+    @vote = Vote.new(votable: @votable, user_id: current_user.id, vote_field: -1)
     rendering
   end
 
   def upvote
-    @vote = Vote.new(votable_id: @votable.id, user_id: current_user.id, votable_type: "#{model_klass}", vote_field: 1)    
+    @vote = Vote.new(votable: @votable, user_id: current_user.id, vote_field: 1)    
     rendering
   end
 
@@ -25,7 +25,7 @@ module Voted
   end
 
   def rendering
-    if @vote.check_vote_permission?     
+    if @vote.vote_permitted?     
       @vote.errors[:base] << "Author can not vote for his resource"
       render json: @vote.errors.full_messages, status: 403 and return 
     end
