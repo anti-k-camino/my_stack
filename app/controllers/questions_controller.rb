@@ -16,7 +16,7 @@ class QuestionsController < ApplicationController
       @vote = @question.get_vote current_user
     else
       @vote = Vote.new
-    end  
+    end
   end
 
   def new
