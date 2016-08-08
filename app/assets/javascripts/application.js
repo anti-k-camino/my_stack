@@ -7,7 +7,6 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // compiled file.
 //
-// require_tree ../templates
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
@@ -17,7 +16,6 @@
 //= require cocoon
 //= require twitter/bootstrap
 //= require turbolinks
-//= require_tree ../templates
 //= require_tree .
 
 
