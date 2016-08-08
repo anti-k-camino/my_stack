@@ -3,7 +3,7 @@ module Votings
   included do
     has_many :votes, as: :votable, dependent: :destroy
     has_many :users, through: :votes    
-  end
+  end  
   def user_voted? user    
     self.votes.where(user: user).exists?
   end

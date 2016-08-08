@@ -9,4 +9,12 @@ class Vote < ActiveRecord::Base
   def vote_permitted?
     self.user == self.votable.user   
   end  
+
+  def down?
+    self.vote_field == -1 
+  end
+
+  def up?
+    self.vote_field == 1 
+  end
 end

@@ -1,13 +1,13 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
-  before_action :check_permission, only:[:update, :destroy]
+  before_action :check_permission, only:[:update, :destroy]  
 
   include Voted
-
   def index
     @questions = Question.all    
   end
+
 
   def show   
     @answer = @question.answers.new
