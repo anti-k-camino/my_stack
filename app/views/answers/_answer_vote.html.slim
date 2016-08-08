@@ -1,4 +1,4 @@
--if answer.check_if_voted? current_user
+-if answer.user_voted? current_user
   -if answer.get_vote(current_user).vote_field == -1 
     =image_tag('down_red.png')
     span.rating
