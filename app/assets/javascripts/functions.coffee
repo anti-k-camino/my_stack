@@ -18,7 +18,7 @@ ready = ->
 
   createVotes = (res, param) ->
     if res.vote.vote_field == -1      
-      result = JST["create_vote"]
+      result = JST["templates/create_vote"]
              rate: res.rating
              votee: { name: "/assets/down_red.png" }
              linkToo: (votee) ->                           
@@ -30,7 +30,7 @@ ready = ->
                data-remote=true href='#{url}'\
                  ><img alt='Delete' src='#{vote.name}'/></a>"             
     else
-      result = JST["create_vote"]
+      result = JST["templates/create_vote"]
              rate: res.rating
              votee: { id: res.vote.id, name: "/assets/down.png" }
              linkToo: (votee) ->
@@ -56,7 +56,7 @@ ready = ->
 
   $('.delete_vote').bind 'ajax:success', (e, data, status, xhr) -> 
     res = $.parseJSON(xhr.responseText)
-    result = JST["delete_vote"]
+    result = JST["templates/delete_vote"]
       rate: res.rating
       id: res.votable
       create_class: 'create_vote'
@@ -64,7 +64,7 @@ ready = ->
 
   $('.delete_answer_vote').bind 'ajax:success', (e, data, status, xhr) -> 
     res = $.parseJSON(xhr.responseText)
-    result = JST["delete_vote"]
+    result = JST["templates/delete_vote"]
       rate: res.rating
       id: ('/answers/' + res.votable)
       create_class: 'create_answer_vote'
