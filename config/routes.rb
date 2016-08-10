@@ -2,9 +2,14 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users, only:[:index, :show]
   resources :attachments, only:[:destroy]
-  resources :questions do
-    resources :answers, only:[:create, :destroy, :update], shallow: true do
-      patch :best, on: :member
+  resources :votes, only:[:destroy]
+  concern :votable do
+    get :upvote, on: :member
+    get :downvote, on: :member
+  end
+  resources :questions, concerns: :votable do      
+    resources :answers, only:[:create, :destroy, :update], shallow: true, concerns: :votable do      
+      patch :best, on: :member      
     end
   end  
   root 'questions#index'

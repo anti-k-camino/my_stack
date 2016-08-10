@@ -1,9 +1,11 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, except:[:update, :destroy, :best]
-  before_action :set_answer, only:[:update, :destroy, :best]
+  before_action :set_question, except:[:update, :destroy, :best, :upvote, :downvote]
+  before_action :set_answer, only:[:update, :destroy, :best, :upvote, :downvote]
   before_action :get_question, only:[:best, :destroy]
-  before_action :not_author?, except:[:create, :best]
+  before_action :not_author?, except:[:create, :best, :upvote, :downvote]
+
+  include Voted
 
   def create    
     @answer = @question.answers.new(answer_params)    
@@ -30,7 +32,7 @@ class AnswersController < ApplicationController
       redirect_to @answer.question, notice: 'Restricted'
     end
   end
-  
+
   def get_question
     @question = @answer.question
   end

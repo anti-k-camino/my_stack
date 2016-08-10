@@ -28,8 +28,8 @@ gem 'therubyracer'
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'carrierwave'
 gem 'remotipart'
-gem "cocoon"
-
+gem 'cocoon'
+gem 'skim'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -1,15 +1,22 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
-  before_action :set_question, only:[:show, :update, :destroy]
-  before_action :check_permission, only:[:update, :destroy]
+  before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
+  before_action :check_permission, only:[:update, :destroy]  
 
+  include Voted
   def index
     @questions = Question.all    
   end
 
+
   def show   
     @answer = @question.answers.new
     @answer.attachments.build
+    if @question.user_voted?(current_user)
+      @vote = @question.get_vote current_user
+    else
+      @vote = Vote.new
+    end
   end
 
   def new
@@ -42,7 +49,7 @@ class QuestionsController < ApplicationController
       render :show, id: @question, notice: 'Restricted' and return
     end
   end
-
+ 
   def set_question
     @question = Question.find params[:id]
   end

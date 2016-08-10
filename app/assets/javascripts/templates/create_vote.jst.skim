@@ -1,0 +1,3 @@
+= @linkToo(@votee)
+span.raiting #{@rate}
+= @linkTo(@vote)
