@@ -6,12 +6,12 @@ module Voted
   end
 
   def downvote
-    @vote = Vote.new(votable: @votable, user_id: current_user.id, vote_field: -1)
+    @vote = @votable.downvote(current_user)
     rendering
   end
 
-  def upvote
-    @vote = Vote.new(votable: @votable, user_id: current_user.id, vote_field: 1)    
+  def upvote     
+    @vote = @votable.upvote(current_user)   
     rendering
   end
 

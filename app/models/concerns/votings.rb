@@ -11,4 +11,12 @@ module Votings
   def get_vote(user)
     self.votes.where(user: user).first
   end
+
+  def upvote(user)
+    self.votes.new(user: user, vote_field: 1)
+  end
+
+  def downvote(user)
+    self.votes.new(user: user, vote_field: -1)
+  end
 end
