@@ -3,7 +3,8 @@ module Votings
   included do
     has_many :votes, as: :votable, dependent: :destroy
     has_many :users, through: :votes    
-  end  
+  end 
+
   def user_voted?(user)   
     self.votes.where(user: user).exists?
   end
@@ -13,10 +14,14 @@ module Votings
   end
 
   def upvote(user)
-    self.votes.new(user: user, vote_field: 1)
+    @vote = self.votes.new(user: user, vote_field: 1)
+    #@vote.errors[:base] << "Author can not vote for his resource" if @vote.vote_permitted?
+    @vote
   end
 
   def downvote(user)
-    self.votes.new(user: user, vote_field: -1)
+    @vote = self.votes.new(user: user, vote_field: -1)
+    #@vote.errors[:base] << "Author can not vote for his resource" if @vote.vote_permitted? 
+    @vote
   end
 end
