@@ -4,10 +4,10 @@ class QuestionsController < ApplicationController
   before_action :check_permission, only:[:update, :destroy]  
 
   include Voted
+
   def index
     @questions = Question.all    
   end
-
 
   def show   
     @answer = @question.answers.new

@@ -10,7 +10,13 @@ class AnswersController < ApplicationController
   def create    
     @answer = @question.answers.new(answer_params)    
     @answer.user = current_user       
-    @answer.save              
+    respond_to do |format|
+      if @answer.save
+        format.js
+      else
+        format.js
+      end
+    end             
   end
 
   def update    
