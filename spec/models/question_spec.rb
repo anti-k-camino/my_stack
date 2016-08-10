@@ -23,8 +23,45 @@ RSpec.describe Question, type: :model do
     it 'user different from resource user is accapteble' do
       expect(question.user_voted?(sample_user)).to be_falsy
     end
+    
     it 'user similar to resource user is accapteble' do
       expect(question.user_voted?(user)).to be_truthy
     end
+  end
+  describe 'upvote' do
+    let(:user){ create :user }
+    let(:another_user){ create :user }
+    let(:question){ create :question, user: another_user }
+
+    context 'voter is a author of a question' do      
+      it 'can not upvote a question' do        
+        expect(question.upvote(another_user).valid?).to be_falsy
+      end
+    end
+
+    context 'voter is not the author of a question' do
+      it 'can upvote a question' do        
+        expect(question.upvote(user).valid?).to be_truthy
+      end
+    end
+
+  end
+  describe 'downvote' do
+    let(:user){ create :user }
+    let(:another_user){ create :user }
+    let(:question){ create :question, user: another_user }
+
+    context 'voter is a author of a question' do      
+      it 'can not downvote a question' do        
+        expect(question.downvote(another_user).valid?).to be_falsy
+      end
+    end
+
+    context 'voter is not the author of a question' do
+      it 'can downvote a question' do        
+        expect(question.downvote(user).valid?).to be_truthy
+      end
+    end
+
   end
 end

@@ -14,8 +14,7 @@ module Votings
   end
 
   def upvote(user)
-    self.votes.new(user: user, vote_field: 1)    
-    
+    self.votes.new(user: user, vote_field: 1)   
   end
 
   def downvote(user)
