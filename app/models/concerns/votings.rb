@@ -14,14 +14,11 @@ module Votings
   end
 
   def upvote(user)
-    @vote = self.votes.new(user: user, vote_field: 1)
-    #@vote.errors[:base] << "Author can not vote for his resource" if @vote.vote_permitted?
-    @vote
+    self.votes.new(user: user, vote_field: 1)    
+    
   end
 
   def downvote(user)
-    @vote = self.votes.new(user: user, vote_field: -1)
-    #@vote.errors[:base] << "Author can not vote for his resource" if @vote.vote_permitted? 
-    @vote
+    self.votes.new(user: user, vote_field: -1)    
   end
 end

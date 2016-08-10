@@ -78,7 +78,7 @@ RSpec.describe Vote, type: :model do
     end
   end
 
-  describe 'validation on user is resourse author error' do
+  describe 'validation on user is resource author error' do
     let(:user){ create :user }
     let(:question){ create :question }
     let(:another_question){ create :question, user: user }
