@@ -4,11 +4,11 @@ module Votings
     has_many :votes, as: :votable, dependent: :destroy
     has_many :users, through: :votes    
   end  
-  def user_voted? user    
+  def user_voted?(user)   
     self.votes.where(user: user).exists?
   end
 
-  def get_vote user
+  def get_vote(user)
     self.votes.where(user: user).first
   end
 end

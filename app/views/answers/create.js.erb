@@ -1,6 +1,9 @@
 $('.errors').html("<%= j render 'common/errors', resource:@answer %>");
-$('.answers').append("<%= j render @answer %>");
+<% publish_to "/questions/#{@question.id}/answers" do %>
+  $('.answers').append("<%= j render @answer %>");
+<% end %>
 $('.create_answer').find('#answer_body').val('');
+
 
 
 

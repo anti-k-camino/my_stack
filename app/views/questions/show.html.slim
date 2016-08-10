@@ -18,6 +18,7 @@ div.create_answer
       = link_to_add_association 'add file', f, :attachments, partial:'common/attachment_fields'    
   -if user_signed_in?#temporary solution
     = f.submit 'Create answer'
+=subscribe_to "/questions/#{@question.id}/answers"
 
 
 
