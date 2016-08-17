@@ -15,8 +15,10 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
-    @question = @comment.commentable
-    @comment.destroy
+    @question = @comment.commentable 
+    if current_user.author_of? @comment         
+      @comment.destroy 
+    end   
   end
 
   private
