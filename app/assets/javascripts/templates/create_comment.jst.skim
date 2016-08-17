@@ -1,0 +1,4 @@
+<div class="panel" id=#{@custom_id}>
+  <div class="panel-heading">#{@user_name}</div>
+  <div class="panel-body">#{@comment_body}</div>
+</div>

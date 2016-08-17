@@ -3,12 +3,19 @@ Rails.application.routes.draw do
   resources :users, only:[:index, :show]
   resources :attachments, only:[:destroy]
   resources :votes, only:[:destroy]
+
   concern :votable do
     get :upvote, on: :member
     get :downvote, on: :member
   end
-  resources :questions, concerns: :votable do      
-    resources :answers, only:[:create, :destroy, :update], shallow: true, concerns: :votable do      
+
+  concern :commentable do
+    resources :comments, only: [:create]
+  end  
+  resources :comments, only:[:destroy]
+
+  resources :questions, concerns:[:votable, :commentable] do      
+    resources :answers, only:[:create, :destroy, :update], shallow: true, concerns: [:votable, :commentable] do      
       patch :best, on: :member      
     end
   end  

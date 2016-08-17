@@ -1,0 +1,7 @@
+div.panel id="#{comment.commentable_type.underscore}_comment_#{comment.id}"
+  div.panel-heading
+    =comment.user.name
+  div.panel-body
+    =comment.body
+  =link_to 'Delete', comment, method: :delete, remote: true, class:'delete_comment', data:{ confirm: 'Are you sure?' }
+
