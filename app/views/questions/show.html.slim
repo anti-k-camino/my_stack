@@ -3,7 +3,7 @@ div.question_errors
 div.question  
   =render @question, question: @question
 
-div.question_comments
+div.question_comments data={comment_id: "/questions/#{@question.id}/comments"} 
   div.comments_list
     -if @question.comments.any?
       =render @question.comments    
@@ -11,8 +11,9 @@ div.question_comments
   =form_for [@question, Comment.new] ,remote: true do |f|    
     =f.label :body, class:'label_hidden'
     =f.text_area :body, place_holder:'Leave a comment...'
-    =f.submit 'Create a comment'
-  
+    =f.submit 'Create a comment'  
+  =subscribe_to "/questions/#{@question.id}/comments"
+
 div.answers                
   =render @question.answers.order_by_best
 
@@ -29,6 +30,7 @@ div.create_answer
   -if user_signed_in?#temporary solution
     = f.submit 'Create answer'
 =subscribe_to "/questions/#{@question.id}/answers"
+
 
 
 

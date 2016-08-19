@@ -1,4 +1,5 @@
-<div class="panel" id=#{@custom_id}>
+<div class="panel">
   <div class="panel-heading">#{@user_name}</div>
-  <div class="panel-body">#{@comment_body}</div>
+  <div class="panel-body">#{@comment_body}</div> 
+  <a class="delete_comment" href="/comments/#{@comment_id}" data-method="delete" rel="nofollow" data-remote="true" data-confirm="Are you sure?">Delete<a>
 </div>

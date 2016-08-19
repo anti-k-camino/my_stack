@@ -1,1 +1,4 @@
-$('.comments_list').html("<%= j render @question.comments %>")
+<% publish_to "/questions/#{@question.id}/comments" do %>
+  $('.comments_list').html("<%= j render @question.comments %>")
+<% end %>
+

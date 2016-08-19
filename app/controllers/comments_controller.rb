@@ -4,11 +4,16 @@ class CommentsController < ApplicationController
   def create
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
-    respond_to do |format|
-      if @comment.save
-        format.json{ render json:{ comment: @comment, type: @comment.commentable_type.underscore, user_name: @comment.user.name } }
-      else        
-        format.json{ render json:{ errors: @comment.errors.full_messages }, status: :unprocessable_entity }
+    respond_to do |format|      
+      if @comment.save        
+        format.js do
+         PrivatePub.publish_to "/questions/#{@commentable.id}/comments", comment_res: { comment: @comment.to_json, user: current_user.name, execute: true } 
+         render nothing: true
+        end
+        #format.json{ render json:{ comment: @comment, type: @comment.commentable_type.underscore, user_name: @comment.user.name } }
+      else 
+        format.js       
+        #format.json{ render json:{ errors: @comment.errors.full_messages }, status: :unprocessable_entity }
       end
     end
   end
