@@ -1,7 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
-  before_action :check_permission, only:[:update, :destroy]  
+  before_action :check_permission, only:[:update, :destroy] 
+  before_action :set_gon 
 
   include Voted
 
@@ -49,6 +50,10 @@ class QuestionsController < ApplicationController
     if !current_user.author_of? @question    
       render :show, id: @question, notice: 'Restricted' and return
     end
+  end
+
+  def set_gon   
+    gon.cur_user = current_user.name
   end
  
   def set_question
