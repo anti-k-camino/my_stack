@@ -1,7 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
-  before_action :check_permission, only:[:update, :destroy]  
+  before_action :check_permission, only:[:update, :destroy] 
+  before_action :set_gon_user, only:[:show] 
 
   include Voted
 
@@ -11,7 +12,7 @@ class QuestionsController < ApplicationController
 
   def show   
     @answer = @question.answers.new
-    @answer.attachments.build
+    @answer.attachments.build    
     if @question.user_voted?(current_user)
       @vote = @question.get_vote current_user
     else
@@ -58,5 +59,11 @@ class QuestionsController < ApplicationController
   
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id, :type, :_destroy])
+  end
+
+  def set_gon_user
+    if user_signed_in?
+      gon.user = current_user
+    end
   end
 end

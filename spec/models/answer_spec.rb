@@ -10,6 +10,7 @@ RSpec.describe Answer, type: :model do
   it { should have_db_index :user_id }
   it { should have_many :attachments }
   it { should accept_nested_attributes_for :attachments }
+  it { should have_many(:comments).dependent :destroy }
 
   describe 'best!' do    
     let!(:question){ create :question }
