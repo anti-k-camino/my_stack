@@ -3,7 +3,8 @@ module Votings
   included do
     has_many :votes, as: :votable, dependent: :destroy
     has_many :users, through: :votes    
-  end  
+  end 
+
   def user_voted?(user)   
     self.votes.where(user: user).exists?
   end
@@ -12,11 +13,11 @@ module Votings
     self.votes.where(user: user).first
   end
 
-  def upvote(user)
-    self.votes.new(user: user, vote_field: 1)
+  def upvote(user)    
+    @vote = self.votes.new(user: user, vote_field: 1)
   end
 
   def downvote(user)
-    self.votes.new(user: user, vote_field: -1)
+    @vote = self.votes.new(user: user, vote_field: -1)    
   end
 end

@@ -24,11 +24,7 @@ module Voted
     @votable = model_klass.find(params[:id])
   end
 
-  def rendering
-    if @vote.vote_permitted?     
-      @vote.errors[:base] << "Author can not vote for his resource"
-      render json: @vote.errors.full_messages, status: 403 and return 
-    end
+  def rendering    
     respond_to do |format|
       if @vote.save
         format.json{ render json: { vote: @vote, rating: @votable.rating } }
