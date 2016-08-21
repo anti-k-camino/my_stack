@@ -1,7 +1,8 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
-  before_action :check_permission, only:[:update, :destroy]  
+  before_action :check_permission, only:[:update, :destroy] 
+  before_action :set_gon, only:[:show] 
 
   include Voted
 
@@ -32,6 +33,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
+      PrivatePub.publish_to '/questions', question: @question.to_json
       redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new
@@ -47,6 +49,12 @@ class QuestionsController < ApplicationController
   def check_permission
     if !current_user.author_of? @question    
       render :show, id: @question, notice: 'Restricted' and return
+    end
+  end
+
+  def set_gon 
+    if user_signed_in?  
+      gon.cur_user = current_user.name
     end
   end
  
