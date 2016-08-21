@@ -77,4 +77,26 @@ RSpec.describe Vote, type: :model do
       expect(another_answer_vote.vote_permitted?).to be_falsy
     end
   end
+
+  describe 'validation on user is resourse author error' do
+    let(:user){ create :user }
+    let(:question){ create :question }
+    let(:another_question){ create :question, user: user }
+
+    it 'is not valid when user is the author of resource' do
+      @vote = Vote.new(votable: another_question, user: user, vote_field: 1)
+      @vote.should_not be_valid# here I get a deprication warning on should_not is depricated/ Should I change this to expectation?
+    end
+
+    it 'raises an error when user is the author of resource' do
+      @vote = Vote.new(votable: another_question, user: user, vote_field: 1)
+      @vote.valid?
+      @vote.errors.full_messages.should include('Permission denied')
+    end
+    
+    it 'is valid when user is not the author of resource' do
+      @vote = Vote.new(votable: question, user: user, vote_field: 1)
+      @vote.should be_valid
+    end
+  end
 end
