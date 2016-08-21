@@ -3,6 +3,8 @@
     =comment.user.name 
   .panel-body    
     =comment.body
-  =link_to 'Delete', comment, method: :delete, remote: true, class:'delete_comment', data:{ confirm: 'Are you sure?' }
+  -if user_signed_in? 
+    -if current_user.author_of? comment
+      =link_to 'Delete', comment, method: :delete, remote: true, class:'delete_comment', data:{ confirm: 'Are you sure?' }
 
 

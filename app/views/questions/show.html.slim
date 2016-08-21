@@ -8,11 +8,12 @@ div.question_comments data={comment_id: "/questions/#{@question.id}/comments"}
   div.comments_list
     -if @question.comments.any?
       =render @question.comments    
-  div.comments_error  
-  =form_for [@question, Comment.new] ,remote: true do |f|    
-    =f.label :body, class:'label_hidden'
-    =f.text_area :body, place_holder:'Leave a comment...'
-    =f.submit 'Create a comment'  
+  div.comments_error 
+  -if user_signed_in? 
+    =form_for [@question, Comment.new] ,remote: true do |f|    
+      =f.label :body, class:'label_hidden'
+      =f.text_area :body, place_holder:'Leave a comment...'
+      =f.submit 'Create a comment'  
   =subscribe_to "/questions/#{@question.id}/comments"
 
 div.answers                

@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show]
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
   before_action :check_permission, only:[:update, :destroy] 
-  before_action :set_gon 
+  before_action :set_gon, only:[:show] 
 
   include Voted
 
@@ -52,8 +52,10 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def set_gon   
-    gon.cur_user = current_user.name
+  def set_gon 
+    if user_signed_in?  
+      gon.cur_user = current_user.name
+    end
   end
  
   def set_question
