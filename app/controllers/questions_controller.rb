@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
-      PrivatePub.publish_to '/questions', question: @question.to_json
+      PrivatePub.publish_to '/questions', resp: { question: @question.to_json, method: action_name }
       redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new
@@ -41,6 +41,7 @@ class QuestionsController < ApplicationController
 
   def destroy    
     @question.destroy
+    PrivatePub.publish_to '/questions', resp: { id: @question.id, method: action_name }
     redirect_to questions_path, notice: 'Question successfully destroyed.'    
   end
   

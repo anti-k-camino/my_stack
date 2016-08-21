@@ -3,7 +3,7 @@ ul.questions_list
     |no questions available
   -else
    -@questions.each do|question|
-     li 
+     li id="q_#{question.id}"
       =link_to"#{ question.title } ", question_path(question)      
 
 p= link_to 'Ask question', new_question_path
