@@ -1,0 +1,1 @@
+<a class="delete_comment" href="/comments/#{@comment_id}" data-method="delete" rel="nofollow" data-remote="true" data-confirm="Are you sure?">Delete<a>

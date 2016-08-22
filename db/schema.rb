@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804092239) do
+ActiveRecord::Schema.define(version: 20160810201512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,17 @@ ActiveRecord::Schema.define(version: 20160804092239) do
   end
 
   add_index "attachments", ["attachable_id", "attachable_type"], name: "index_attachments_on_attachable_id_and_attachable_type", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "user_id"
+    t.text     "body"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+  end
+
+  add_index "comments", ["user_id", "commentable_id", "commentable_type"], name: "comment_index", using: :btree
 
   create_table "questions", force: :cascade do |t|
     t.string   "title"
@@ -78,7 +89,7 @@ ActiveRecord::Schema.define(version: 20160804092239) do
     t.integer  "vote_field"
   end
 
-  add_index "votes", ["user_id", "votable_id", "votable_type"], name: "index_votes_on_user_id_and_votable_id_and_votable_type", using: :btree
+  add_index "votes", ["user_id", "votable_id", "votable_type"], name: "vote_index", unique: true, using: :btree
 
   add_foreign_key "answers", "questions", on_delete: :cascade
   add_foreign_key "questions", "users", on_delete: :cascade

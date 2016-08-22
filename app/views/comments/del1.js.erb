@@ -1,0 +1,7 @@
+<% if current_user.author_of? @comment %>
+  $(document).ready(function(){
+    alert(commentIdea)  
+    commentino = "#question_comment_" + commentIdea  
+    $(commentino).html("<h1>Yamakasi</h1>");
+  });  
+<% end %>
