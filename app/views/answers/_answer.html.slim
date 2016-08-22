@@ -22,7 +22,7 @@ div.panel-body id="answer_dom_#{ answer.id }"
       div.modal id="edit_answer#{ answer.id }" 
         =render 'answers/form', answer: answer
     -if answer.persisted?
-      div.container._comments
+      div.container.answer_comment
         =render "comments/commenting", res: answer  
        
 
