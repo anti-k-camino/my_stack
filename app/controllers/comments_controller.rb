@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         format.js do
-          PrivatePub.publish_to "/questions/#{@commentable.id}/comments", comment_res: { comment: @comment.to_json, user: current_user.name, execute: true } 
+          PrivatePub.publish_to "/comments", comment_res: { comment: @comment.to_json, user: current_user.to_json, type: @comment.commentable_type.downcase, type_id: @commentable.id  } 
           render nothiing: true
         end
       else
@@ -18,8 +18,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def destroy
-    @question = @comment.commentable 
+  def destroy    
     if current_user.author_of? @comment         
       @comment.destroy 
     end

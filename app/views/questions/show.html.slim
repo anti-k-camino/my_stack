@@ -3,26 +3,8 @@ div.question_errors
 div.question  
   =render @question, question: @question
 
-
-
-
-
-
-
-
-
-div.container.question_comments data={comment_id: "/questions/#{@question.id}/comments"}
-  =render "comments/commenting", res: @question  
-  
-
-
-
-
-
-
-
-
-
+div.container.question_comments
+  =render "comments/commenting", res: @question
 
 hr
 hr  
@@ -42,7 +24,7 @@ div.create_answer
   -if user_signed_in?#temporary solution
     = f.submit 'Create answer'
 
-=subscribe_to "/questions/#{@question.id}/comments"
+=subscribe_to "/comments"
 =subscribe_to "/questions/#{@question.id}/answers"
 
 

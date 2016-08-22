@@ -1,0 +1,4 @@
+<% publish_to '/comments' do %>
+  $("#<%= @comment.commentable_type.downcase%>_comment_<%=@comment.id%>").remove()
+<% end %>
+

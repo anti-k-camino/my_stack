@@ -1,5 +1,5 @@
 div.row.commentings id="#{res.class.name.underscore}_#{res.id}_comments"
-  div.col-sm-8.comments_list
+  div.col-sm-8.comments_list id="#{res.class.name.underscore}_#{res.id}_list"
     -if res.comments.any?
       =render res.comments    
   div.col-sm-4
