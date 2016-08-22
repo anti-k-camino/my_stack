@@ -8,9 +8,9 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     respond_to do |format|
       if @comment.save
-        format.js do
-          PrivatePub.publish_to "/comments", comment_res: { comment: @comment.to_json, user: current_user.to_json, type: @comment.commentable_type.downcase, type_id: @commentable.id  } 
-          render nothiing: true
+        format.json do
+          PrivatePub.publish_to "/comments", comment_res: { comment: @comment.to_json, user: current_user.to_json, type: @comment.commentable_type.downcase, type_id: @commentable.id  }
+          render :nothing => true          
         end
       else
         format.js

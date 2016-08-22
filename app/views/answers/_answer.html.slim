@@ -21,8 +21,9 @@ div.panel-body id="answer_dom_#{ answer.id }"
             =link_to 'Delete', answer, method: :delete, data: { confirm: 'Are you sure?' }, remote: true      
       div.modal id="edit_answer#{ answer.id }" 
         =render 'answers/form', answer: answer
-  div.container.answer_comments
-    =render "comments/commenting", res: answer
+    -if answer.persisted?
+      div.container._comments
+        =render "comments/commenting", res: answer  
        
 
   
