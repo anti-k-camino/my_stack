@@ -54,7 +54,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
         it 'responds with error' do
           get :upvote, id: question.id, format: :json                 
-          expect(JSON.parse(response.body)).to eq ["Author can not vote for his resource"]
+          expect(JSON.parse(response.body)).to eq ["Permission denied"]
         end
       end
       context 'Non author of a resource' do
@@ -100,7 +100,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
         it 'responds with error' do
           get :downvote, id: question.id, format: :json                 
-          expect(JSON.parse(response.body)).to eq ["Author can not vote for his resource"]
+          expect(JSON.parse(response.body)).to eq ["Permission denied"]
         end
       end
       context 'Non author of a resource' do

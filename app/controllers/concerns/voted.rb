@@ -5,13 +5,13 @@ module Voted
     before_action :set_votable, only:[:upvote, :downvote]    
   end
 
-  def downvote
-    @vote = Vote.new(votable: @votable, user_id: current_user.id, vote_field: -1)
+  def downvote    
+    @vote = @votable.downvote(current_user)
     rendering
   end
 
-  def upvote
-    @vote = Vote.new(votable: @votable, user_id: current_user.id, vote_field: 1)    
+  def upvote    
+    @vote = @votable.upvote(current_user)    
     rendering
   end
 
@@ -24,11 +24,7 @@ module Voted
     @votable = model_klass.find(params[:id])
   end
 
-  def rendering
-    if @vote.vote_permitted?     
-      @vote.errors[:base] << "Author can not vote for his resource"
-      render json: @vote.errors.full_messages, status: 403 and return 
-    end
+  def rendering    
     respond_to do |format|
       if @vote.save
         format.json{ render json: { vote: @vote, rating: @votable.rating } }

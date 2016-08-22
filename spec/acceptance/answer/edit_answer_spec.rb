@@ -53,10 +53,7 @@ feature 'Answer editing', %q{
           expect(page).to have_selector "textarea"        
           fill_in :answer_body, with: "edited message"
           click_on 'Edit'
-        end 
-        within ".answers" do
-          expect(page).to_not have_selector 'textarea'
-        end  
+        end         
         expect(page).to have_content "edited message"
       end
 
