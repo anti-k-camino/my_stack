@@ -3,18 +3,19 @@ class QuestionsController < ApplicationController
   before_action :set_question, only:[:show, :update, :destroy, :upvote, :downvote]
   before_action :check_permission, only:[:update, :destroy] 
   before_action :set_gon_user, only:[:show] 
+  after_action :publish_to, only:[:create, :destroy]
+  before_action :build_answer, only:[:show]
 
   include Voted
 
   def index
-    @questions = Question.all    
+    respond_with(@questions = Question.all)    
   end
 
   def show   
-    @answer = @question.answers.new
     @answer.attachments.build    
     if @question.user_voted?(current_user)
-      @vote = @question.get_vote current_user
+      @vote = @question.get_vote(current_user)
     else
       @vote = Vote.new
     end
@@ -22,7 +23,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
-    @question.attachments.build
+    @question.attachments.build    
   end  
   
   def update    
@@ -34,16 +35,14 @@ class QuestionsController < ApplicationController
     @question.user = current_user
     if @question.save
       PrivatePub.publish_to '/questions', resp: { question: @question.to_json, method: action_name }
-      redirect_to @question, notice: 'Your question successfully created.'
+      redirect_to @question, notice: 'Question was successfully created.'
     else
       render :new
     end
   end
 
   def destroy    
-    @question.destroy
-    PrivatePub.publish_to '/questions', resp: { id: @question.id, method: action_name }
-    redirect_to questions_path, notice: 'Question successfully destroyed.'    
+    respond_with @question.destroy        
   end
   
   private
@@ -61,9 +60,17 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id, :type, :_destroy])
   end
 
+  def publish_to
+    PrivatePub.publish_to '/questions', resp: { question: @question.to_json, method: action_name } if @question.errors.empty?
+  end
+
   def set_gon_user
     if user_signed_in?
       gon.user = current_user
     end
+  end
+
+  def build_answer
+    @answer = @question.answers.new
   end
 end

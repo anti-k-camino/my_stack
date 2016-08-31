@@ -13,7 +13,7 @@ feature 'User can delete a question', %q{
       sign_in user         
       visit question_path question      
       within('.question'){ click_on 'Delete' }             
-      expect(page).to have_content 'Question successfully destroyed.'
+      expect(page).to have_content 'Question was successfully destroyed.'
       expect(current_path).to eq questions_path 
       expect(page).to_not have_content "#{ question.title }"
       expect(page).to_not have_content "#{ question.body }"      
