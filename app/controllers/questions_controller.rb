@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   after_action :publish_to, only:[:create, :destroy]
   before_action :build_answer, only:[:show]
 
+  respond_to :js
+
   include Voted
 
   def index
@@ -22,8 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build    
+    respond_with @question = Question.new        
   end  
   
   def update    
