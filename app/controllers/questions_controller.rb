@@ -31,15 +31,10 @@ class QuestionsController < ApplicationController
     @question.update(question_params)  
   end
 
-  def create
-    @question = Question.new(question_params)
-    @question.user = current_user
-    if @question.save
-      PrivatePub.publish_to '/questions', resp: { question: @question.to_json, method: action_name }
-      redirect_to @question, notice: 'Question was successfully created.'
-    else
-      render :new
-    end
+  def create    
+    
+    respond_with @question = current_user.questions.create(question_params)
+   
   end
 
   def destroy    
