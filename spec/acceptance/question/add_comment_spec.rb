@@ -24,8 +24,7 @@ feature 'Add comment to question', %q{
           wait_for_ajax
         end
         expect(current_path).to eq question_path(question)
-        within("#question_#{question.id}_list") do
-          save_and_open_page          
+        within("#question_#{question.id}_list") do                    
           expect(page).to have_content "Some text"
           expect(page).to have_content user.name
         end

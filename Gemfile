@@ -33,6 +33,7 @@ gem 'skim'
 gem 'private_pub'
 gem 'thin'
 gem 'gon'
+gem 'responders', '~> 2.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

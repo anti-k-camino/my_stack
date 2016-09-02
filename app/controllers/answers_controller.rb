@@ -6,17 +6,12 @@ class AnswersController < ApplicationController
   before_action :not_author?, except:[:create, :best, :upvote, :downvote]
 
   include Voted
+  respond_to :js
 
   def create    
     @answer = @question.answers.new(answer_params)    
     @answer.user = current_user       
-    respond_to do |format|
-      if @answer.save
-        format.js
-      else
-        format.js
-      end
-    end             
+    respond_with @answer.save          
   end
 
   def update    
@@ -26,10 +21,11 @@ class AnswersController < ApplicationController
   def best
     not_author?(@answer.question)    
     @answer.the_best!
+    respond_with @answer
   end
 
   def destroy           
-    @answer.destroy        
+    respond_with @answer.destroy        
   end
 
   private
