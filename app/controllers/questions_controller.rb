@@ -31,10 +31,8 @@ class QuestionsController < ApplicationController
     @question.update(question_params)  
   end
 
-  def create    
-    
-    respond_with @question = current_user.questions.create(question_params)
-   
+  def create   
+    respond_with @question = current_user.questions.create(question_params)   
   end
 
   def destroy    
