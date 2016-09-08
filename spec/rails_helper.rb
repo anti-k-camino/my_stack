@@ -7,6 +7,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'shoulda/matchers'
 require 'support/factory_girl'
+require 'capybara/email/rspec'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

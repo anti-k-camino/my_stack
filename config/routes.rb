@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
   resources :users, only:[:index, :show]
   resources :attachments, only:[:destroy]
   resources :votes, only:[:destroy]
+  resources :authorizations, only:[:new, :create]
 
   concern :votable do
     get :upvote, on: :member
