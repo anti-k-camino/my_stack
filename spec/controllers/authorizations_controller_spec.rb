@@ -49,6 +49,10 @@ RSpec.describe AuthorizationsController, type: :controller do
       it "should not create new User" do
         expect{ post :create, authorization: { email: "example@gmail.com" }}.to_not change(User, :count)
       end
+
+      it "creates a new authorization for user" do
+        expect{ post :create, authorization: { email: "example@gmail.com" }}.to change(user.authorizations, :count).by 1
+      end
     end
 
   end
