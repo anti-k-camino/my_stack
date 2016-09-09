@@ -85,51 +85,40 @@ RSpec.describe User, type: :model do
         it 'creates new user' do
           expect { User.find_for_oauth(auth)}.to change(User, :count).by(1)
         end
+
+        it 'does not send confirmation' do
+          expect{ User.find_for_oauth(auth) }.to_not change(ActionMailer::Base.deliveries, :count)
+        end
+
         it 'returns new user' do
           expect(User.find_for_oauth(auth)).to be_a(User)
         end
+
         it 'fills user email' do
           user = User.find_for_oauth(auth)
           expect(user.email).to eq auth.info[:email]
         end
+
         it 'creates authorization for user' do
           user = User.find_for_oauth(auth)
           expect(user.authorizations).to_not be_empty
         end
+
         it 'creates authorization with provider and uid' do
           authorization = User.find_for_oauth(auth).authorizations.first
           expect(authorization.provider).to eq auth.provider
           expect(authorization.uid).to eq auth.uid
         end
+
       end
     end
-    context 'has authorization twitter' do
-      it 'returns the user' do
-        user.authorizations.create(provider: 'twitter', uid: '654321')
-        expect(User.find_for_oauth(twitter_auth)).to eq user
-      end
-    end
-
-    context 'user allready exists twitter' do
-      it 'does not create new user' do
-        expect {User.find_for_oauth(twitter_auth)}.to_not change(User, :count)
-      end
-
-      it 'creates authorization for user' do
-        expect {User.find_for_oauth(twitter_auth)}.to change(user.authorizations, :count).by(1)
-      end
-
-      it 'creates authorization with provider and uid' do
-        user = User.find_for_oauth(twitter_auth)
-        authorization = user.authorizations.first
-        expect(authorization.provider).to eq twitter_auth.provider
-        expect(authorization.uid).to eq twitter_auth.uid
-      end
-
-      it 'returns user' do
-        expect(User.find_for_oauth(twitter_auth)).to eq user
-      end
-
+    context 'twitter' do
+      context 'has authorization twitter' do
+        it 'returns the user' do
+          user.authorizations.create(provider: 'twitter', uid: '654321')
+          expect(User.find_for_oauth(twitter_auth)).to eq user
+        end
+      end      
     end
   end
  

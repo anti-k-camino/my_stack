@@ -1,5 +1,5 @@
 class AuthorizationsController < ApplicationController
-  
+
   def new
     @authorization = Authorization.new
   end
@@ -13,9 +13,10 @@ class AuthorizationsController < ApplicationController
       @user.update(confirmed_at: nil)     
       @user.send_confirmation_instructions      
       redirect_to root_path
-    else              
-      @user = User.create!(name: @auth['info']['name'], email: params[:authorization][:email], password: '123123', password_confirmation: '123123')     
-      @user.authorizations.create!(provider: @auth['provider'], uid: @auth['uid'])      
+    else 
+      pass = Devise.friendly_token[0, 20]             
+      @user = User.create!(name: @auth['info']['name'], email: params[:authorization][:email], password: pass, password_confirmation: pass)     
+      @user.authorizations.create!(provider: @auth['provider'], uid: @auth['uid'])
       redirect_to root_path 
     end
   end
