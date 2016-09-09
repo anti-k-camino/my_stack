@@ -3,15 +3,15 @@ require_relative '../acceptance_helper'
 feature 'user can registrate' do
   given(:user){ create :user }
 
-  background do
+  #background do
     # will clear the message queue
-    clear_emails
+    #clear_emails
     
     # Will find an email sent to test@example.com
     # and set `current_email`
     
-  end
-
+  #end
+  
   scenario 'unregistered user has ability to registrate' do
     visit root_path
     expect(page).to have_content 'Register' # /register/i
@@ -22,10 +22,14 @@ feature 'user can registrate' do
     fill_in 'Password', with: '12345678'
     fill_in 'Password confirmation', with:'12345678'
     click_on 'Sign up'
+    sleep 1
     expect(current_path).to eq root_path
     expect(page).to have_content 'A message with a confirmation link has been sent to your email address'
+
     open_email('email@gmail.com')
-    save_and_open_page
-    expect(current_email).to have_content 'click'
+
+    p "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+    p ActionMailer::Base.deliveries.count    
+    expect(current_email).to have_content 'Confirm my account'
   end  
 end
