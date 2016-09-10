@@ -31,19 +31,38 @@ RSpec.describe User, type: :model do
    expect(user1).to_not be_author_of answer 
   end
 
-  describe '.find_by_email' do
-    let!(:users){ create_list :user, 3 }
+ describe '#create_authorization' do
+  let!(:user){ create :user, confirmed_at: (Time.now-7)}  
+  let(:face_auth){ OmniAuth::AuthHash.new(provider:'facebook', uid: '123456') }
+  let(:twitter_auth){ OmniAuth::AuthHash.new(provider:'twitter', uid: '654321') }
 
-    it 'should return correct user if matches' do
-      expect(User.find_by_email(users[1].email)).to eq users[1]
-    end
+  it "should create an authorization" do
+    expect{ user.create_authorization!(twitter_auth) }.to change(user.authorizations, :count).by(1)
+  end 
 
-    it 'should return nil if no matches founded' do
-      expect(User.find_by_email('exam@email.com')).to eq nil
-    end
+  it "should create an authorization with twitter" do
+    user.create_authorization!(twitter_auth)
+    expect(user.authorizations.first.provider).to eq twitter_auth.provider
   end
 
+  it "should create an authorization with propper uid" do
+    user.create_authorization!(twitter_auth)
+    expect(user.authorizations.first.uid).to eq twitter_auth.uid
+  end
 
+  it "should left user invalid )) (unconfirmed)" do
+    user.create_authorization!(twitter_auth)
+    #expect(user.confirmed_at).to eq nil
+    expect(user.confirmed?).to be_falsy
+  end
+
+  it "should mail user to confirm" do    
+    expect{ user.create_authorization!(twitter_auth) }.to change(ActionMailer::Base.deliveries, :count).by(1)
+  end
+
+ end
+
+=begin
   describe '.find_for_oauth' do
     let!(:user){ create :user }
     let(:auth){ OmniAuth::AuthHash.new(provider:'facebook', uid: '123456') }
@@ -121,6 +140,6 @@ RSpec.describe User, type: :model do
       end      
     end
   end
- 
+=end
 
 end
