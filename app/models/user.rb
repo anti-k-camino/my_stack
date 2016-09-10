@@ -17,10 +17,6 @@ class User < ActiveRecord::Base
     id == comp.user_id
   end 
 
-  def self.find_by_email(email)
-    where(email: email).first
-  end 
-
   def self.create_self_and_authorization!(auth, email)
     pass = Devise.friendly_token[0, 20]
     transaction do             
@@ -44,7 +40,7 @@ class User < ActiveRecord::Base
     email = auth.info.try(:email)
     if email      
       name = auth.info[:name]    
-      user = User.find_by_email(email)
+      user = User.find_by(email: email)
       if user        
         user.authorizations.create(provider: auth.provider, uid: auth.uid) if user        
       else

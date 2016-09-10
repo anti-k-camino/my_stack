@@ -3,7 +3,7 @@ class AuthorizationsController < ApplicationController
     @authorization = Authorization.new
   end
   def create
-    @user = User.where(email: params[:authorization][:email]).first
+    @user = User.find_by(email: params[:authorization][:email])
     @auth = session['devise.provider_data']
     if @user        
       @user.create_authorization!(@auth)
