@@ -57,7 +57,9 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'letter_opener'
   gem 'capybara-email', '~> 2.4'
+  gem 'pry-rails'
   gem 'byebug'
+  gem 'pry-byebug'
 end
 
 group :test do

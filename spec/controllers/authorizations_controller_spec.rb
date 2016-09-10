@@ -12,7 +12,7 @@ RSpec.describe AuthorizationsController, type: :controller do
 
   describe "POST#create" do  
 
-    context 'with valid provider data' do
+    context 'with valid provider data' do      
       before do
         auth_hash = {
             provider: 'twitter',
@@ -22,8 +22,8 @@ RSpec.describe AuthorizationsController, type: :controller do
         session['devise.provider_data'] = OmniAuth::AuthHash.new(auth_hash)
       end    
 
-      it "sends email confirmation" do                
-        expect{ post :create, authorization: { email: "user@email.com" } }    ActionMailer::Base.deliveries.count).to eq 1
+      it "sends email confirmation" do             
+        expect{ post :create, authorization: { email: "user@email.com" } }.to change( ActionMailer::Base.deliveries, :count).by 1
       end
     end
 

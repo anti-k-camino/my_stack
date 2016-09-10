@@ -21,6 +21,22 @@ class User < ActiveRecord::Base
     where(email: email).first
   end 
 
+  def self.create_self_and_authorization!(auth, email)
+    pass = Devise.friendly_token[0, 20]
+    transaction do             
+      @user = User.create!(name: auth['info']['name'], email: email, password: pass, password_confirmation: pass)     
+      @user.authorizations.create!(provider: auth['provider'], uid: auth['uid'])
+    end
+  end
+
+  def create_authorization!(auth)
+    transaction do
+      authorizations.create!(provider: auth['provider'], uid: auth['uid'])
+      update!(confirmed_at: nil)
+    end    
+    self.send_confirmation_instructions 
+  end
+
   def self.find_for_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
@@ -36,8 +52,8 @@ class User < ActiveRecord::Base
         user = User.new(email: email, name: name, password: password, password_confirmation: password)
         user.skip_confirmation!
         transaction do
-          user.save
-          user.authorizations.create(provider: auth.provider, uid: auth.uid)
+          user.save!
+          user.authorizations.create!(provider: auth.provider, uid: auth.uid)
         end
       end 
     end   

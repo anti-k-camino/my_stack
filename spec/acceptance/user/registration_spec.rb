@@ -43,15 +43,7 @@ feature 'user can registrate' do
     ActionMailer::Base.deliveries.clear
   end
 =end
-  before(:each) do
-    ActionMailer::Base.delivery_method = :test
-    ActionMailer::Base.perform_deliveries = true
-    ActionMailer::Base.deliveries = []
-  end
 
-  after(:each) do
-    ActionMailer::Base.deliveries.clear
-  end
   before do
     visit root_path
     click_on 'Register'
