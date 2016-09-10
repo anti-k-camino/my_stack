@@ -33,11 +33,14 @@ RSpec.describe User, type: :model do
 
  describe '#create_authorization' do
   let!(:user){ create :user, confirmed_at: (Time.now-7)}  
-  let(:face_auth){ OmniAuth::AuthHash.new(provider:'facebook', uid: '123456') }
   let(:twitter_auth){ OmniAuth::AuthHash.new(provider:'twitter', uid: '654321') }
 
   it "should create an authorization" do
     expect{ user.create_authorization!(twitter_auth) }.to change(user.authorizations, :count).by(1)
+  end 
+
+  it "should not create new user" do
+    expect{ user.create_authorization!(twitter_auth) }.to_not change(User, :count)
   end 
 
   it "should create an authorization with twitter" do
@@ -50,19 +53,62 @@ RSpec.describe User, type: :model do
     expect(user.authorizations.first.uid).to eq twitter_auth.uid
   end
 
-  it "should left user invalid )) (unconfirmed)" do
+  it "should left user invalid (unconfirmed)" do
     user.create_authorization!(twitter_auth)
     #expect(user.confirmed_at).to eq nil
     expect(user.confirmed?).to be_falsy
   end
 
-  it "should mail user to confirm" do    
+  it "should mail user to confirm" do
     expect{ user.create_authorization!(twitter_auth) }.to change(ActionMailer::Base.deliveries, :count).by(1)
   end
 
  end
 
-=begin
+ describe '.create_self_and_authorization!' do
+  let(:twitter_auth){ OmniAuth::AuthHash.new(provider:'twitter', uid: '654321', info:{ name: 'Antonio Montana'}) }
+  email = 'some@email.com'
+
+  it 'should create new user' do    
+    expect{ User.create_self_and_authorization!(twitter_auth, email) }.to change(User, :count).by(1)
+  end
+
+  it 'should create new user with name recieved from twitter' do
+    User.create_self_and_authorization!(twitter_auth, email)
+    expect(User.last.name).to eq twitter_auth['info']['name']
+  end
+
+  it 'should create new user with given email' do
+    User.create_self_and_authorization!(twitter_auth, email)
+    expect(User.last.email).to eq email
+  end
+
+  it 'should create authorization' do
+    User.create_self_and_authorization!(twitter_auth, email)
+    expect(User.last.authorizations.count).to eq 1
+  end
+
+  it 'should create twitter authorization' do
+    User.create_self_and_authorization!(twitter_auth, email)
+    expect(User.last.authorizations.first.provider).to eq twitter_auth['provider']
+  end
+
+  it 'should create authorization with propper uid' do
+    User.create_self_and_authorization!(twitter_auth, email)
+    expect(User.last.authorizations.first.uid).to eq twitter_auth['uid']
+  end
+
+  #it 'should left user invalid (unconfirmed)' do
+    #User.create_self_and_authorization!(twitter_auth, email)
+    #expect(User.last.confirmed?).to be_falsy
+  #end
+
+  #it 'should send confirmation mail to user' do
+    #expect{ User.create_self_and_authorization!(twitter_auth, email); sleep 3 }.to change(ActionMailer::Base.deliveries, :count).by(1)
+  #end 
+ end
+
+
   describe '.find_for_oauth' do
     let!(:user){ create :user }
     let(:auth){ OmniAuth::AuthHash.new(provider:'facebook', uid: '123456') }
@@ -131,8 +177,10 @@ RSpec.describe User, type: :model do
 
       end
     end
+
     context 'twitter' do
       context 'has authorization twitter' do
+        
         it 'returns the user' do
           user.authorizations.create(provider: 'twitter', uid: '654321')
           expect(User.find_for_oauth(twitter_auth)).to eq user
@@ -140,6 +188,6 @@ RSpec.describe User, type: :model do
       end      
     end
   end
-=end
+
 
 end
