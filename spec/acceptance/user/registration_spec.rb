@@ -60,7 +60,8 @@ context 'user with existing account'do
        
     open_email('some@email.com')
         
-    expect(current_email).to have_content "Confirm my account"
+    click_on "Confirm my account"
+
   end
 end
 
