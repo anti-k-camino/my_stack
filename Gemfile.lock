@@ -332,7 +332,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   capybara
-  capybara-email (~> 2.4)
+  capybara-email
   capybara-webkit
   carrierwave
   cocoon

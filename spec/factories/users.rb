@@ -12,4 +12,5 @@ FactoryGirl.define do
     password_confirmation '12345678' 
     confirmed_at Time.now 
   end
+
 end

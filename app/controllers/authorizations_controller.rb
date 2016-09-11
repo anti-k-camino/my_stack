@@ -8,7 +8,8 @@ class AuthorizationsController < ApplicationController
     if @user        
       @user.create_authorization!(@auth)
     else 
-      User.create_self_and_authorization!(@auth, params[:authorization][:email])       
+      User.create_self_and_authorization!(@auth, params[:authorization][:email]) 
+      flash[:notice] = "Confirmation email was sent!"      
     end
     redirect_to root_path
   end
