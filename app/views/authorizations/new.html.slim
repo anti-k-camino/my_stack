@@ -1,0 +1,12 @@
+.container
+  .row
+    .formconf.col-md-4.col-md-offset-3   
+      = form_for @authorization do |f|
+        .form-group
+          = f.label :email, class:'label_hidden'
+          .controls
+            = f.text_field :email, autofocus: true, value: '',
+              class: 'form-control input-lg', placeholder: 'your@email.com'
+            p.help-block Please confirm your email address. No spam.
+        .actions
+          = f.submit 'Continue', class: 'btn btn-primary formbutton'
