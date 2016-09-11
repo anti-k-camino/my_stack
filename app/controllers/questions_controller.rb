@@ -8,7 +8,10 @@ class QuestionsController < ApplicationController
 
   respond_to :js
 
+  #authorize_resource
+
   include Voted
+
 
   def index
     respond_with(@questions = Question.all)    
