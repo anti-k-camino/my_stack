@@ -17,7 +17,7 @@ feature 'user can registrate' do
     click_on 'Register'
     expect(current_path).to eq new_user_registration_path
   end
- 
+=begin 
   scenario 'unregistered user has ability to registrate' do
     
     fill_in 'Name', with: 'AntonioMontana'
@@ -34,7 +34,7 @@ feature 'user can registrate' do
     p ActionMailer::Base.deliveries.count    
     expect(current_email).to have_content 'Confirm my account'
   end
-
+=end
 
 
   scenario 'unregisterd user has ability to sign in with facebook' do       
@@ -46,18 +46,23 @@ feature 'user can registrate' do
     expect(current_path).to eq new_question_path
   end 
 
+
+context 'user with existing account'do
+
+  given!(:user){ create :user , email: 'some@email.com'}
+
   scenario 'unregistered user has ability to sign in with twitter' do       
     mock_auth_twitter_hash    
     click_on 'Sign in with Twitter'    
     #binding.pry   
     fill_in 'Email', with: 'some@email.com'    
-    click_on 'Continue' 
-    expect(page).to have_content "Confirmation email was sent!"
+    click_on 'Continue'     
        
-  #  open_email('some@email.com')
+    open_email('some@email.com')
         
-  #  expect(current_email).to have_content "Confirm my account"
+    expect(current_email).to have_content "Confirm my account"
   end
+end
 
   
 
