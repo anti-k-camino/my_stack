@@ -11,9 +11,10 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     #redirect_to root_url, alert: exception.message
     respond_to do |format|
-      format.html { redirect_to root_url, alert: exception.message }
-      format.json { head :ok, status: :forbidden }
-      format.js   { head :ok, status: :forbidden }      
+      flash[:alert] = 'You are not authorized to perform this action.'
+      format.html { redirect_to root_path }
+      format.js { render js: "alert('#{flash[:alert]}');", status: :forbidden }
+      format.json { render json: flash[:alert], status: :forbidden}     
     end    
   end
 
