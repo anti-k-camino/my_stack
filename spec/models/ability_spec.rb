@@ -70,8 +70,8 @@ describe Ability  do
     it { should be_able_to :destroy, create(:attachment, attachable: answer)}
     it { should_not be_able_to :destroy, create(:attachment, attachable: some_other_answer)}
 
-    it { should be_able_to :best!, best_answer }
-    it { should_not be_able_to :best!, best_other_answer }
+    it { should be_able_to :best, best_answer }
+    it { should_not be_able_to :best, best_other_answer }
 
 
   end

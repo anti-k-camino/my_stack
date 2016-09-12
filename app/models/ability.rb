@@ -35,7 +35,7 @@ class Ability
     can :manage, Attachment do |attachment|
       attachment.attachable.user_id == user.id
     end
-    can :best!, Answer do |answer|
+    can :best, Answer do |answer|
       answer.question.user_id == user.id
     end 
   end
