@@ -3,6 +3,8 @@ class AttachmentsController < ApplicationController
   before_action :set_attachment, only:[:destroy]
   before_action :check_permission, only:[:destroy]
   respond_to :js
+
+  authorize_resource
   
   def destroy     
     respond_with @attachment.destroy     

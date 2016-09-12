@@ -8,7 +8,7 @@ class QuestionsController < ApplicationController
 
   respond_to :js
 
-  #authorize_resource
+  authorize_resource
 
   include Voted
 

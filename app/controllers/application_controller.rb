@@ -11,6 +11,11 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
   end
+
+  check_authorization unless: :devise_controller?
+
+  
+
   protected
 
   def configure_permitted_parameters
@@ -18,4 +23,5 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
+  
 end

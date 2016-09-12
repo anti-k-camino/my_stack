@@ -21,8 +21,22 @@ class Ability
   end
 
   def user_abilities
-    guest_abilities
+    guest_abilities    
     can :create, [Question, Answer, Comment]
-    can :update, [Question, Answer, Comment], user: user
+    can :update, [Question, Answer], user: user
+    can :destroy, [Question, Answer, Comment], user: user
+    can :upvote, [Question, Answer] do |resource|
+      resource.user != user
+    end
+    can :downvote, [Question, Answer] do |resource|
+      resource.user != user
+    end
+    can :destroy, [Vote], user: user 
+    can :manage, Attachment do |attachment|
+      attachment.attachable.user_id == user.id
+    end
+    can :best!, Answer do |answer|
+      answer.question.user_id == user.id
+    end 
   end
 end
