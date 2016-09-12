@@ -22,8 +22,8 @@ describe Ability  do
     let(:user){ create :user }
     let(:other_user){ create :user }
     let(:answer){ create :answer, user: user }
-    let(:some_answer){ create :answer }
     let(:some_other_answer){ create :answer, user: other_user }
+    let(:some_answer){ create :answer }    
     let(:question){ create :question, user: user }
     let(:other_question){ create :question, user: other_user }
     let(:best_answer){ create :answer, question: question, user: other_user }
@@ -37,17 +37,17 @@ describe Ability  do
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
 
-    it { should be_able_to :update, create(:question, user: user) }
-    it { should_not be_able_to :update, create(:question, user: other_user) }
+    it { should be_able_to :update, question }
+    it { should_not be_able_to :update, other_question }
 
-    it { should be_able_to :update, create(:answer, user: user) }
-    it { should_not be_able_to :update, create(:answer, user: other_user) }    
+    it { should be_able_to :update, answer }
+    it { should_not be_able_to :update, some_other_answer }    
 
-    it { should be_able_to :destroy, create(:question, user: user) }
-    it { should_not be_able_to :destroy, create(:question, user: other_user) }
+    it { should be_able_to :destroy, question }
+    it { should_not be_able_to :destroy, other_question }
 
-    it { should be_able_to :destroy, create(:answer, user: user) }
-    it { should_not be_able_to :destroy, create(:answer, user: other_user) }
+    it { should be_able_to :destroy, answer }
+    it { should_not be_able_to :destroy, some_other_answer }
 
     it { should be_able_to :destroy, create(:comment, body: 'Text',commentable: some_answer, user: user) }
     it { should_not be_able_to :destroy, create(:comment, body: 'Text', commentable: some_answer, user: other_user) }
