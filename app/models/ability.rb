@@ -24,14 +24,10 @@ class Ability
     guest_abilities    
     can :create, [Question, Answer, Comment]
     can :update, [Question, Answer], user: user
-    can :destroy, [Question, Answer, Comment], user: user
-    can :upvote, [Question, Answer] do |resource|
+    can :destroy, [Question, Answer, Comment, Vote], user: user
+    can [:upvote, :downvote], [Question, Answer] do |resource|
       resource.user != user
-    end
-    can :downvote, [Question, Answer] do |resource|
-      resource.user != user
-    end
-    can :destroy, [Vote], user: user 
+    end    
     can :manage, Attachment do |attachment|
       attachment.attachable.user_id == user.id
     end
