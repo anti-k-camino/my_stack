@@ -19,6 +19,7 @@ describe Ability  do
   end
 
   describe 'for user' do
+
     let(:user){ create :user }
     let(:other_user){ create :user }
     let(:answer){ create :answer, user: user }
@@ -72,7 +73,6 @@ describe Ability  do
 
     it { should be_able_to :best, best_answer }
     it { should_not be_able_to :best, best_other_answer }
-
-
+    
   end
 end

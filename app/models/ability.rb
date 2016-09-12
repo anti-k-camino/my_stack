@@ -26,7 +26,7 @@ class Ability
     can :update, [Question, Answer], user: user
     can :destroy, [Question, Answer, Comment, Vote], user: user
     can [:upvote, :downvote], [Question, Answer] do |resource|
-      resource.user != user
+      resource.user_id != user.id
     end    
     can :manage, Attachment do |attachment|
       attachment.attachable.user_id == user.id

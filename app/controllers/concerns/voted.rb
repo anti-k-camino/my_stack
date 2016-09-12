@@ -27,9 +27,7 @@ module Voted
   def rendering    
     respond_to do |format|
       if @vote.save
-        format.json{ render json: { vote: @vote, rating: @votable.rating } }
-      else
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
+        format.json{ render json: { vote: @vote, rating: @votable.rating } }      
       end
     end
   end
