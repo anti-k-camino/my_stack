@@ -52,17 +52,17 @@ describe Ability  do
     it { should be_able_to :destroy, create(:comment, body: 'Text',commentable: some_answer, user: user) }
     it { should_not be_able_to :destroy, create(:comment, body: 'Text', commentable: some_answer, user: other_user) }
 
-    it { should_not be_able_to :upvote, create(:answer, user: user) }
-    it { should be_able_to :upvote, create(:answer, user: other_user) }
+    it { should_not be_able_to :upvote, answer }
+    it { should be_able_to :upvote, some_other_answer }
 
-    it { should_not be_able_to :upvote, create(:question, user: user) }
-    it { should be_able_to :upvote, create(:question, user: other_user) }
+    it { should_not be_able_to :upvote, question }
+    it { should be_able_to :upvote, other_question }
 
-    it { should_not be_able_to :downvote, create(:answer, user: user) }
-    it { should be_able_to :downvote, create(:answer, user: other_user) }
+    it { should_not be_able_to :downvote, answer }
+    it { should be_able_to :downvote, some_other_answer }
 
-    it { should_not be_able_to :downvote, create(:question, user: user) }
-    it { should be_able_to :downvote, create(:question, user: other_user) }
+    it { should_not be_able_to :downvote, question }
+    it { should be_able_to :downvote, other_question }
 
     it { should be_able_to :destroy, create(:vote, votable: some_answer, vote_field: 1, user: user)}
     it { should_not be_able_to :destroy, create(:vote, votable: some_answer, vote_field: 1, user: other_user)}
