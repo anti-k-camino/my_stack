@@ -72,6 +72,15 @@ describe 'Profile API' do
             expect(a["#{attr}"]).to eq users[(iter + 1)]["#{attr}"]
           end
         end
+      end
+
+      %w(password encrypted_password).each do |attr|
+        it "does not contain #{attr}" do
+          arr = JSON.parse(response.body)
+          arr.each do |a|
+            expect(a.try("#{attr}".to_sym)).to eq nil
+          end
+        end
       end    
     end
   
