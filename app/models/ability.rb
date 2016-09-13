@@ -23,8 +23,8 @@ class Ability
   def user_abilities
     guest_abilities    
     can :create, [Question, Answer, Comment]
-    can :update, [Question, Answer], user: user
-    can :destroy, [Question, Answer, Comment, Vote], user: user
+    can :update, [Question, Answer], user_id: user.id
+    can :destroy, [Question, Answer, Comment, Vote], user_id: user.id
     can [:upvote, :downvote], [Question, Answer] do |resource|
       resource.user_id != user.id
     end    

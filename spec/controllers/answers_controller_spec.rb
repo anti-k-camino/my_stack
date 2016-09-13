@@ -264,6 +264,12 @@ RSpec.describe AnswersController, type: :controller do
           expect(response.status).to eq 403
           expect(response.body).to eq "You are not authorized to perform this action."
         end
+
+        it 'renders forbbidden' do
+          get :upvote, id: answer.id, format: :js
+          expect(response.status).to eq 403
+          expect(response).to render_template 'common/forbidden.js.erb'
+        end
         
       end
 
