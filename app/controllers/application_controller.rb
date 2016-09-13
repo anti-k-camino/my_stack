@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       flash[:alert] = 'You are not authorized to perform this action.'
       format.html { redirect_to root_path }
-      format.js { render :file => "common/forbidden.js.erb", status: :forbidden }
+      format.js { render file:"common/forbidden.js.erb", status: :forbidden }
       format.json { render json: flash[:alert], status: :forbidden}     
     end    
   end
