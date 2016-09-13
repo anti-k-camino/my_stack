@@ -28,8 +28,7 @@ module Voted
     respond_to do |format|
       if @vote.save
         format.json{ render json: { vote: @vote, rating: @votable.rating } }
-      else
-        format.json{ render json: @vote.errors.full_messages, status: :unprocessable_entity }
+        format.js {}      
       end
     end
   end

@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :get_question, only:[:best, :destroy]
   before_action :not_author?, except:[:create, :best, :upvote, :downvote]
 
+  authorize_resource
+
   include Voted
   respond_to :js
 

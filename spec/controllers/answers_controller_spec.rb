@@ -211,10 +211,12 @@ RSpec.describe AnswersController, type: :controller do
           expect{ get :upvote, id: answer.id, format: :json }.to_not change(Vote, :count)
         end
         it 'responds with error' do
-          get :upvote, id: answer.id, format: :json                 
-          expect(JSON.parse(response.body)).to eq ["Permission denied"]
+          get :upvote, id: answer.id, format: :json          
+          expect(response.status).to eq 403
+          expect(response.body).to eq "You are not authorized to perform this action."
         end
       end
+
       context 'Non author of a resource' do
         let!(:answer){ create :answer }
 
@@ -256,11 +258,21 @@ RSpec.describe AnswersController, type: :controller do
         it 'can not create upvote' do
           expect{ get :downvote, id: answer.id, format: :json }.to_not change(Vote, :count)
         end
+
         it 'responds with error' do
-          get :downvote, id: answer.id, format: :json                 
-          expect(JSON.parse(response.body)).to eq ["Permission denied"]
+          get :upvote, id: answer.id, format: :json          
+          expect(response.status).to eq 403
+          expect(response.body).to eq "You are not authorized to perform this action."
         end
+
+        it 'renders forbbidden' do
+          get :upvote, id: answer.id, format: :js
+          expect(response.status).to eq 403
+          expect(response).to render_template 'common/forbidden.js.erb'
+        end
+        
       end
+
       context 'Non author of a resource' do
         let!(:answer){ create :answer }
 

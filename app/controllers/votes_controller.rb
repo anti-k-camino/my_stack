@@ -2,6 +2,8 @@ class VotesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_vote, only:[:destroy] 
 
+  authorize_resource
+
   respond_to :json
   def destroy    
     @vote.destroy if current_user.author_of? @vote    
