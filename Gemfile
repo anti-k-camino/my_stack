@@ -66,6 +66,7 @@ end
 
 group :test do
   gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
+  gem 'json_spec'
 end
 
 group :development do  

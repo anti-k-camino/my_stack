@@ -12,6 +12,14 @@ Rails.application.routes.draw do
     get :downvote, on: :member
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+      end
+    end
+  end
+
   concern :commentable do
     resources :comments, only: [:create]
   end  
