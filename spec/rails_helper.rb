@@ -10,6 +10,7 @@ require 'shoulda/matchers'
 require 'support/factory_girl'
 require 'capybara/email/rspec'
 require 'cancan/matchers'
+require "json_matchers/rspec"
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

@@ -35,7 +35,46 @@ describe 'Profile API' do
           expect(response.body).to_not have_json_path(attr)
         end
       end
-
     end
+  end
+
+  
+  describe 'GET /index' do
+    context 'authorized' do
+      let!(:users){ create_list :user, 3 }
+      
+      
+      let(:access_token) { create(:access_token, resource_owner_id: users[0].id) }
+      
+
+      before do        
+        get '/api/v1/profiles', format: :json, access_token: access_token.token
+      end
+
+      it 'return 200 status' do
+        expect(response).to be_success
+      end
+
+
+      it 'not contain current_resource_owner' do
+        expect(response.body).to_not include_json(users[0].to_json)
+      end
+
+
+      it "return array of user objects propper length" do        
+        expect((JSON.parse(response.body)).count).to eq (users.count - 1)
+      end
+
+      %w(id email).each do |attr|
+        it "contains #{attr}" do
+          arr = JSON.parse(response.body)
+          arr.each_with_index do |a, iter|
+            expect(a["#{attr}"]).to eq users[(iter + 1)]["#{attr}"]
+          end
+        end
+      end    
+    end
+  
+
   end
 end
