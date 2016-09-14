@@ -77,8 +77,10 @@ describe 'Profile API' do
           expect(response.body).to_not have_json_path("0/#{attr}")
         end
       end
+
       it "return array of user objects propper length" do        
-        expect((JSON.parse(response.body)).count).to eq (users.count - 1)
+        #expect((JSON.parse(response.body)).count).to eq (users.count - 1)
+        expect(response.body).to have_json_size(users.count - 1)
       end
     end
 
