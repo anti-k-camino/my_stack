@@ -1,21 +1,18 @@
-class Api::V1::ProfilesController < Api::V1::BaseController 
-  #skip_before_action :authenticate_user!
+class Api::V1::ProfilesController < Api::V1::BaseController   
 
   before_action :doorkeeper_authorize! 
-  #skip_authorization_check 
+  
   authorize_resource class: User
+  respond_to :json
 
   api :GET, '/profiles', "This is index for all registered users except current user" 
-  def index
-    respond_to do|format|
-      format.json { render json: User.where.not(id: current_resource_owner.id) }
-    end
-  end   
+  def index    
+    render json: User.where.not(id: current_resource_owner.id)   
+  end 
+
   api :GET, '/profiles/me', "This is current user profile's data"
-  def me
-    respond_to do |format|
-      format.json { render json: current_resource_owner }
-    end    
+  def me    
+    render json: current_resource_owner      
   end
 
   protected
