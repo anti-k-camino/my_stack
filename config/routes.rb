@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  apipie
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 

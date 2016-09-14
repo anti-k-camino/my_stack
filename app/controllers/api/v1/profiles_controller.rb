@@ -4,13 +4,13 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   before_action :doorkeeper_authorize! 
   #skip_authorization_check 
   authorize_resource class: User
-
+  api!
   def index
     respond_to do|format|
       format.json { render json: User.where.not(id: current_resource_owner.id) }
     end
   end 
-
+  api!
   def me
     respond_to do |format|
       format.json { render json: current_resource_owner }
