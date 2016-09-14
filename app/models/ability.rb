@@ -34,6 +34,6 @@ class Ability
     can :best, Answer do |answer|
       answer.question.user_id == user.id
     end 
-    can :me, User, id: user.id
+    can :me, User, id: user.id          
   end
 end

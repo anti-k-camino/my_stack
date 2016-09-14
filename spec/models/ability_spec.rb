@@ -75,8 +75,7 @@ describe Ability  do
     it { should_not be_able_to :best, best_other_answer }
 
     it { should be_able_to :me, user, user: user }
-    it { should_not be_able_to :me, other_user, user: user }
-    
+    it { should_not be_able_to :me, other_user, user: user }         
     
   end
 end
