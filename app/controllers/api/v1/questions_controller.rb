@@ -1,8 +1,9 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  authorize_resource 
-  respond_to :json
+  authorize_resource   
 
+  api :GET, '/questions', 'This is index for all questions'
   def index
-    render json: Question.all
+    @question = Question.all
+    render json: @question   
   end
 end

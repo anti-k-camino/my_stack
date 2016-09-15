@@ -12,7 +12,15 @@ describe 'Questions API'do
         get '/api/v1/questions', format: :json, access_token: '123456'
         expect(response.status).to eq 401
       end
+    end
 
+    context 'authorized' do
+      let(:access_token){ create(:access_token) }
+      before{ get '/api/v1/questions', format: :json, access_token: access_token.token }
+
+      it 'returns 200 status' do
+        expect(response).to be_successful
+      end
     end
   end
 end
