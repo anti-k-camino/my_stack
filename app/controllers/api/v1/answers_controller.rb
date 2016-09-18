@@ -26,7 +26,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   protected
-
   def set_answer
     @answer = Answer.find(params[:id])
   end
