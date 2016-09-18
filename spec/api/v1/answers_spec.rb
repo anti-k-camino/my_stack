@@ -140,9 +140,8 @@ describe 'Answers API'do
         end        
 
         %w(id body created_at updated_at).each do |attr|
-          it "contains #{attr}" do 
-          #NO UNDERSTANDING AT ALL!!!!!         
-            expect(response.body).to be_json_eql(comments[0].send(attr.to_sym).to_json).at_path("comments/1/#{attr}")
+          it "contains #{attr}" do                 
+            expect(response.body).to be_json_eql(comments[0].send(attr.to_sym).to_json).at_path("comments/0/#{attr}")
           end
         end
       end
@@ -152,9 +151,8 @@ describe 'Answers API'do
           expect(response.body).to have_json_size(2).at_path("attachments")
         end        
 
-        it 'contains url' do
-          #Do not ubderstand why 0 : 1
-          expect(response.body).to be_json_eql(attachments[0].file.url.to_json).at_path('attachments/1/file/url')
+        it 'contains url' do          
+          expect(response.body).to be_json_eql(attachments[0].file.url.to_json).at_path('attachments/0/file/url')
         end
       end
      

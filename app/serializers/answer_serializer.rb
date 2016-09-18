@@ -3,4 +3,12 @@ class AnswerSerializer < ActiveModel::Serializer
     
   has_many :comments
   has_many :attachments 
+
+  def comments
+    object.comments.order(updated_at: :asc)
+  end
+
+  def attachments
+    object.attachments.order(updated_at: :asc)
+  end
 end

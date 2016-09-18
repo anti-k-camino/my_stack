@@ -4,6 +4,18 @@ class QuestionSerializer < ActiveModel::Serializer
   has_many :comments
   has_many :attachments
 
+  def comments
+    object.comments.order(updated_at: :asc)
+  end
+
+  def answers
+    object.answers.order(updated_at: :asc)
+  end
+
+  def attachments
+    object.attachments.order(updated_at: :asc)
+  end
+
   def short_title
     object.title.truncate(10)
   end

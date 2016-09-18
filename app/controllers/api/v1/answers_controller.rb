@@ -9,7 +9,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     render json: @answers
   end
 
-  api :GET, '/questions/:question_id/answers/id', 'This answer by id'
+  api :GET, '/questions/:question_id/answers/id', 'This renders answer by id'
   def show
     render json: @answer, serializer: AnswerSerializer
   end
