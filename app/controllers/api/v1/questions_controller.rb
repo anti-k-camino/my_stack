@@ -3,7 +3,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   api :GET, '/questions', 'This is index for all questions'
   def index
-    @question = Question.all
-    render json: @question   
+    @questions = Question.all
+    render json: @questions  
   end
 end
