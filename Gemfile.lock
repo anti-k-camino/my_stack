@@ -37,6 +37,11 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_model_serializers (0.10.2)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      jsonapi (~> 0.1.1.beta2)
+      railties (>= 4.1, < 6)
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
@@ -160,6 +165,8 @@ GEM
     json_spec (1.1.4)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
+    jsonapi (0.1.1.beta2)
+      json (~> 1.8)
     jwt (1.5.4)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -197,6 +204,8 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
+    oj (2.17.4)
+    oj_mimic_json (1.0.1)
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
@@ -346,6 +355,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10.0)
   apipie-rails
   byebug
   cancancan
@@ -366,6 +376,8 @@ DEPENDENCIES
   json_spec
   launchy
   letter_opener
+  oj
+  oj_mimic_json
   omniauth
   omniauth-facebook
   omniauth-twitter
@@ -391,4 +403,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.12.5
+   1.13.1
