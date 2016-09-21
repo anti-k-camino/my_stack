@@ -87,18 +87,7 @@ describe 'Answers API'do
   end
 
   describe 'GET #show' do
-    context 'unauthorized' do
-
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/answers/1', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access toke is invalid' do
-        get '/api/v1/answers/1', format: :json, access_token: '123456789'
-        expect(response.status).to eq 401
-      end
-    end
+   it_behaves_like 'API Authenticable Show'
 
     context 'authorized' do
       let(:user){ create :user }
@@ -151,5 +140,9 @@ describe 'Answers API'do
 
   def do_post_request(options = {})    
     post "/api/v1/questions/1/answers", {answer: attributes_for(:answer),format: :json}.merge(options)
+  end
+
+  def do_show_request(options = {})
+    get '/api/v1/answers/1', {format: :json}.merge(options)
   end
 end
