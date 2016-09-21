@@ -28,17 +28,9 @@ describe 'Answers API'do
     end
   end
 
-  describe 'POST #create' do
-    context 'non authorized user' do
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/questions/1/answers', format: :json
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if access toke is invalid' do
-        get '/api/v1/questions/1/answers', format: :json, access_token: '123456789'
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'POST #create' do    
+     
+    it_behaves_like 'API Authenticable Post'
 
     context 'authenticated user' do  
     
@@ -155,5 +147,9 @@ describe 'Answers API'do
 
   def do_request(options = {})
     get "/api/v1/questions/#{question.id}/answers", {format: :json}.merge(options)
+  end
+
+  def do_post_request(options = {})    
+    post "/api/v1/questions/1/answers", {answer: attributes_for(:answer),format: :json}.merge(options)
   end
 end
