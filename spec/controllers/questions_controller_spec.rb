@@ -160,9 +160,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       let(:path) { '/questions' }
-      let(:create_question) { post :create, question: attributes_for(:question) }
+      let(:create_object) { post :create, question: attributes_for(:question) }
       let(:invalid) { post :create, question: attributes_for(:invalid_question) } 
-       
+
       it_behaves_like "Publishable"
 
       it 'user  has this question as the author' do
