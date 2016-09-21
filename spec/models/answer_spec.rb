@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe Answer, type: :model do
-  it { should validate_presence_of :body }
-  it { should validate_presence_of :question_id }
-  it { should validate_presence_of :user_id }
+RSpec.describe Answer, type: :model do 
+
+  it_behaves_like "User Ownerable"
+  it_behaves_like "Ownerable"
+
+
+  it { should validate_presence_of :question_id }  
   it { should belong_to :question }  
   it { should have_db_index :question_id }
-  it { should belong_to :user }  
-  it { should have_db_index :user_id }
-  it { should have_many :attachments }
-  it { should accept_nested_attributes_for :attachments }
-  it { should have_many(:comments).dependent :destroy }
+   
+  
 
   describe 'best!' do    
     let!(:question){ create :question }
@@ -30,18 +30,10 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe 'user_voted?' do 
-    let!(:user){ create :user } 
-    let!(:sample_user){ create :user }  
-    let!(:answer){ create :answer }
-    let!(:vote){ create :vote, user: user, votable: answer, vote_field: 1}   
-  
-    it 'user different from resource user is accapteble' do
-      expect(answer.user_voted?(sample_user)).to be_falsy
-    end
-    
-    it 'user similar to resource user is accapteble' do
-      expect(answer.user_voted?(user)).to be_truthy
+
+  describe 'user_voted?' do
+    it_behaves_like 'User Votable' do
+      subject { build(:answer) }
     end
   end
 
@@ -61,7 +53,6 @@ RSpec.describe Answer, type: :model do
         expect(answer.upvote(user).valid?).to be_truthy
       end
     end
-
   end
 
   describe 'downvote' do

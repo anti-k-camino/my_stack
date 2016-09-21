@@ -6,18 +6,9 @@ describe 'Answers API'do
     let!(:answers){ create_list :answer, 2, question: question }
     let(:user){ create :user }
     let(:access_token){ create :access_token, resource_owner_id: user.id }
-    context 'non-authorized' do      
 
-      it 'respondes with 401 unauthorized without access_token' do
-        get "/api/v1/questions/#{question.id}/answers" 
-        expect(response.status).to eq 401
-      end
+    it_behaves_like "API Authenticable"
 
-      it 'respondes with 401 when invalid access_token' do
-        get "/api/v1/questions/#{question.id}/answers", access_token: '123456678789' 
-        expect(response.status).to eq 401
-      end
-    end
     context 'authorized' do
       before{ get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: access_token.token }
 
@@ -37,17 +28,9 @@ describe 'Answers API'do
     end
   end
 
-  describe 'POST #create' do
-    context 'non authorized user' do
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/questions/1/answers', format: :json
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if access toke is invalid' do
-        get '/api/v1/questions/1/answers', format: :json, access_token: '123456789'
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'POST #create' do    
+     
+    it_behaves_like 'API Authenticable Post'
 
     context 'authenticated user' do  
     
@@ -104,16 +87,7 @@ describe 'Answers API'do
   end
 
   describe 'GET #show' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/answers/1', format: :json
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if access toke is invalid' do
-        get '/api/v1/answers/1', format: :json, access_token: '123456789'
-        expect(response.status).to eq 401
-      end
-    end
+   it_behaves_like 'API Authenticable Show'
 
     context 'authorized' do
       let(:user){ create :user }
@@ -147,6 +121,7 @@ describe 'Answers API'do
       end
 
       context 'attachments' do
+        
         it 'included in question object' do
           expect(response.body).to have_json_size(2).at_path("attachments")
         end        
@@ -157,5 +132,17 @@ describe 'Answers API'do
       end
      
     end
+  end
+
+  def do_request(options = {})
+    get "/api/v1/questions/#{question.id}/answers", {format: :json}.merge(options)
+  end
+
+  def do_post_request(options = {})    
+    post "/api/v1/questions/1/answers", {answer: attributes_for(:answer),format: :json}.merge(options)
+  end
+
+  def do_show_request(options = {})
+    get '/api/v1/answers/1', {format: :json}.merge(options)
   end
 end
