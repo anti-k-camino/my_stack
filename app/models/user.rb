@@ -55,4 +55,10 @@ class User < ActiveRecord::Base
     end   
     user    
   end
+
+  def self.send_daily_digest
+    all.each do |user|
+      DailyMailer.digest(user).deliver
+    end
+  end
 end
