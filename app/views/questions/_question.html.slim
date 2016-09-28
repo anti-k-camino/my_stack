@@ -13,12 +13,11 @@ div.show_question
 
 -if can? :create, @subscription
   .subscription
-    = link_to t('.subscribe'), question_subscribe_path(@question),
-      method: :post, remote: true
+    = link_to t('Subscribe'), question_subscribe_path(@question), method: :post, remote: true
 -if can? :destroy, @subscription
   .subscription
-    = link_to t('.unsubscribe'), question_unsubscribe_path(@question),
-      method: :delete, remote: true
+    = link_to t('Unsubscribe'), question_unsubscribe_path(@question), method: :delete, remote: true
+    
 div.edit_question
   =form_for @question, remote: true do |f|     
     = f.label :title, class: 'label_hidden' 

@@ -5,6 +5,7 @@ class QuestionsController < ApplicationController
   before_action :set_gon_user, only:[:show] 
   after_action :publish_to, only:[:create, :destroy]
   before_action :build_answer, only:[:show]
+  before_action :set_subscription, only: :show
 
   respond_to :js
 
@@ -69,5 +70,12 @@ class QuestionsController < ApplicationController
 
   def build_answer
     @answer = @question.answers.new
+  end
+
+  def set_subscription
+    if user_signed_in?    
+      @subscription = Subscription.find_by(user_id: current_user.id, question: @question)
+      @subscription ||= Subscription.new(user_id: current_user.id, question: @question)
+    end
   end
 end
