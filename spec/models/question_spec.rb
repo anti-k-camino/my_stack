@@ -58,4 +58,12 @@ RSpec.describe Question, type: :model do
       end
     end
   end
+
+  describe '.subscribe_author' do
+    let(:question) { create :question }
+
+    it 'is called after creating' do
+      expect(Subscription.where(user: question.user, question: question)).to exist
+    end
+  end
 end

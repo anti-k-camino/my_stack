@@ -1,4 +1,4 @@
-
+=begin
 require 'rails_helper'
 
 RSpec.describe DailyDigestJob, type: :job do
@@ -7,8 +7,8 @@ RSpec.describe DailyDigestJob, type: :job do
     DailyDigestJob.perform_now
   end
 end
+=end
 
-=begin
 require 'rails_helper'
 
 RSpec.describe DailyDigestJob, type: :job do
@@ -32,4 +32,3 @@ RSpec.describe DailyDigestJob, type: :job do
     end
   end
 end
-=end
