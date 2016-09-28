@@ -6,6 +6,7 @@ class Question < ActiveRecord::Base
   include Commentings  
   
   has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
    
   validates :title, :body, presence: true  
 end

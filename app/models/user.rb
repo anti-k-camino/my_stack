@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :answers, dependent: :destroy #foreign_key on_delete: :cascade is set in db
   has_many :comments, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   has_many :votes, dependent: :destroy  
 
