@@ -1,8 +1,0 @@
-h1 New answer for question:
-= link_to "#{@answer.question.title}", @answer.question
-p= "#{@answer.user.email} answerd #{l(@answer.created_at, format: :day)} " + |
-        "at #{l(@answer.created_at, format: :time)}:"                         |
-p= @answer.body
-
-= link_to 'Open question', @answer.question
-= link_to 'Unsubscribe from new answers', question_unsubscribe_url(@answer.question)
