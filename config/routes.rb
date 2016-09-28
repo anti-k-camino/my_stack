@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     resources :answers, only:[:create, :destroy, :update], shallow: true, concerns: [:votable, :commentable] do      
       patch :best, on: :member      
     end
+    post   '/subscribe'   => 'subscriptions#create'
+    delete '/unsubscribe' => 'subscriptions#destroy'
   end  
   root 'questions#index'
   # The priority is based upon order of creation: first created -> highest priority.
