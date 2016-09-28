@@ -75,7 +75,26 @@ describe Ability  do
     it { should_not be_able_to :best, best_other_answer }
 
     it { should be_able_to :me, user, user: user }
-    it { should_not be_able_to :me, other_user, user: user }         
+    it { should_not be_able_to :me, other_user, user: user }  
+
+    context "with subscription" do
+      let!(:question) { create :question }
+
+      context "when user is not subscribed to question" do
+        let(:subscription) { build :subscription, user_id: user.id, question: question }
+
+        it { should     be_able_to :create,  subscription }
+        it { should_not be_able_to :destroy, subscription, user_id: user.id }
+      end
+
+      context "when user subscirbed to question" do
+        let!(:subscription) { create :subscription, user_id: user.id, question: question }
+
+        it { should     be_able_to :destroy, subscription, user_id: user.id }
+        it { should_not be_able_to :create,  subscription, user_id: user.id }
+      end
+    end       
     
   end
+
 end
