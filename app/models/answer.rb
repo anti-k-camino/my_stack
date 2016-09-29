@@ -8,11 +8,17 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   validates :body, :question_id, presence: true
   scope :order_by_best, -> { order(best: :desc) }
+  after_commit :sent_notification, on: :create
 
   def the_best!
     transaction do
       self.question.answers.where(best: true).update_all(best: false)    
       update! best: true
     end      
-  end    
+  end 
+  private
+
+  def sent_notification
+    NewAnswerNotificationJob.perform_now(self)
+  end   
 end
