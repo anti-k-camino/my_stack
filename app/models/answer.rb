@@ -8,7 +8,7 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   validates :body, :question_id, presence: true
   scope :order_by_best, -> { order(best: :desc) }
-  after_commit :sent_notification, on: :create
+  after_save :sent_notification, on: :create
 
   def the_best!
     transaction do
@@ -16,8 +16,8 @@ class Answer < ActiveRecord::Base
       update! best: true
     end      
   end 
-  private
 
+  private
   def sent_notification
     NewAnswerNotificationJob.perform_now(self)
   end   
