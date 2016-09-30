@@ -43,6 +43,10 @@ gem 'apipie-rails'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'whenever'
+gem 'sidekiq'
+gem 'sidetiq'
+gem 'sinatra', '>=1.3.0', require: nil
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

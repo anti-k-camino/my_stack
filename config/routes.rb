@@ -1,4 +1,12 @@
+=begin
+require 'sidekiq/web'
+=end
 Rails.application.routes.draw do
+=begin
+  authenticate :user, lambda{|u| u.admin?} do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+=end  
   apipie
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
@@ -33,6 +41,8 @@ Rails.application.routes.draw do
     resources :answers, only:[:create, :destroy, :update], shallow: true, concerns: [:votable, :commentable] do      
       patch :best, on: :member      
     end
+    post   '/subscribe'   => 'subscriptions#create'
+    delete '/unsubscribe' => 'subscriptions#destroy'
   end  
   root 'questions#index'
   # The priority is based upon order of creation: first created -> highest priority.

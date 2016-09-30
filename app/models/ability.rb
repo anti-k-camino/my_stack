@@ -34,6 +34,13 @@ class Ability
     can :best, Answer do |answer|
       answer.question.user_id == user.id
     end 
-    can :me, User, id: user.id          
+    can :me, User, id: user.id
+    can :create, Subscription do |subscription|
+      !user.subscriptions.include?(subscription)
+    end
+
+    can :destroy, Subscription do |subscription|
+      user.subscriptions.include?(subscription)
+    end          
   end
 end

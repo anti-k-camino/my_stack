@@ -13,7 +13,8 @@ RSpec.describe Question, type: :model do
   
   it { should have_many(:answers).dependent :destroy }
   it { should have_many(:votes).dependent :destroy }
-  it { should have_many(:users) } 
+  it { should have_many(:subscriptions).dependent :destroy }  
+  it { should have_many(:subscribers).through(:subscriptions) }
   
 
   describe 'user_voted?' do
@@ -55,6 +56,14 @@ RSpec.describe Question, type: :model do
       it 'can downvote a question' do        
         expect(question.downvote(user).valid?).to be_truthy
       end
+    end
+  end
+
+  describe '.subscribe_author' do
+    let(:question) { create :question }
+
+    it 'is called after creating' do
+      expect(Subscription.where(user_id: question.user, question: question)).to exist
     end
   end
 end
