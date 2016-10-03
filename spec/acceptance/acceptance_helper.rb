@@ -8,6 +8,8 @@ RSpec.configure do |config|
     
   config.include AcceptenceHelpers, type: :feature
 
+  config.include SphinxHelpers, type: :feature
+
   config.use_transactional_fixtures = false
 
   config.before(:suite) do

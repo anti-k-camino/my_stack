@@ -26,8 +26,6 @@ feature 'Search' do
     fill_in 'query', with: question.title
     click_button 'Find'
 
-    save_and_open_page
-
     expect(page).to have_content question.title
     expect(page).to have_content answer.body
     expect(page).to have_content comment.body
