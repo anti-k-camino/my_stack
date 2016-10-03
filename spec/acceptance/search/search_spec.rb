@@ -14,7 +14,7 @@ feature 'Search' do
   end
 
   scenario 'Visit search page', :sphinx do
-    expect(current_path).to eq search_path
+    expect(current_path).to eq search_index_path
   end
 
   scenario 'See search query', :sphinx do
@@ -23,8 +23,10 @@ feature 'Search' do
 
   scenario 'See result with all', :sphinx do
     select 'All', from: 'model'
-    fill_in 'query', with: ''
+    fill_in 'query', with: question.title
     click_button 'Find'
+
+    save_and_open_page
 
     expect(page).to have_content question.title
     expect(page).to have_content answer.body
