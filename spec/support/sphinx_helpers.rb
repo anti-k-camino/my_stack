@@ -22,4 +22,5 @@ RSpec.configure do |config|
 
   config.before(:each, sphinx: true) do
     index
+  end
 end
