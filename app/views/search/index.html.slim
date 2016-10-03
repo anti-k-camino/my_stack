@@ -1,39 +1,27 @@
-h1 Search results
-.search_results
-  - if @results.present?
-    - @results.each do |result|
-      .result
-        - case result.model_name
-          - when 'Question'
-            p.user="User #{result.user.email} asked "
-            p.date=result.created_at
-            h1=result.title
-            p=result.body
-            = link_to "Open", question_path(result)
+= form_tag search_index_path, method: :get, role: 'search' do
+  = label_tag :query, 'Search'
+  = select_tag(:model, options_for_select(['All', 'Question', 'Answer', 'Comment', 'User']))
+  = text_field_tag :query
+  = submit_tag 'Find', name: nil, class: 'btn-sm btn-primary'
 
-          - when 'Answer'
-            p.user= "User #{result.user.email} answered "
-            p.date=   result.created_at
-            p=        "Question: #{result.question.title}"
-            p=        result.body
-            = link_to "Open", question_path(result.question)
-
-          - when 'Comment'
-            - if result.commentable_type == "Answer"
-              p.user= "User #{result.user.email} commented "
-              p.date= result.created_at
-              p= "Answer: #{result.commentable.body}"
-              p= result.body
-              = link_to "Open", question_path(result.commentable.question)
-            - else
-              p.user= "User #{result.user.email} commented "
-              p.date= result.created_at
-              p= "Question: #{result.commentable.title}"
-              p= result.body
-              = link_to "Open", question_path(result.commentable)
-
-          - when 'User'
-            p.user= "User #{result.email} registered at "
-            p.date= result.created_at
-  - else
-    p There are no search results.
+- if @results.empty?
+  p Not found
+- else
+  h1 Results:
+  - @results.each do |r|
+    - case r.class.name
+      - when 'Question'
+        h2= link_to r.class.name, question_path(r.id)
+        p= r.title
+      - when 'Answer'
+        h2= link_to r.class.name, question_path(r.question.id)
+        p= r.body
+      - when 'User'
+        h2 User
+        p= r.email
+      - when 'Comment'
+        - if 'Question'.include? r.commentable.class.name
+          h2= link_to r.class.name, question_path(r.commentable.id)
+        - if 'Answer'.include? r.commentable.class.name
+          h2= link_to r.class.name, question_path(r.commentable.question.id)
+        p= r.body
