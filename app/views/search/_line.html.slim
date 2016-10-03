@@ -1,0 +1,8 @@
+.search
+  = form_tag search_index_path, method: :get do |f|
+    .field
+      = label :model, "Search at"
+      = select_tag :model,
+        options_for_select(['Anywhere', 'Questions', 'Answers', 'Comments', 'Users'], 'Anywhere')
+      = text_field_tag :query, params[:query]
+      = submit_tag "Search"

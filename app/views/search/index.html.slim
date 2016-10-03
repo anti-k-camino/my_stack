@@ -1,0 +1,39 @@
+h1 Search results
+.search_results
+  - if @results.present?
+    - @results.each do |result|
+      .result
+        - case result.model_name
+          - when 'Question'
+            p.user="User #{result.user.email} asked "
+            p.date=result.created_at
+            h1=result.title
+            p=result.body
+            = link_to "Open", question_path(result)
+
+          - when 'Answer'
+            p.user= "User #{result.user.email} answered "
+            p.date=   result.created_at
+            p=        "Question: #{result.question.title}"
+            p=        result.body
+            = link_to "Open", question_path(result.question)
+
+          - when 'Comment'
+            - if result.commentable_type == "Answer"
+              p.user= "User #{result.user.email} commented "
+              p.date= result.created_at
+              p= "Answer: #{result.commentable.body}"
+              p= result.body
+              = link_to "Open", question_path(result.commentable.question)
+            - else
+              p.user= "User #{result.user.email} commented "
+              p.date= result.created_at
+              p= "Question: #{result.commentable.title}"
+              p= result.body
+              = link_to "Open", question_path(result.commentable)
+
+          - when 'User'
+            p.user= "User #{result.email} registered at "
+            p.date= result.created_at
+  - else
+    p There are no search results.

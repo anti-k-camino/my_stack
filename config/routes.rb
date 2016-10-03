@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     get :downvote, on: :member
   end
 
+  resources :search, only: :index
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: [:index]do
