@@ -24,8 +24,7 @@ feature 'Search' do
   scenario 'See result with all', :sphinx do
     select 'All', from: 'model'
     fill_in 'query', with: question.title
-    click_button 'Find'
-
+    click_button 'Find'    
     expect(page).to have_content question.title
     expect(page).to have_content answer.body
     expect(page).to have_content comment.body
