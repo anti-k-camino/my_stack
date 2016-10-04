@@ -8,6 +8,8 @@ RSpec.configure do |config|
     
   config.include AcceptenceHelpers, type: :feature
 
+  config.include SphinxHelpers, type: :feature
+
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
@@ -20,6 +22,10 @@ RSpec.configure do |config|
 
   config.before(:each, js: true) do
     DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each, sphinx: true) do
+    DatabaseCleaner.strategy = :deletion
   end
 
   config.before(:each) do
